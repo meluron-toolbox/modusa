@@ -1,0 +1,10 @@
+img.sidebar-logo {
+    max-width: 200px;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+}
+
+.sidebar-brand-text {
+    display: none !important;
+}
