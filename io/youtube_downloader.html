@@ -2,10 +2,11 @@
 <html class="no-js" lang="en" data-content_root="../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" />
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Engines" href="../engines/index.html" /><link rel="prev" title="Plotter" href="plotter.html" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2024.08.06 -->
-        <title>Overview: module code - modusa 0.1.0 documentation</title>
+        <title>YoutubeDownloader - modusa 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -179,7 +180,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -213,7 +214,7 @@
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../signals/index.html">Signals</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Signals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../signals/base.html">ModusaSignal</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../signals/audio_signal.html">AudioSignal</a></li>
@@ -228,12 +229,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../generators/audio_waveforms.html">BasicWaveformGenerator</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../io/index.html">IO</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of IO</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../io/base.html">ModusaIO</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../io/audio_loader.html">AudioLoader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../io/audio_converter.html">AudioConverter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../io/plotter.html">Plotter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../io/youtube_downloader.html">YoutubeDownloader</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">IO</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of IO</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="base.html">ModusaIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_loader.html">AudioLoader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_converter.html">AudioConverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotter.html">Plotter</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">YoutubeDownloader</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../engines/index.html">Engines</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Engines</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -265,7 +266,13 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/io/youtube_downloader.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
@@ -274,32 +281,92 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>All modules for which code is available</h1>
-<ul><li><a href="modusa/engines/base.html">modusa.engines.base</a></li>
-<li><a href="modusa/generators/audio_waveforms.html">modusa.generators.audio_waveforms</a></li>
-<li><a href="modusa/generators/base.html">modusa.generators.base</a></li>
-<li><a href="modusa/io/audio_converter.html">modusa.io.audio_converter</a></li>
-<li><a href="modusa/io/audio_loader.html">modusa.io.audio_loader</a></li>
-<li><a href="modusa/io/base.html">modusa.io.base</a></li>
-<li><a href="modusa/io/plotter.html">modusa.io.plotter</a></li>
-<li><a href="modusa/io/youtube_downloader.html">modusa.io.youtube_downloader</a></li>
-<li><a href="modusa/plugins/base.html">modusa.plugins.base</a></li>
-<li><a href="modusa/signals/audio_signal.html">modusa.signals.audio_signal</a></li>
-<li><a href="modusa/signals/base.html">modusa.signals.base</a></li>
+          <section id="youtubedownloader">
+<h1>YoutubeDownloader<a class="headerlink" href="#youtubedownloader" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="modusa.io.YoutubeDownloader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modusa.io.</span></span><span class="sig-name descname"><span class="pre">YoutubeDownloader</span></span><a class="reference internal" href="../_modules/modusa/io/youtube_downloader.html#YoutubeDownloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.io.YoutubeDownloader" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="base.html#modusa.io.ModusaIO" title="modusa.io.base.ModusaIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModusaIO</span></code></a></p>
+<p>Download highest quality audio/video from YouTube.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>The engine uses <cite>yt_dlp</cite> python package to download content from YouTube.</p></li>
 </ul>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="modusa.io.YoutubeDownloader.download">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="../_modules/modusa/io/youtube_downloader.html#YoutubeDownloader.download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.io.YoutubeDownloader.download" title="Link to this definition">¶</a></dt>
+<dd><p>Downloads audio/video from YouTube.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># To download audio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">modusa.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">YoutubeDownloader</span>
+<span class="n">audio_fp</span> <span class="o">=</span> <span class="n">YoutubeDownloader</span><span class="o">.</span><span class="n">download</span><span class="p">(</span>
+        <span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://www.youtube.com/watch?v=lIpw9-Y_N0g&quot;</span><span class="p">,</span>
+        <span class="n">content_type</span><span class="o">=</span><span class="s2">&quot;audio&quot;</span><span class="p">,</span>
+        <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># To download video</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">modusa.engines</span><span class="w"> </span><span class="kn">import</span> <span class="n">YoutubeDownloaderEngine</span>
+<span class="n">video_fp</span> <span class="o">=</span> <span class="n">YoutubeDownloader</span><span class="o">.</span><span class="n">download</span><span class="p">(</span>
+        <span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://www.youtube.com/watch?v=lIpw9-Y_N0g&quot;</span><span class="p">,</span>
+        <span class="n">content_type</span><span class="o">=</span><span class="s2">&quot;audio&quot;</span><span class="p">,</span>
+        <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>str</em>) – Link to the YouTube video.</p></li>
+<li><p><strong>content_type</strong> (<em>str</em>) – “audio” or “video”</p></li>
+<li><p><strong>output_dir</strong> (<em>str</em><em> | </em><em>Path</em>) – Directory to save the YouTube content.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>File path of the downloaded content.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
         </article>
       </div>
       <footer>
         
         <div class="related-pages">
-          
-          
+          <a class="next-page" href="../engines/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Engines</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="plotter.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Plotter</div>
+                
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -318,8 +385,30 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">YoutubeDownloader</a><ul>
+<li><a class="reference internal" href="#modusa.io.YoutubeDownloader"><code class="docutils literal notranslate"><span class="pre">YoutubeDownloader</span></code></a><ul>
+<li><a class="reference internal" href="#modusa.io.YoutubeDownloader.download"><code class="docutils literal notranslate"><span class="pre">YoutubeDownloader.download()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>

@@ -2,10 +2,11 @@
 <html class="no-js" lang="en" data-content_root="../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" />
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="prev" title="Engine Creation Guide" href="engine_creation_guide.html" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2024.08.06 -->
-        <title>Overview: module code - modusa 0.1.0 documentation</title>
+        <title>Plugin Creation Guide - modusa 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -179,7 +180,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -242,10 +243,10 @@
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">How to contribute</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../contrib/contribution_guidelines.html">Contributing to modusa</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../contrib/engine_creation_guide.html">Engine Creation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../contrib/plugin_creation_guide.html">Plugin Creation Guide</a></li>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="contribution_guidelines.html">Contributing to modusa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engine_creation_guide.html">Engine Creation Guide</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Plugin Creation Guide</a></li>
 </ul>
 
 </div>
@@ -265,7 +266,13 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/contrib/plugin_creation_guide.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
@@ -274,32 +281,113 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>All modules for which code is available</h1>
-<ul><li><a href="modusa/engines/base.html">modusa.engines.base</a></li>
-<li><a href="modusa/generators/audio_waveforms.html">modusa.generators.audio_waveforms</a></li>
-<li><a href="modusa/generators/base.html">modusa.generators.base</a></li>
-<li><a href="modusa/io/audio_converter.html">modusa.io.audio_converter</a></li>
-<li><a href="modusa/io/audio_loader.html">modusa.io.audio_loader</a></li>
-<li><a href="modusa/io/base.html">modusa.io.base</a></li>
-<li><a href="modusa/io/plotter.html">modusa.io.plotter</a></li>
-<li><a href="modusa/io/youtube_downloader.html">modusa.io.youtube_downloader</a></li>
-<li><a href="modusa/plugins/base.html">modusa.plugins.base</a></li>
-<li><a href="modusa/signals/audio_signal.html">modusa.signals.audio_signal</a></li>
-<li><a href="modusa/signals/base.html">modusa.signals.base</a></li>
+          <section id="plugin-creation-guide">
+<h1>Plugin Creation Guide<a class="headerlink" href="#plugin-creation-guide" title="Link to this heading">¶</a></h1>
+<p>This guide will walk you through creating a new plugin in the <strong>Modusa</strong> framework.</p>
+<p>All plugins must inherit from the base class <code class="xref py py-class docutils literal notranslate"><span class="pre">modusa.plugins.ModusaPlugin</span></code> and implement the required properties and methods to be considered valid and safely executable within the framework.</p>
+<section id="plugin-structure">
+<h2>Plugin Structure<a class="headerlink" href="#plugin-structure" title="Link to this heading">¶</a></h2>
+<p>Each plugin must:</p>
+<ol class="arabic simple">
+<li><p>Define the input and output signal types using the <cite>allowed_input_signal_types</cite> and <cite>allowed_output_signal_types</cite> properties.</p></li>
+<li><p>Implement the main logic inside the <cite>apply()</cite> method.</p></li>
+<li><p>Be decorated with <cite>&#64;plugin_safety_check()</cite> for automatic type validation and safe execution.</p></li>
+</ol>
+<section id="basic-template">
+<h3>Basic Template<a class="headerlink" href="#basic-template" title="Link to this heading">¶</a></h3>
+<p>Here is a minimal working example of a Modusa plugin:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">modusa.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModusaPlugin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">modusa.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">plugin_safety_check</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">modusa.signals</span><span class="w"> </span><span class="kn">import</span> <span class="n">Signal1D</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyPlugin</span><span class="p">(</span><span class="n">ModusaPlugin</span><span class="p">):</span>
+        <span class="nd">@property</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">allowed_input_signal_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="c1"># Accept only Signal1D input</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">Signal1D</span><span class="p">,</span> <span class="p">)</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">allowed_output_signal_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="c1"># Return type is also Signal1D</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">Signal1D</span><span class="p">,</span> <span class="p">)</span>
+
+        <span class="nd">@plugin_safety_check</span><span class="p">()</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="p">:</span> <span class="n">Signal1D</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Signal1D</span><span class="p">:</span>
+                <span class="c1"># Plugin processing logic</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">y</span> <span class="o">*</span> <span class="mi">2</span>
+                <span class="k">return</span> <span class="n">Signal1D</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">signal</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="explanation-of-components">
+<h2>Explanation of Components<a class="headerlink" href="#explanation-of-components" title="Link to this heading">¶</a></h2>
+<section id="allowed-input-signal-types">
+<h3>allowed_input_signal_types<a class="headerlink" href="#allowed-input-signal-types" title="Link to this heading">¶</a></h3>
+<p>This property defines what types of signals your plugin can operate on.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@property</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">allowed_input_signal_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">Signal1D</span><span class="p">,</span> <span class="n">Signal2D</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="allowed-output-signal-types">
+<h3>allowed_output_signal_types<a class="headerlink" href="#allowed-output-signal-types" title="Link to this heading">¶</a></h3>
+<p>This property defines the types your plugin might return from <cite>apply()</cite>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@property</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">allowed_output_signal_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">Signal1D</span><span class="p">,</span> <span class="n">Signal2D</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>  <span class="c1"># None for plot-only plugins</span>
+</pre></div>
+</div>
+</section>
+<section id="apply">
+<h3>apply()<a class="headerlink" href="#apply" title="Link to this heading">¶</a></h3>
+<p>This method contains the core logic. You <strong>must</strong> decorate it with <cite>&#64;plugin_safety_check()</cite> to ensure input/output types are automatically checked and errors are raised clearly if the contract is violated.</p>
+<p>Do <strong>not</strong> make <cite>apply</cite> a <cite>&#64;staticmethod</cite> or <cite>&#64;classmethod</cite>, as that breaks safety checking.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@plugin_safety_check</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="p">:</span> <span class="n">Signal1D</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Signal1D</span><span class="p">:</span>
+        <span class="c1"># Do processing here</span>
+        <span class="k">return</span> <span class="n">processed_signal</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="advanced-notes">
+<h2>Advanced Notes<a class="headerlink" href="#advanced-notes" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>If your plugin doesn’t return anything (e.g., it only plots), return <cite>None</cite> and include <cite>type(None)</cite> in <cite>allowed_output_signal_types</cite>.</p></li>
+<li><p>All signal types should come from <cite>modusa.signals</cite>.</p></li>
 </ul>
+</section>
+<section id="plugin-discovery">
+<h2>Plugin Discovery<a class="headerlink" href="#plugin-discovery" title="Link to this heading">¶</a></h2>
+<p>To be discoverable by the CLI or GUI (if applicable), your plugin class must reside in a Python module that follows the naming conventions required by the framework. Typically, all plugins are placed in a <cite>plugins/</cite> directory or registered via entry points.</p>
+</section>
+</section>
+
         </article>
       </div>
       <footer>
         
         <div class="related-pages">
           
-          
+          <a class="prev-page" href="engine_creation_guide.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Engine Creation Guide</div>
+                
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -318,8 +406,38 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Plugin Creation Guide</a><ul>
+<li><a class="reference internal" href="#plugin-structure">Plugin Structure</a><ul>
+<li><a class="reference internal" href="#basic-template">Basic Template</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#explanation-of-components">Explanation of Components</a><ul>
+<li><a class="reference internal" href="#allowed-input-signal-types">allowed_input_signal_types</a></li>
+<li><a class="reference internal" href="#allowed-output-signal-types">allowed_output_signal_types</a></li>
+<li><a class="reference internal" href="#apply">apply()</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#advanced-notes">Advanced Notes</a></li>
+<li><a class="reference internal" href="#plugin-discovery">Plugin Discovery</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>

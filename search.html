@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=d5dd7f3e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=3e3f2cfa" />
     
     
 
@@ -203,22 +203,50 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Example Usage</span></p>
+  <p class="caption" role="heading"><span class="caption-text">Quick Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="examples/Example1.html">Test</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="examples/index.html">Examples</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/example1.html">Loading Audio Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/example2.html">Performing mathematical operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/example3.html">Plotting signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/example4.html">Computing spectrogram</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Public API</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="signals.html">Signals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generators.html">Generators</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins</a></li>
-<li class="toctree-l1"><a class="reference internal" href="engines.html">Engines</a></li>
+</li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="contribution_guidelines.html">Contributing to modusa</a></li>
-<li class="toctree-l1"><a class="reference internal" href="engine_creation_guide.html">Engine Creation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plugin_creation_guide.html">Plugin Creation Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="signals/index.html">Signals</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Signals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="signals/base.html">ModusaSignal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals/audio_signal.html">AudioSignal</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="plugins/index.html">Plugins</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Plugins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="plugins/base.html">ModusaPlugin</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="generators/index.html">Generators</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Generators</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="generators/base.html">ModusaGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generators/audio_waveforms.html">BasicWaveformGenerator</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="io/index.html">IO</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of IO</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="io/base.html">ModusaIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/audio_loader.html">AudioLoader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/audio_converter.html">AudioConverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/plotter.html">Plotter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/youtube_downloader.html">YoutubeDownloader</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="engines/index.html">Engines</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Engines</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="engines/base.html">ModusaEngine</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How to contribute</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contrib/contribution_guidelines.html">Contributing to modusa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib/engine_creation_guide.html">Engine Creation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib/plugin_creation_guide.html">Plugin Creation Guide</a></li>
 </ul>
 
 </div>

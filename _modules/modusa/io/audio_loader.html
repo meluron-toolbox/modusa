@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2024.08.06 -->
-        <title>modusa.signals.base - modusa 0.1.0 documentation</title>
+        <title>modusa.io.audio_loader - modusa 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -280,78 +280,237 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Source code for modusa.signals.base</h1><div class="highlight"><pre>
+          <h1>Source code for modusa.io.audio_loader</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">modusa</span><span class="w"> </span><span class="kn">import</span> <span class="n">excp</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">modusa.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">immutable_property</span><span class="p">,</span> <span class="n">validate_args_type</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">modusa.signals.signal_ops</span><span class="w"> </span><span class="kn">import</span> <span class="n">SignalOps</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Self</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">modusa.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModusaIO</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">modusa.signals</span><span class="w"> </span><span class="kn">import</span> <span class="n">AudioSignal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">modusa.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">validate_args_type</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
-<div class="viewcode-block" id="ModusaSignal">
-<a class="viewcode-back" href="../../../signals/base.html#modusa.signals.ModusaSignal">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ModusaSignal</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<div class="viewcode-block" id="AudioLoader">
+<a class="viewcode-back" href="../../../io/audio_loader.html#modusa.io.AudioLoader">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AudioLoader</span><span class="p">(</span><span class="n">ModusaIO</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Base class for any signal in the modusa framework.</span>
+<span class="sd">	Loads audio from various sources like filepath, YouTube, etc.</span>
 <span class="sd">	</span>
 <span class="sd">	Note</span>
 <span class="sd">	----</span>
-<span class="sd">	- Intended to be subclassed.</span>
+<span class="sd">	- All `from_` methods return :class:`~modusa.signals.AudioSignal` instance.</span>
+<span class="sd">	</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	
 	<span class="c1">#--------Meta Information----------</span>
-	<span class="n">_name</span> <span class="o">=</span> <span class="s2">&quot;Modusa Signal&quot;</span>
-	<span class="n">_description</span> <span class="o">=</span> <span class="s2">&quot;Base class for any signal types in the Modusa framework.&quot;</span>
+	<span class="n">_name</span> <span class="o">=</span> <span class="s2">&quot;Audio Loader&quot;</span>
+	<span class="n">_description</span> <span class="o">=</span> <span class="s2">&quot;Loads audio from various sources.&quot;</span>
 	<span class="n">_author_name</span> <span class="o">=</span> <span class="s2">&quot;Ankit Anand&quot;</span>
 	<span class="n">_author_email</span> <span class="o">=</span> <span class="s2">&quot;ankit0.anand0@gmail.com&quot;</span>
-	<span class="n">_created_at</span> <span class="o">=</span> <span class="s2">&quot;2025-06-23&quot;</span>
+	<span class="n">_created_at</span> <span class="o">=</span> <span class="s2">&quot;2025-07-05&quot;</span>
 	<span class="c1">#----------------------------------</span>
 	
-	<span class="nd">@validate_args_type</span><span class="p">()</span>
 	<span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_plugin_chain</span> <span class="o">=</span> <span class="p">[]</span>
-	
-	<span class="c1">#----------------------------</span>
-	<span class="c1"># Properties</span>
-	<span class="c1">#----------------------------</span>
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
-	<span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="bp">cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
-		<span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+<div class="viewcode-block" id="AudioLoader.from_youtube">
+<a class="viewcode-back" href="../../../io/audio_loader.html#modusa.io.AudioLoader.from_youtube">[docs]</a>
+	<span class="nd">@staticmethod</span>
+	<span class="nd">@validate_args_type</span><span class="p">()</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">from_youtube</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sr</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;AudioSignal&quot;</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Loads audio from youtube url using :class:`~modusa.io.YoutubeDownloader`,</span>
+<span class="sd">		:class:`~modusa.io.AudioConverter` and `librosa`.</span>
+
+<span class="sd">		.. code-block:: python</span>
+<span class="sd">			</span>
+<span class="sd">			from modusa.io import AudioSignalLoader</span>
+<span class="sd">		</span>
+<span class="sd">			# From youtube</span>
+<span class="sd">			audio_signal = AudioSignalLoader.from_youtube(</span>
+<span class="sd">				url=&quot;https://www.youtube.com/watch?v=lIpw9-Y_N0g&quot;, </span>
+<span class="sd">				sr=None</span>
+<span class="sd">			)</span>
+
+<span class="sd">		PARAMETERS</span>
+<span class="sd">		----------</span>
+<span class="sd">		url: str</span>
+<span class="sd">			Link to the YouTube video.</span>
+<span class="sd">		sr: int</span>
+<span class="sd">			Sampling rate to load the audio in.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		</span>
+<span class="sd">		AudioSignal:</span>
+<span class="sd">			`Audio signal` instance with loaded audio content from YouTube.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="kn">from</span><span class="w"> </span><span class="nn">modusa.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">YoutubeDownloader</span><span class="p">,</span> <span class="n">AudioConverter</span>
+		<span class="kn">import</span><span class="w"> </span><span class="nn">librosa</span>
 		
-		<span class="n">arr_str</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array2string</span><span class="p">(</span>
-			<span class="n">data</span><span class="p">,</span>
-			<span class="n">separator</span><span class="o">=</span><span class="s2">&quot;, &quot;</span><span class="p">,</span>
-			<span class="n">threshold</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>       <span class="c1"># limit number of elements shown</span>
-			<span class="n">edgeitems</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>          <span class="c1"># show first/last 3 rows and columns</span>
-			<span class="n">max_line_width</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>   <span class="c1"># avoid wrapping</span>
-			<span class="n">formatter</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;float_kind&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
-		<span class="p">)</span>
+		<span class="c1"># Download the audio in temp directory using tempfile module</span>
+		<span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmpdir</span><span class="p">:</span>
+			<span class="n">audio_fp</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">YoutubeDownloader</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s2">&quot;audio&quot;</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">))</span>
+			
+			<span class="c1"># Convert the audio to &quot;.wav&quot; form for loading</span>
+			<span class="n">wav_audio_fp</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">AudioConverter</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">inp_audio_fp</span><span class="o">=</span><span class="n">audio_fp</span><span class="p">,</span> <span class="n">output_audio_fp</span><span class="o">=</span><span class="n">audio_fp</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.wav&quot;</span><span class="p">))</span>
+			
+			<span class="c1"># Load the audio in memory and return that</span>
+			<span class="n">audio_data</span><span class="p">,</span> <span class="n">audio_sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">wav_audio_fp</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">)</span>
 		
-		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Signal(</span><span class="si">{</span><span class="n">arr_str</span><span class="si">}</span><span class="s2">, shape=</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, kind=</span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s2">)&quot;</span>
-	
-	<span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="bp">cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
-		<span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
-		
-		<span class="n">arr_str</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array2string</span><span class="p">(</span>
-			<span class="n">data</span><span class="p">,</span>
-			<span class="n">separator</span><span class="o">=</span><span class="s2">&quot;, &quot;</span><span class="p">,</span>
-			<span class="n">threshold</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>       <span class="c1"># limit number of elements shown</span>
-			<span class="n">edgeitems</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>          <span class="c1"># show first/last 3 rows and columns</span>
-			<span class="n">max_line_width</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>   <span class="c1"># avoid wrapping</span>
-			<span class="n">formatter</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;float_kind&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
-		<span class="p">)</span>
-		
-		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Signal(</span><span class="si">{</span><span class="n">arr_str</span><span class="si">}</span><span class="s2">, shape=</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, kind=</span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+		<span class="n">audio</span> <span class="o">=</span> <span class="n">AudioSignal</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">audio_data</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">audio_fp</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="n">audio</span></div>
 
 	
+<div class="viewcode-block" id="AudioLoader.from_fp">
+<a class="viewcode-back" href="../../../io/audio_loader.html#modusa.io.AudioLoader.from_fp">[docs]</a>
+	<span class="nd">@staticmethod</span>
+	<span class="nd">@validate_args_type</span><span class="p">()</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">from_fp</span><span class="p">(</span><span class="n">fp</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span> <span class="n">sr</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AudioSignal</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Loads audio from a filepath using `librosa`.</span>
+
+<span class="sd">		.. code-block:: python</span>
+<span class="sd">			</span>
+<span class="sd">			from modusa.io import AudioSignalLoader</span>
+<span class="sd">			</span>
+<span class="sd">			# From file</span>
+<span class="sd">			audio_signal = AudioSignalLoader.from_fp(</span>
+<span class="sd">				fp=&quot;path/to/audio.wav&quot;, </span>
+<span class="sd">				sr=None</span>
+<span class="sd">			)</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		fp: str | Path</span>
+<span class="sd">			Local filepath of the audio.</span>
+<span class="sd">		sr: int | None</span>
+<span class="sd">			Sampling rate to load the audio in.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		AudioSignal</span>
+<span class="sd">			`Audio signal` instance with loaded audio content from filepath.</span>
+<span class="sd">		</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="kn">import</span><span class="w"> </span><span class="nn">librosa</span>
+		
+		<span class="n">fp</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+		<span class="n">y</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">)</span>
+		
+		<span class="n">audio_signal</span> <span class="o">=</span> <span class="n">AudioSignal</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">fp</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+		
+		<span class="k">return</span> <span class="n">audio_signal</span></div>
 
 	
+	
+<div class="viewcode-block" id="AudioLoader.from_array">
+<a class="viewcode-back" href="../../../io/audio_loader.html#modusa.io.AudioLoader.from_array">[docs]</a>
+	<span class="nd">@staticmethod</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">from_array</span><span class="p">(</span><span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AudioSignal</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Loads audio from numpy arrays.</span>
+
+<span class="sd">		.. code-block:: python</span>
+<span class="sd">			</span>
+<span class="sd">			from modusa.io import AudioSignalLoader</span>
+<span class="sd">			import numpy as np</span>
+<span class="sd">			</span>
+<span class="sd">			# From numpy array</span>
+<span class="sd">			audio_signal = AudioSignalLoader.from_array(</span>
+<span class="sd">				x=np.random.random((100, )),</span>
+<span class="sd">				t = None # Automatically creates time index (integer)</span>
+<span class="sd">			)</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		y: np.ndarray</span>
+<span class="sd">			Data of the audio signal.</span>
+<span class="sd">		t: np.ndarray | None</span>
+<span class="sd">			Corresponding time stamps of the audio signal.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		AudioSignal</span>
+<span class="sd">			`Audio signal` instance with loaded audio content from arrays.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		
+		<span class="k">return</span>  <span class="n">AudioSignal</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">t</span><span class="p">)</span></div>
+
+	
+<div class="viewcode-block" id="AudioLoader.from_array_with_sr">
+<a class="viewcode-back" href="../../../io/audio_loader.html#modusa.io.AudioLoader.from_array_with_sr">[docs]</a>
+	<span class="nd">@staticmethod</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">from_array_with_sr</span><span class="p">(</span><span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sr</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AudioSignal</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Loads audio with a given sampling rate.</span>
+<span class="sd">	</span>
+<span class="sd">		.. code-block:: python</span>
+<span class="sd">			</span>
+<span class="sd">			from modusa.io import AudioSignalLoader</span>
+<span class="sd">			import numpy as np</span>
+<span class="sd">			</span>
+<span class="sd">			# From numpy array</span>
+<span class="sd">			audio_signal = AudioSignalLoader.from_array_with_sr(</span>
+<span class="sd">				x=np.random.random((100, )),</span>
+<span class="sd">				sr = 100 # Automatically generates time index</span>
+<span class="sd">			)</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		y: np.ndarray</span>
+<span class="sd">			Data of the audio signal.</span>
+<span class="sd">		sr: int</span>
+<span class="sd">			Sampling rate of the audio signal.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		AudioSignal</span>
+<span class="sd">			`Audio signal` instance with loaded audio content from sampling rate.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		
+		<span class="k">return</span> <span class="n">AudioSignal</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">)</span></div>
+
+	
+<div class="viewcode-block" id="AudioLoader.from_list">
+<a class="viewcode-back" href="../../../io/audio_loader.html#modusa.io.AudioLoader.from_list">[docs]</a>
+	<span class="nd">@staticmethod</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">from_list</span><span class="p">(</span><span class="n">y</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AudioSignal</span><span class="p">:</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Loads `AudioSignal` instance from python list.</span>
+<span class="sd">		</span>
+<span class="sd">		.. code-block:: python</span>
+<span class="sd">			</span>
+<span class="sd">			from modusa.io import AudioSignalLoader</span>
+<span class="sd">			</span>
+<span class="sd">			# From list</span>
+<span class="sd">			audio_signal = AudioSignalLoader.from_list(</span>
+<span class="sd">				y=[1, 2, 3, 2, 3],</span>
+<span class="sd">				t = [0.1, 0.2, 0.3, 0.4, 0.5]</span>
+<span class="sd">			)</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		y: list</span>
+<span class="sd">			Data of the audio signal.</span>
+<span class="sd">		t: np.ndarray | None</span>
+<span class="sd">			Corresponding time stamps of the audio signal.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		AudioSignal</span>
+<span class="sd">			`Audio signal` instance with loaded audio content from python list.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+		<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+		
+		<span class="k">return</span> <span class="n">AudioSignal</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">t</span><span class="p">)</span></div>
+</div>
+
+		
+		
 </pre></div>
         </article>
       </div>

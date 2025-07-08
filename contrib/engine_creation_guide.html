@@ -2,10 +2,11 @@
 <html class="no-js" lang="en" data-content_root="../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" />
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Plugin Creation Guide" href="plugin_creation_guide.html" /><link rel="prev" title="Contributing to modusa" href="contribution_guidelines.html" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2024.08.06 -->
-        <title>Overview: module code - modusa 0.1.0 documentation</title>
+        <title>Engine Creation Guide - modusa 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -179,7 +180,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -242,10 +243,10 @@
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">How to contribute</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../contrib/contribution_guidelines.html">Contributing to modusa</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../contrib/engine_creation_guide.html">Engine Creation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../contrib/plugin_creation_guide.html">Plugin Creation Guide</a></li>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="contribution_guidelines.html">Contributing to modusa</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Engine Creation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugin_creation_guide.html">Plugin Creation Guide</a></li>
 </ul>
 
 </div>
@@ -265,7 +266,13 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/contrib/engine_creation_guide.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
@@ -274,32 +281,131 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>All modules for which code is available</h1>
-<ul><li><a href="modusa/engines/base.html">modusa.engines.base</a></li>
-<li><a href="modusa/generators/audio_waveforms.html">modusa.generators.audio_waveforms</a></li>
-<li><a href="modusa/generators/base.html">modusa.generators.base</a></li>
-<li><a href="modusa/io/audio_converter.html">modusa.io.audio_converter</a></li>
-<li><a href="modusa/io/audio_loader.html">modusa.io.audio_loader</a></li>
-<li><a href="modusa/io/base.html">modusa.io.base</a></li>
-<li><a href="modusa/io/plotter.html">modusa.io.plotter</a></li>
-<li><a href="modusa/io/youtube_downloader.html">modusa.io.youtube_downloader</a></li>
-<li><a href="modusa/plugins/base.html">modusa.plugins.base</a></li>
-<li><a href="modusa/signals/audio_signal.html">modusa.signals.audio_signal</a></li>
-<li><a href="modusa/signals/base.html">modusa.signals.base</a></li>
+          <section id="engine-creation-guide">
+<h1>Engine Creation Guide<a class="headerlink" href="#engine-creation-guide" title="Link to this heading">¶</a></h1>
+<p>In Modusa, all core logic <strong>must reside in a separate `ModusaEngine` subclass</strong>, not directly inside the plugin.</p>
+<p>This ensures:</p>
+<ul class="simple">
+<li><p>Cleaner separation of concerns.</p></li>
+<li><p>Reusability of processing logic across plugins, tests, scripts, and CLI tools.</p></li>
+<li><p>Easier unit testing (engines don’t depend on plugin infrastructure).</p></li>
+<li><p>Plugins remain lightweight and act only as adapters.</p></li>
 </ul>
+<section id="engine-structure">
+<h2>Engine Structure<a class="headerlink" href="#engine-structure" title="Link to this heading">¶</a></h2>
+<p>An <strong>ModusaEngine</strong> is a plain Python class or function that performs a specific computation or transformation. It should be completely <strong>decoupled from the modusa signal and plugin framework</strong>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">modusa</span><span class="o">/</span>
+    <span class="n">engines</span><span class="o">/</span>
+        <span class="n">my_engine</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</section>
+<section id="basic-engine-example">
+<h2>Basic Engine Example<a class="headerlink" href="#basic-engine-example" title="Link to this heading">¶</a></h2>
+<p>Let’s say we want to build a signal amplifier. The engine looks like:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># modusa/engines/amplifier.py</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">modusa.signals</span><span class="w"> </span><span class="kn">import</span> <span class="n">Signal1D</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">AmplifierEngine</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gain</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gain</span> <span class="o">=</span> <span class="n">gain</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="p">:</span> <span class="n">Signal1D</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Signal1D</span><span class="p">:</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">y</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">gain</span>
+        <span class="k">return</span> <span class="n">Signal1D</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">signal</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Key Points:</p>
+<ul class="simple">
+<li><p><cite>run()</cite> performs the transformation.</p></li>
+<li><p>Engine should take clean inputs and return clean outputs.</p></li>
+<li><p>Avoid direct dependency on plugins or decorators.</p></li>
+</ul>
+</section>
+<section id="connecting-engine-to-plugin">
+<h2>Connecting Engine to Plugin<a class="headerlink" href="#connecting-engine-to-plugin" title="Link to this heading">¶</a></h2>
+<p>Now that you have the engine, use it inside your plugin’s <cite>apply()</cite> method.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">modusa.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModusaPlugin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">modusa.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">plugin_safety_check</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">modusa.signals</span><span class="w"> </span><span class="kn">import</span> <span class="n">Signal1D</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">modusa.engines.amplifier</span><span class="w"> </span><span class="kn">import</span> <span class="n">AmplifierEngine</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">AmplifyPlugin</span><span class="p">(</span><span class="n">ModusaPlugin</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">allowed_input_signal_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">Signal1D</span><span class="p">,</span> <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">allowed_output_signal_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">Signal1D</span><span class="p">,</span> <span class="p">)</span>
+
+    <span class="nd">@plugin_safety_check</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="p">:</span> <span class="n">Signal1D</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Signal1D</span><span class="p">:</span>
+        <span class="n">engine</span> <span class="o">=</span> <span class="n">AmplifierEngine</span><span class="p">(</span><span class="n">gain</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">engine</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>✅ This makes the plugin reusable and logic-free. Any CLI or GUI can now directly use the <cite>AmplifierEngine</cite> too.</p>
+</section>
+<section id="testing-engines">
+<h2>Testing Engines<a class="headerlink" href="#testing-engines" title="Link to this heading">¶</a></h2>
+<p>You can now unit test the engine without touching plugins:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">modusa.engines.amplifier</span><span class="w"> </span><span class="kn">import</span> <span class="n">AmplifierEngine</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">modusa.signals</span><span class="w"> </span><span class="kn">import</span> <span class="n">Signal1D</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_amplifier</span><span class="p">():</span>
+    <span class="n">signal</span> <span class="o">=</span> <span class="n">Signal1D</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span> <span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">AmplifierEngine</span><span class="p">(</span><span class="n">gain</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">y</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>This makes testing fast, independent, and framework-free.</p>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>✅ Create all core logic in <cite>modusa.engines</cite>.</p></li>
+<li><p>✅ Keep plugins thin and delegate work to engines.</p></li>
+<li><p>✅ Test engines directly.</p></li>
+<li><p>❌ Do <strong>not</strong> put complex logic directly in plugin <cite>apply()</cite> methods.</p></li>
+</ul>
+<p>This architecture promotes modularity, testability, and maintainability across the Modusa ecosystem.</p>
+</section>
+</section>
+
         </article>
       </div>
       <footer>
         
         <div class="related-pages">
-          
-          
+          <a class="next-page" href="plugin_creation_guide.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Plugin Creation Guide</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="contribution_guidelines.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Contributing to modusa</div>
+                
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -318,8 +424,31 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Engine Creation Guide</a><ul>
+<li><a class="reference internal" href="#engine-structure">Engine Structure</a></li>
+<li><a class="reference internal" href="#basic-engine-example">Basic Engine Example</a></li>
+<li><a class="reference internal" href="#connecting-engine-to-plugin">Connecting Engine to Plugin</a></li>
+<li><a class="reference internal" href="#testing-engines">Testing Engines</a></li>
+<li><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>

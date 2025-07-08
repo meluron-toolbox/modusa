@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=d5dd7f3e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=3e3f2cfa" />
     
     
 
@@ -201,22 +201,50 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Example Usage</span></p>
+  <p class="caption" role="heading"><span class="caption-text">Quick Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="examples/Example1.html">Test</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="examples/index.html">Examples</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/example1.html">Loading Audio Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/example2.html">Performing mathematical operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/example3.html">Plotting signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/example4.html">Computing spectrogram</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Public API</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="signals.html">Signals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generators.html">Generators</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins</a></li>
-<li class="toctree-l1"><a class="reference internal" href="engines.html">Engines</a></li>
+</li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Developer Guide</span></p>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="contribution_guidelines.html">Contributing to modusa</a></li>
-<li class="toctree-l1"><a class="reference internal" href="engine_creation_guide.html">Engine Creation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plugin_creation_guide.html">Plugin Creation Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="signals/index.html">Signals</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Signals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="signals/base.html">ModusaSignal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals/audio_signal.html">AudioSignal</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="plugins/index.html">Plugins</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Plugins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="plugins/base.html">ModusaPlugin</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="generators/index.html">Generators</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Generators</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="generators/base.html">ModusaGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generators/audio_waveforms.html">BasicWaveformGenerator</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="io/index.html">IO</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of IO</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="io/base.html">ModusaIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/audio_loader.html">AudioLoader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/audio_converter.html">AudioConverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/plotter.html">Plotter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/youtube_downloader.html">YoutubeDownloader</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="engines/index.html">Engines</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Engines</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="engines/base.html">ModusaEngine</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">How to contribute</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contrib/contribution_guidelines.html">Contributing to modusa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib/engine_creation_guide.html">Engine Creation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib/plugin_creation_guide.html">Plugin Creation Guide</a></li>
 </ul>
 
 </div>
@@ -254,23 +282,43 @@
           
 <section class="genindex-section">
   <h1 id="index">Index</h1>
-  <div class="genindex-jumpbox"><a href="#A"><strong>A</strong></a> | <a href="#D"><strong>D</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#N"><strong>N</strong></a> | <a href="#P"><strong>P</strong></a> | <a href="#S"><strong>S</strong></a></div>
+  <div class="genindex-jumpbox"><a href="#A"><strong>A</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#D"><strong>D</strong></a> | <a href="#E"><strong>E</strong></a> | <a href="#F"><strong>F</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#L"><strong>L</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#P"><strong>P</strong></a> | <a href="#R"><strong>R</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a> | <a href="#Y"><strong>Y</strong></a></div>
 </section>
 <section id="A" class="genindex-section">
   <h2>A</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="plugins.html#modusa.plugins.ModusaPlugin.allowed_input_signal_types">allowed_input_signal_types (modusa.plugins.ModusaPlugin property)</a>
+        <li><a href="plugins/base.html#modusa.plugins.base.ModusaPlugin.allowed_input_signal_types">allowed_input_signal_types (modusa.plugins.base.ModusaPlugin property)</a>
 </li>
-        <li><a href="plugins.html#modusa.plugins.ModusaPlugin.allowed_output_signal_types">allowed_output_signal_types (modusa.plugins.ModusaPlugin property)</a>
+        <li><a href="plugins/base.html#modusa.plugins.base.ModusaPlugin.allowed_output_signal_types">allowed_output_signal_types (modusa.plugins.base.ModusaPlugin property)</a>
+</li>
+        <li><a href="plugins/base.html#modusa.plugins.base.ModusaPlugin.apply">apply() (modusa.plugins.base.ModusaPlugin method)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="plugins.html#modusa.plugins.ModusaPlugin.apply">apply() (modusa.plugins.ModusaPlugin method)</a>
+        <li><a href="io/audio_converter.html#modusa.io.AudioConverter">AudioConverter (class in modusa.io)</a>
 </li>
-        <li><a href="signals.html#modusa.signals.ModusaSignal.author_email">author_email (modusa.signals.ModusaSignal attribute)</a>
+        <li><a href="io/audio_loader.html#modusa.io.AudioLoader">AudioLoader (class in modusa.io)</a>
 </li>
-        <li><a href="signals.html#modusa.signals.ModusaSignal.author_name">author_name (modusa.signals.ModusaSignal attribute)</a>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal">AudioSignal (class in modusa.signals)</a>
+</li>
+        <li><a href="generators/audio_waveforms.html#modusa.generators.AudioWaveformGenerator">AudioWaveformGenerator (class in modusa.generators)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="C" class="genindex-section">
+  <h2>C</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="io/audio_converter.html#modusa.io.AudioConverter.convert">convert() (modusa.io.AudioConverter static method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.cos">cos() (modusa.signals.AudioSignal method)</a>
+</li>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.crop">crop() (modusa.signals.AudioSignal method)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -280,11 +328,63 @@
   <h2>D</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="signals.html#modusa.signals.ModusaSignal.data">data (modusa.signals.ModusaSignal property)</a>
+        <li><a href="io/youtube_downloader.html#modusa.io.YoutubeDownloader.download">download() (modusa.io.YoutubeDownloader static method)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="signals.html#modusa.signals.ModusaSignal.description">description (modusa.signals.ModusaSignal attribute)</a>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.duration">duration (modusa.signals.AudioSignal property)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="E" class="genindex-section">
+  <h2>E</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.exp">exp() (modusa.signals.AudioSignal method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="F" class="genindex-section">
+  <h2>F</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="io/audio_loader.html#modusa.io.AudioLoader.from_array">from_array() (modusa.io.AudioLoader static method)</a>
+</li>
+        <li><a href="io/audio_loader.html#modusa.io.AudioLoader.from_array_with_sr">from_array_with_sr() (modusa.io.AudioLoader static method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="io/audio_loader.html#modusa.io.AudioLoader.from_fp">from_fp() (modusa.io.AudioLoader static method)</a>
+</li>
+        <li><a href="io/audio_loader.html#modusa.io.AudioLoader.from_list">from_list() (modusa.io.AudioLoader static method)</a>
+</li>
+        <li><a href="io/audio_loader.html#modusa.io.AudioLoader.from_youtube">from_youtube() (modusa.io.AudioLoader static method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="G" class="genindex-section">
+  <h2>G</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="generators/audio_waveforms.html#modusa.generators.AudioWaveformGenerator.generate_example">generate_example() (modusa.generators.AudioWaveformGenerator static method)</a>
+</li>
+        <li><a href="generators/audio_waveforms.html#modusa.generators.AudioWaveformGenerator.generate_random">generate_random() (modusa.generators.AudioWaveformGenerator static method)</a>
+</li>
+        <li><a href="generators/audio_waveforms.html#modusa.generators.AudioWaveformGenerator.generate_sawtooth">generate_sawtooth() (modusa.generators.AudioWaveformGenerator static method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="generators/audio_waveforms.html#modusa.generators.AudioWaveformGenerator.generate_sinusoid">generate_sinusoid() (modusa.generators.AudioWaveformGenerator static method)</a>
+</li>
+        <li><a href="generators/audio_waveforms.html#modusa.generators.AudioWaveformGenerator.generate_square">generate_square() (modusa.generators.AudioWaveformGenerator static method)</a>
+</li>
+        <li><a href="generators/audio_waveforms.html#modusa.generators.AudioWaveformGenerator.generate_triangle">generate_triangle() (modusa.generators.AudioWaveformGenerator static method)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -294,7 +394,25 @@
   <h2>I</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="signals.html#modusa.signals.ModusaSignal.info">info (modusa.signals.ModusaSignal property)</a>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.info">info (modusa.signals.AudioSignal property)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="L" class="genindex-section">
+  <h2>L</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.log">log() (modusa.signals.AudioSignal method)</a>
+</li>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.log10">log10() (modusa.signals.AudioSignal method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.log1p">log1p() (modusa.signals.AudioSignal method)</a>
+</li>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.log2">log2() (modusa.signals.AudioSignal method)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -304,21 +422,23 @@
   <h2>M</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="plugins.html#modusa.plugins.ModusaPlugin">ModusaPlugin (class in modusa.plugins)</a>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.max">max() (modusa.signals.AudioSignal method)</a>
+</li>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.mean">mean() (modusa.signals.AudioSignal method)</a>
+</li>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.min">min() (modusa.signals.AudioSignal method)</a>
+</li>
+        <li><a href="engines/base.html#modusa.engines.base.ModusaEngine">ModusaEngine (class in modusa.engines.base)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="signals.html#modusa.signals.ModusaSignal">ModusaSignal (class in modusa.signals)</a>
+        <li><a href="generators/base.html#modusa.generators.base.ModusaGenerator">ModusaGenerator (class in modusa.generators.base)</a>
 </li>
-    </ul></td>
-  </tr></table>
-</section>
-
-<section id="N" class="genindex-section">
-  <h2>N</h2>
-  <table style="width: 100%" class="indextable genindextable"><tr>
-    <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="signals.html#modusa.signals.ModusaSignal.name">name (modusa.signals.ModusaSignal attribute)</a>
+        <li><a href="io/base.html#modusa.io.ModusaIO">ModusaIO (class in modusa.io)</a>
+</li>
+        <li><a href="plugins/base.html#modusa.plugins.base.ModusaPlugin">ModusaPlugin (class in modusa.plugins.base)</a>
+</li>
+        <li><a href="signals/base.html#modusa.signals.ModusaSignal">ModusaSignal (class in modusa.signals)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -328,13 +448,25 @@
   <h2>P</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="signals.html#modusa.signals.ModusaSignal.plot">plot() (modusa.signals.ModusaSignal method)</a>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.plot">plot() (modusa.signals.AudioSignal method)</a>
+</li>
+        <li><a href="io/plotter.html#modusa.io.Plotter.plot_matrix">plot_matrix() (modusa.io.Plotter static method)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="signals.html#modusa.signals.ModusaSignal.plugin_chain">plugin_chain (modusa.signals.ModusaSignal property)</a>
+        <li><a href="io/plotter.html#modusa.io.Plotter.plot_signal">plot_signal() (modusa.io.Plotter static method)</a>
 </li>
-        <li><a href="signals.html#modusa.signals.ModusaSignal.power">power() (modusa.signals.ModusaSignal method)</a>
+        <li><a href="io/plotter.html#modusa.io.Plotter">Plotter (class in modusa.io)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="R" class="genindex-section">
+  <h2>R</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="engines/base.html#modusa.engines.base.ModusaEngine.run">run() (modusa.engines.base.ModusaEngine method)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -344,7 +476,49 @@
   <h2>S</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="signals.html#modusa.signals.ModusaSignal.sin">sin() (modusa.signals.ModusaSignal method)</a>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.sin">sin() (modusa.signals.AudioSignal method)</a>
+</li>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.sr">sr (modusa.signals.AudioSignal property)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.std">std() (modusa.signals.AudioSignal method)</a>
+</li>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.sum">sum() (modusa.signals.AudioSignal method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="T" class="genindex-section">
+  <h2>T</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.t">t (modusa.signals.AudioSignal property)</a>
+</li>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.t0">t0 (modusa.signals.AudioSignal property)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.tanh">tanh() (modusa.signals.AudioSignal method)</a>
+</li>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.to_spectrogram">to_spectrogram() (modusa.signals.AudioSignal method)</a>
+</li>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.Ts">Ts (modusa.signals.AudioSignal property)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="Y" class="genindex-section">
+  <h2>Y</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.y">y (modusa.signals.AudioSignal property)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="io/youtube_downloader.html#modusa.io.YoutubeDownloader">YoutubeDownloader (class in modusa.io)</a>
 </li>
     </ul></td>
   </tr></table>
