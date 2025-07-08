@@ -43,6 +43,11 @@ class PluginInputError(MusaBaseError):
 class PluginOutputError(MusaBaseError):
 	pass
 	
+
+
+class SignalOpError(MusaBaseError):
+	pass
+	
 class AttributeNotFoundError(MusaBaseError):
 	pass
 	

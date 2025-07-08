@@ -103,7 +103,7 @@ def validate_arg(arg_name: str, value: Any, expected_type: Any) -> None:
 		union_args = get_args(expected_type)
 		for typ in union_args:
 			typ_origin = get_origin(typ) or typ
-			if type(value) is typ_origin:
+			if isinstance(value, typ_origin):
 				return
 		
 		# ❌ If none match
@@ -116,17 +116,17 @@ def validate_arg(arg_name: str, value: Any, expected_type: Any) -> None:
 	
 	# Handle generic types like list[float], tuple[int, str]
 	elif origin is not None:
-		if type(value) is not origin:
+		if not isinstance(value, origin):
 			raise excp.ValidationError(
-				f"Argument '{arg_name}' must be exactly of type {origin.__name__}, got {type(value).__name__}"
+				f"Argument '{arg_name}' must be of type {origin.__name__}, got {type(value).__name__}"
 			)
 		return
 		
 	# ✅ Handle plain types
 	elif isinstance(expected_type, type):
-		if type(value) is not expected_type:
+		if not isinstance(value, expected_type):
 			raise excp.ValidationError(
-				f"Argument '{arg_name}' must be exactly {expected_type.__name__}, got {type(value).__name__}"
+				f"Argument '{arg_name}' must be of type {expected_type.__name__}, got {type(value).__name__}"
 			)
 		return
 	# ❌ Unsupported type structure

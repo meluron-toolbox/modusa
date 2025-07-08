@@ -20,10 +20,12 @@ def main():
 		create_parser = subparsers.add_parser("create", help="Create new Modusa components")
 		create_subparsers = create_parser.add_subparsers(dest="what", required=True)
 		
-		create_subparsers.add_parser("engine", help="Create a new engine class").set_defaults(func=lambda:TemplateGenerator.create_template("engines"))
-		create_subparsers.add_parser("plugin", help="Create a new plugin class").set_defaults(func=lambda:TemplateGenerator.create_template("plugins"))
-		create_subparsers.add_parser("signal", help="Create a new signal class").set_defaults(func=lambda:TemplateGenerator.create_template("signals"))
-		create_subparsers.add_parser("generator", help="Create a new signal generator class").set_defaults(func=lambda:TemplateGenerator.create_template("generators"))
+		create_subparsers.add_parser("engine", help="Create a new engine class").set_defaults(func=lambda:TemplateGenerator.create_template("engine"))
+		create_subparsers.add_parser("plugin", help="Create a new plugin class").set_defaults(func=lambda:TemplateGenerator.create_template("plugin"))
+		create_subparsers.add_parser("signal", help="Create a new signal class").set_defaults(func=lambda:TemplateGenerator.create_template("signal"))
+		create_subparsers.add_parser("generator", help="Create a new signal generator class").set_defaults(func=lambda:TemplateGenerator.create_template("generator"))
+		create_subparsers.add_parser("io", help="Create a new IO class").set_defaults(func=lambda:TemplateGenerator.create_template("io"))
+		
 		
 		# --- LIST group ---
 		list_parser = subparsers.add_parser("list", help="List information about Modusa components")

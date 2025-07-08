@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
 
-from modusa.plugins.base import ModusaPlugin
+from modusa import excp
 from modusa.decorators import immutable_property, validate_args_type, plugin_safety_check
+from modusa.plugins import ModusaPlugin
 
 
 class {class_name}(ModusaPlugin):
@@ -11,11 +12,11 @@ class {class_name}(ModusaPlugin):
 	"""
 	
 	#--------Meta Information----------
-	name = ""
-	description = ""
-	author_name = "{author_name}"
-	author_email = "{author_email}"
-	created_at = "{date_created}"
+	_name = ""
+	_description = ""
+	_author_name = "{author_name}"
+	_author_email = "{author_email}"
+	_created_at = "{date_created}"
 	#----------------------------------
 	
 	def __init__(self):

@@ -1,19 +1,20 @@
 # modusa
 
-**modusa**: **Mod**ular **U**nified **S**ignal **A**rchitecture* is a flexible, extensible Python framework for building, transforming, and analyzing different signal representations. It is a domain-agnostic core architecture for modern signal processing workflows.
+[**modusa**](https://meluron-toolbox.github.io/modusa/) is a modular framework for audio signal analysis and processing, designed to help researchers and developers build reusable DSP chains with minimal code.
 
 ---
 
-## 🔧 Features
+## Core Components
 
 - ⚙️ **modusa Signals**
 - 🧩 **modusa Plugins**
 - 📊 **modusa Genetators**
-- ♻️ **modusa Engine**
+- ♻️ **modusa Engines**
+- 📥 **modusa I/O**
 
 ---
 
-## 🚀 Installation
+## Installation
 
 > modusa is under active development. You can install the latest version via:
 
@@ -25,7 +26,7 @@ pdm install
 
 ---
 
-## 🧪 Tests
+## Tests
 
 ```bash
 pytest tests/
@@ -33,26 +34,26 @@ pytest tests/
 
 ---
 
-## 🧊 Status
+## Status
 
 modusa is in **early alpha**. Expect rapid iteration, breaking changes, and big ideas.  
 If you like the direction, consider ⭐ starring the repo and opening issues or ideas.
 
 ---
 
-## 🧠 About
+## About
 
 **modusa** is developed and maintained by [meluron](https://www.github.com/meluron),
 
 ---
 
-## 📜 License
+## License
 
 MIT License. See `LICENSE` for details.
 
 ---
 
-## 🙌 Contributions
+## Contributions
 
 Pull requests, ideas, and discussions are welcome!  
 No matter which domain you are in, if you work with any signal, we'd love your input.

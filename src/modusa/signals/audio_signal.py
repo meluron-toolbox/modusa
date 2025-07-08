@@ -4,6 +4,7 @@
 from modusa import excp
 from modusa.decorators import immutable_property, validate_args_type
 from modusa.signals.base import ModusaSignal
+from modusa.signals.signal_ops import SignalOps
 from typing import Self, Any
 import numpy as np
 import matplotlib.pyplot as plt
@@ -11,220 +12,327 @@ from pathlib import Path
 
 class AudioSignal(ModusaSignal):
 	"""
-
+	A subclass of `ModusaSignal` that represents audio data within the Modusa framework.
 	"""
 
 	#--------Meta Information----------
-	name = "Audio Signal"
-	description = ""
-	author_name = "Ankit Anand"
-	author_email = "ankit0.anand0@gmail.com"
-	created_at = "2025-07-04"
+	_name = "Audio Signal"
+	_description = ""
+	_author_name = "Ankit Anand"
+	_author_email = "ankit0.anand0@gmail.com"
+	_created_at = "2025-07-04"
 	#----------------------------------
 	
 	@validate_args_type()
-	def __init__(self, y: np.ndarray, t: np.ndarray | None = None):
+	def __init__(self, y: np.ndarray, sr: int | None = None, t: np.ndarray | None = None, t0: float = 0.0, title: str | None = None):
 		
-		if y.ndim != 1: # Mono
-			raise excp.InputValueError(f"`y` must have 1 dimension not {y.ndim}.")
-		if t.ndim != 1:
-			raise excp.InputValueError(f"`t` must have 1 dimension not {t.ndim}.")
-		
-		if t is None:
-			t = np.arange(y.shape[0])
-		else:
-			if t.shape[0] != y.shape[0]:
-				raise excp.InputValueError(f"`y` and `t` must have same shape.")
-			dts = np.diff(t)
-			if not np.allclose(dts, dts[0]):
-				raise excp.InputValueError("`t` must be equally spaced")
-		
-		super().__init__(data=y, data_idx=t) # Instantiating `ModusaSignal` class
-		
-		self._y_unit = ""
-		self._t_unit = "sec"
-		
-		self._title = "Audio Signal"
-		self._y_label = "Amplitude"
-		self._t_label = "Time"
-	
-	def _with_data(self, new_data: np.ndarray, new_data_idx: np.ndarray) -> Self:
-		"""Subclasses must override this to return a copy with new data."""
-		new_signal = self.__class__(y=new_data, t=new_data_idx)
-		new_signal.set_units(y_unit=self.y_unit, t_unit=self.t_unit)
-		new_signal.set_plot_labels(title=self.title, y_label=self.y_label, t_label=self.t_label)
-		
-		return new_signal
-	
-	#----------------------
-	# From methods
-	#----------------------
-	@classmethod
-	def from_array(cls, y: np.ndarray, t: np.ndarray | None = None) -> Self:
-		
-		signal = cls(y=y, t=t)
-		
-		return signal
-	
-	@classmethod
-	def from_array_with_sr(cls, y: np.ndarray, sr: int) -> Self:
-		t = np.arange(y.shape[0]) * (1.0 / sr)
-		
-		signal = cls(y=y, t=t)
-		
-		return signal
-	
-	@classmethod
-	def from_list(cls, y: list, t: list) -> Self:
-		
-		y = np.array(y)
-		t = np.array(t)
-		signal = cls(y=y, t=t)
-		
-		return signal
-	
-	@classmethod
-	def from_file(cls, fp: str | Path, sr: int | None = None) -> Self:
-		
-		import librosa
-		
-		fp = Path(fp)
-		y, sr = librosa.load(fp, sr=sr)
-		t = np.arange(y.shape[0]) * (1.0 / sr)
-		
-		signal = cls(y=y, t=t)
-		signal.set_plot_labels(title=fp.stem)
-		
-		return signal
-		
-	#----------------------
-	# Setters
-	#----------------------
-	
-	@validate_args_type()
-	def set_units(self, y_unit: str | None = None, t_unit: str | None = None) -> Self:
-		
-		if y_unit is not None:
-			self._y_unit = y_unit
-		if t_unit is not None:
-			self._t_unit = t_unit
-		
-		return self
-	
-	@validate_args_type()
-	def set_plot_labels(self, title: str | None = None, y_label: str | None = None, t_label: str | None = None) -> Self:
-		
-		if title is not None:
-			self._title = title
-		if y_label is not None:
-			self._y_label = y_label
-		if t_label is not None:
-			self._t_label = t_label
-		
-		return self
-	
-	
+		if y.ndim != 1:
+			raise excp.InputValueError(f"`y` must have 1 dimension, not {y.ndim}.")
+			
+		if t is not None:
+			if len(t) != len(y):
+				raise excp.InputValueError("Length of `t` must match `y`.")
+			if sr is None:
+				# Estimate sr from t if not provided
+				dt = t[1] - t[0]
+				sr = round(1.0 / dt)  # Round to avoid floating-point drift
+			t0 = float(t[0])  # Override t0 from first timestamp
+			
+		elif sr is None:
+			raise excp.InputValueError("Either `sr` or `t` must be provided.")
+			
+		self._y = y
+		self._sr = sr
+		self._t0 = t0
+		self.title = title or self._name
+			
 	#----------------------
 	# Properties
 	#----------------------
-	
 	@immutable_property("Create a new object instead.")
 	def y(self) -> np.ndarray:
 		""""""
-		return self.data
-	
-	@immutable_property("Create a new object instead.")
-	def t(self) -> np.ndarray:
-		""""""
-		return self.data_idx
+		return self._y
 	
 	@immutable_property("Create a new object instead.")
 	def sr(self) -> np.ndarray:
 		""""""
-		return 1.0 / self.t[1] - self.t[0]
+		return self._sr
 	
-	@immutable_property("Use `.set_units` instead.")
-	def y_unit(self) -> str:
+	@immutable_property("Create a new object instead.")
+	def t0(self) -> np.ndarray:
 		""""""
-		return self._y_unit
+		return self._t0
 	
-	@immutable_property("Use `set_units` instead.")
-	def t_unit(self) -> str:
+	@immutable_property("Create a new object instead.")
+	def t(self) -> np.ndarray:
 		""""""
-		return self._t_unit
-	
-	@immutable_property("Use `.set_plot_labels` instead.")
-	def title(self) -> str:
-		""""""
-		return self._title
-	
-	@immutable_property("Use `.set_plot_labels` instead.")
-	def y_label(self) -> str:
-		""""""
-		return self._y_label
-	
-	@immutable_property("Use `.set_plot_labels` instead.")
-	def t_label(self) -> str:
-		""""""
-		return self._t_label
+		return self.t0 + np.arange(len(self.y)) / self.sr 
 	
 	@immutable_property("Mutation not allowed.")
 	def Ts(self) -> int:
 		""""""
-		return self.t[1] - self.t[0]
-	
+		return 1.0 / self.sr
+
 	@immutable_property("Mutation not allowed.")
 	def duration(self) -> int:
 		""""""
-		return self.t[-1]
+		return len(self.y) / self.sr
 	
-	@immutable_property("Use `.set_labels` instead.")
-	def labels(self) -> tuple[str, str, str]:
-		"""Labels in a tuple format appropriate for the plots."""
-		return (self.title, f"{self.y_label} ({self.y_unit})", f"{self.t_label} ({self.t_unit})")
-	
+	@immutable_property("Mutation not allowed.")
+	def info(self) -> None:
+		""""""
+		print("-" * 50)
+		print(f"{'Title':<20}: {self.title}")
+		print(f"{'Kind':<20}: {self._name}")
+		print(f"{'Duration':<20}: {self.duration:.2f} sec")
+		print(f"{'Sampling Rate':<20}: {self.sr} Hz")
+		print(f"{'Sampling Period':<20}: {(self.Ts*1000) :.4f} ms")
+		print("-" * 50)
 	
 	#----------------------
-	# Plugins Access
+	# Methods
 	#----------------------
+	def __getitem__(self, key):
+		if isinstance(key, (int, slice)):
+			# Basic slicing of 1D signals
+			sliced_data = self._data[key]
+			sliced_axis = self._axes[0][key]  # assumes only 1 axis
+			
+			return self.replace(data=sliced_data, axes=(sliced_axis, ))
+		else:
+			raise TypeError(
+				f"Indexing with type {type(key)} is not supported. Use int or slice."
+			)
+			
+	@validate_args_type()
+	def crop(self, t_min: int | float | None = None, t_max: int | float | None = None) -> "AudioSignal":
+		"""
+		Crop the audio signal to a time range [t_min, t_max).
+	
+		Parameters
+		----------
+		t_min : float or None
+			Inclusive lower time bound. If None, no lower bound.
+		t_max : float or None
+			Exclusive upper time bound. If None, no upper bound.
+	
+		Returns
+		-------
+		AudioSignal
+			Cropped audio signal.
+		"""
+		y = self.y
+		t = self.t
+		
+		mask = np.ones_like(t, dtype=bool)
+		if t_min is not None:
+			mask &= (t >= t_min)
+		if t_max is not None:
+			mask &= (t < t_max)
+			
+		cropped_y = y[mask]
+		new_t0 = t[mask][0] if np.any(mask) else self.t0  # fallback to original t0 if mask is empty
+		
+		return self.__class__(y=cropped_y, sr=self.sr, t0=new_t0, title=self.title)
+	
+	
 	@validate_args_type()
 	def plot(
 		self,
 		scale_y: tuple[float, float] | None = None,
-		scale_t: tuple[float, float] | None = None,
 		ax: plt.Axes | None = None,
 		color: str = "b",
 		marker: str | None = None,
 		linestyle: str | None = None,
-		stem: bool | None = None,
-		labels: tuple[str, str, str] | None = None,
+		stem: bool | None = False,
 		legend_loc: str | None = None,
-		zoom: tuple[float, float] | None = None,
+		title: str | None = None,
+		ylabel: str | None = "Amplitude",
+		xlabel: str | None = "Time (sec)",
+		ylim: tuple[float, float] | None = None,
+		xlim: tuple[float, float] | None = None,
 		highlight: list[tuple[float, float]] | None = None,
 	) -> plt.Figure:
 		"""
-		Applies `modusa.plugins.PlotTimeDomainSignal` Plugin.
+		
 		"""
 		
-		from modusa.plugins import PlotTimeDomainSignalPlugin
+		from modusa.io import Plotter
 		
-		labels = labels or self.labels
-		stem = stem or False
+		title = title or self.title
 		
-		fig: plt.Figure | None = PlotTimeDomainSignalPlugin().apply(
-			signal=self,
-			scale_y=scale_y,
-			scale_t=scale_t,
-			ax=ax,
-			color=color,
-			marker=marker,
-			linestyle=linestyle,
-			stem=stem,
-			labels=labels,
-			legend_loc=legend_loc,
-			zoom=zoom,
-			highlight=highlight
-		)
+		fig: plt.Figure | None = Plotter.plot_signal(y=self.y, x=self.t, scale_y=scale_y, ax=ax, color=color, marker=marker, linestyle=linestyle, stem=stem, legend_loc=legend_loc, title=title, ylabel=ylabel, xlabel=xlabel, ylim=ylim, xlim=xlim, highlight=highlight)
 		
 		return fig
+	
+	def to_spectrogram(
+		self,
+		n_fft: int = 2048,
+		hop_length: int = 512,
+		win_length: int | None = None,
+		window: str = "hann"
+	) -> "Spectrogram":
+		"""
+		Compute the Short-Time Fourier Transform (STFT) and return a Spectrogram object.
+		
+		Parameters
+		----------
+		n_fft : int
+			FFT size.
+		win_length : int or None
+			Window length. Defaults to `n_fft` if None.
+		hop_length : int
+			Hop length between frames.
+		window : str
+			Type of window function to use (e.g., 'hann', 'hamming').
+		
+		Returns
+		-------
+		Spectrogram
+			Spectrogram object containing S (complex STFT), t (time bins), and f (frequency bins).
+		"""
+		from modusa.signals.spectrogram import Spectrogram
+		import librosa
+		
+		S = librosa.stft(self.y, n_fft=n_fft, win_length=win_length, hop_length=hop_length, window=window)
+		f = librosa.fft_frequencies(sr=self.sr, n_fft=n_fft)
+		t = librosa.frames_to_time(np.arange(S.shape[1]), sr=self.sr, hop_length=hop_length)
+		t += self.t0
+		spec = Spectrogram(S=S, f=f, t=t)
+		if self.title != self._name: # Means title of the audio was reset so we pass that info to spec
+			spec.title = self.title
+			
+		return spec
+	
+	
+	#----------------------------
+	# Math ops
+	#----------------------------
+	
+	def __add__(self, other):
+		other_data = other.y if isinstance(other, self.__class__) else other
+		result = np.add(self.y, other_data)
+		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+
+	def __radd__(self, other):
+		result = np.add(other, self.y)
+		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+
+	def __sub__(self, other):
+		other_data = other.y if isinstance(other, self.__class__) else other
+		result = np.subtract(self.y, other_data)
+		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+
+	def __rsub__(self, other):
+		result = np.subtract(other, self.y)
+		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+
+	def __mul__(self, other):
+		other_data = other.y if isinstance(other, self.__class__) else other
+		result = np.multiply(self.y, other_data)
+		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+
+	def __rmul__(self, other):
+		result = np.multiply(other, self.y)
+		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+
+	def __truediv__(self, other):
+		other_data = other.y if isinstance(other, self.__class__) else other
+		result = np.true_divide(self.y, other_data)
+		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+
+	def __rtruediv__(self, other):
+		result = np.true_divide(other, self.y)
+		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+
+	def __floordiv__(self, other):
+		other_data = other._y if isinstance(other, self.__class__) else other
+		result = np.floor_divide(self.y, other_data)
+		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+
+	def __rfloordiv__(self, other):
+		result = np.floor_divide(other, self.y)
+		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+
+	def __pow__(self, other):
+		other_data = other.y if isinstance(other, self.__class__) else other
+		result = np.power(self.y, other_data)
+		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+
+	def __rpow__(self, other):
+		result = np.power(other, self.y)
+		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+
+	def __abs__(self):
+		result = np.abs(self.y)
+		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+	
+	
+	#--------------------------
+	# Other signal ops
+	#--------------------------
+	def sin(self) -> Self:
+		"""Compute the element-wise sine of the signal data."""
+		result = np.sin(self.y)
+		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+
+	def cos(self) -> Self:
+		"""Compute the element-wise cosine of the signal data."""
+		result = np.cos(self.y)
+		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+
+	def exp(self) -> Self:
+		"""Compute the element-wise exponential of the signal data."""
+		result = np.exp(self.y)
+		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+
+	def tanh(self) -> Self:
+		"""Compute the element-wise hyperbolic tangent of the signal data."""
+		result = np.tanh(self.y)
+		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+
+	def log(self) -> Self:
+		"""Compute the element-wise natural logarithm of the signal data."""
+		result = np.log(self.y)
+		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+
+	def log1p(self) -> Self:
+		"""Compute the element-wise natural logarithm of (1 + signal data)."""
+		result = np.log1p(self.y)
+		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+
+	def log10(self) -> Self:
+		"""Compute the element-wise base-10 logarithm of the signal data."""
+		result = np.log10(self.y)
+		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+
+	def log2(self) -> Self:
+		"""Compute the element-wise base-2 logarithm of the signal data."""
+		result = np.log2(self.y)
+		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+	
+
+	#--------------------------
+	# Aggregation signal ops
+	#--------------------------
+	def mean(self) -> float:
+		"""Compute the mean of the signal data."""
+		return float(np.mean(self.y))
+	
+	def std(self) -> float:
+		"""Compute the standard deviation of the signal data."""
+		return float(np.std(self.y))
+	
+	def min(self) -> float:
+		"""Compute the minimum value in the signal data."""
+		return float(np.min(self.y))
+	
+	def max(self) -> float:
+		"""Compute the maximum value in the signal data."""
+		return float(np.max(self.y))
+	
+	def sum(self) -> float:
+		"""Compute the sum of the signal data."""
+		return float(np.sum(self.y))
 	
