@@ -4,8 +4,9 @@ modusa
 **modusa** is a modular framework for audio signal analysis and processing, designed to help researchers and developers build reusable DSP chains with minimal code.
 
 .. image:: images/core_components_nobg.png
+   :target: index.html
    :alt: modusa components diagram
-   :width: 100%
+   :width: 60%
    :class: responsive-img
    :align: center
    
@@ -18,28 +19,27 @@ modusa
 
 .. toctree::
    :maxdepth: 1
-   :caption: Example Usage
+   :caption: Quick Guide
    
-   examples/Example1
+   examples/index
 
+.. toctree::
+   :maxdepth: 2
+   :caption: API Reference
+   
+   signals/index
+   plugins/index
+   generators/index
+   io/index
+   engines/index
 
 .. toctree::
    :maxdepth: 1
-   :caption: Public API
+   :caption: How to contribute
    
-   signals
-   generators
-   plugins
-   engines
-
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Developer Guide
-   
-   contribution_guidelines
-   engine_creation_guide
-   plugin_creation_guide
+   contrib/contribution_guidelines
+   contrib/engine_creation_guide
+   contrib/plugin_creation_guide
    
    
    

@@ -3,7 +3,7 @@ Contributing to modusa
 
 We welcome all kinds of contributions! Whether you're a developer, tester, writer, or bug hunter, there's a place for you in the **modusa** project.
 
-.. admonition:: **Steps to setup the project for contribution:**
+.. admonition:: **Steps to setup the project locally for contribution:**
 
    1. **Fork** the repository on GitHub.
    2. **Clone** your fork locally:
@@ -17,7 +17,7 @@ We welcome all kinds of contributions! Whether you're a developer, tester, write
          .. code-block:: bash
          
             cd modusa
-            python -m venv .venv
+            python -m venv .venv # use python version >= 3.12
             source .venv/bin/activate  # or .venv\Scripts\activate on Windows
             pdm install # or pip install -e .
 
@@ -26,7 +26,8 @@ We welcome all kinds of contributions! Whether you're a developer, tester, write
 .. admonition:: **You can contribute to Modusa in many ways:**
 
    - **As a Plugin Developer**  
-      Create new plugins by using existing engines or building your own.  
+      Create new plugins by using existing engines or building your own. Kindly check github issues to find out requested
+      plugins.
       See: :doc:`plugin_creation_guide` and :doc:`engine_creation_guide`
       
    - **As a Tester**
