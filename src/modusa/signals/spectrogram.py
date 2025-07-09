@@ -10,7 +10,18 @@ import matplotlib.pyplot as plt
 
 class Spectrogram(ModusaSignal):
 	"""
+	A 2D time–frequency representation of a signal.
 
+	Parameters
+	----------
+	S : np.ndarray
+		2D matrix representing the spectrogram (shape: [n_freqs, n_frames]).
+	f : np.ndarray
+		Frequency axis corresponding to the rows of `S` (shape: [n_freqs]).
+	t : np.ndarray
+		Time axis corresponding to the columns of `S` (shape: [n_frames]).
+	title : str, optional
+		Optional title for the spectrogram (e.g., used in plotting).
 	"""
 	
 	#--------Meta Information----------
@@ -31,15 +42,17 @@ class Spectrogram(ModusaSignal):
 			raise excp.InputValueError(f"`f` must have 1 dimension, got {f.ndim}.")
 		if t.ndim != 1:
 			raise excp.InputValueError(f"`t` must have 1 dimension, got {t.ndim}.")
-		
+			
 		if t.shape[0] != S.shape[1] or f.shape[0] != S.shape[0]:
-			raise excp.InputValueError(f"`f` and `t` shape do not match with `M` {S.shape}, got {(f.shape[0], t.shape[0])}")
-		
-		if S.shape[1] < 2:
-			raise excp.InputValueError(f"`S` must not have time dimension shape < 2, got {S.shape[1]}")
-		dts = np.diff(t)
-		if not np.allclose(dts, dts[0]):
-			raise excp.InputValueError("`t` must be equally spaced")
+			raise excp.InputValueError(f"`f` and `t` shape do not match with `S` {S.shape}, got {(f.shape[0], t.shape[0])}")
+			
+		if S.shape[1] == 0:
+			raise excp.InputValueError("`S` must have at least one time frame")
+			
+		if t.shape[0] >= 2:
+			dts = np.diff(t)
+			if not np.allclose(dts, dts[0]):
+				raise excp.InputValueError("`t` must be equally spaced")
 		
 		self._S = S
 		self._f = f
@@ -51,22 +64,27 @@ class Spectrogram(ModusaSignal):
 	#----------------------
 	@immutable_property("Create a new object instead.")
 	def S(self) -> np.ndarray:
+		"""Spectrogram matrix (freq × time)."""
 		return self._S
 	
 	@immutable_property("Create a new object instead.")
 	def f(self) -> np.ndarray:
+		"""Frequency axis."""
 		return self._f
 	
 	@immutable_property("Create a new object instead.")
 	def t(self) -> np.ndarray:
+		"""Time axis."""
 		return self._t
 	
 	@immutable_property("Read only property.")
 	def shape(self) -> np.ndarray:
+		"""Shape of the spectrogram (freqs, frames)."""
 		return self.S.shape
 	
 	@immutable_property("Read only property.")
 	def ndim(self) -> np.ndarray:
+		"""Number of dimensions (always 2)."""
 		return self.S.ndim
 	
 	@immutable_property("Mutation not allowed.")
@@ -91,39 +109,67 @@ class Spectrogram(ModusaSignal):
 	#------------------------
 	# Useful tools
 	#------------------------
-	def __getitem__(self, key: tuple[int, int]) -> "Spectrogram":
+
+	def __getitem__(self, key: tuple[int | slice, int | slice]) -> "Spectrogram | FrequencyDomainSignal | TimeDomainSignal":
 		"""
 		Enable 2D indexing: signal[f_idx, t_idx]
 	
-		Returns a new Spectrogram object with sliced data and corresponding frequency/time axes.
+		Returns:
+		- Spectrogram when both f and t are slices
+		- FrequencyDomainSignal when t is int (i.e., fixed time)
+		- TimeDomainSignal when f is int (i.e., fixed frequency)
 		"""
+		from modusa.signals.time_domain_signal import TimeDomainSignal
+		from modusa.signals.frequency_domain_signal import FrequencyDomainSignal
+		
 		if isinstance(key, tuple) and len(key) == 2:
 			f_key, t_key = key
-			
-			# Slice data
+		
 			sliced_data = self.S[f_key, t_key]
-			
-			# Slice frequency and time axes
 			sliced_f = self.f[f_key]
 			sliced_t = self.t[t_key]
-			
-			# Normalize shapes
+		
+			# Case 1: Scalar value → return plain numpy scalar
 			if np.isscalar(sliced_data):
-				sliced_data = np.array([[sliced_data]])
-				sliced_f = np.array([sliced_f])
-				sliced_t = np.array([sliced_t])
-			elif sliced_data.ndim == 1:
-				if isinstance(f_key, int):
-					sliced_data = np.expand_dims(sliced_data, axis=0)
-					sliced_f = np.array([sliced_f])
-				if isinstance(t_key, int):
-					sliced_data = np.expand_dims(sliced_data, axis=1)
-					sliced_t = np.array([sliced_t])
-					
-			return self.__class__(S=sliced_data, f=sliced_f, t=sliced_t, title=self.title)
+				return np.array(sliced_data)
+		
+			# Case 2: frequency slice at a single time (→ FrequencyDomainSignal)
+			elif isinstance(t_key, int):
+				if not isinstance(f_key, int):  # already handled scalar case
+					sliced_data = np.asarray(sliced_data).flatten()
+					sliced_f = np.asarray(sliced_f)
+					t0 = float(self.t[t_key])
+					return FrequencyDomainSignal(
+						spectrum=sliced_data,
+						f=sliced_f,
+						t0=t0,
+						title=self.title + f" [t = {t0:.2f} sec]"
+					)
+		
+			# Case 3: time slice at a single frequency (→ TimeDomainSignal)
+			elif isinstance(f_key, int):
+				sliced_data = np.asarray(sliced_data).flatten()
+				sliced_t = np.asarray(sliced_t)
+				sr = 1.0 / np.mean(np.diff(self.t))  # assume uniform time axis
+				t0 = float(self.t[0])
+				f_val = float(self.f[f_key])
+				return TimeDomainSignal(
+					y=sliced_data,
+					sr=sr,
+					t0=t0,
+					title=self.title + f" [f = {f_val:.2f} Hz]"
+				)
+		
+			# Case 4: 2D slice → Spectrogram
+			else:
+				return self.__class__(
+					S=sliced_data,
+					f=sliced_f,
+					t=sliced_t,
+					title=self.title
+				)
 		
 		raise TypeError("Expected 2D indexing: signal[f_idx, t_idx]")
-		
 	
 	def crop(
 		self,
@@ -134,6 +180,10 @@ class Spectrogram(ModusaSignal):
 	) -> "Spectrogram":
 		"""
 		Crop the spectrogram to a rectangular region in frequency-time space.
+	
+		.. code-block:: python
+
+			cropped = spec.crop(f_min=100, f_max=1000, t_min=5.0, t_max=10.0)
 	
 		Parameters
 		----------
@@ -187,7 +237,53 @@ class Spectrogram(ModusaSignal):
 		tick_mode: str = "center",  # "center" or "edge"
 		n_ticks: tuple[int, int] | None = None,
 	) -> plt.Figure:
-		
+		"""
+		Plot the spectrogram using Matplotlib.
+	
+		.. code-block:: python
+			
+			fig = spec.plot(log_compression_factor=10, title="Log-scaled Spectrogram")
+	
+		Parameters
+		----------
+		log_compression_factor : float or int, optional
+			If specified, apply log-compression using log(1 + S * factor).
+		ax : matplotlib.axes.Axes, optional
+			Axes to draw on. If None, a new figure and axes are created.
+		cmap : str, default "gray_r"
+			Colormap used for the image.
+		title : str, optional
+			Title to use for the plot. Defaults to the signal's title.
+		Mlabel : str, optional
+			Label for the colorbar (e.g., "Magnitude", "dB").
+		ylabel : str, optional
+			Label for the y-axis. Default is "Frequency (hz)".
+		xlabel : str, optional
+			Label for the x-axis. Default is "Time (sec)".
+		ylim : tuple of float, optional
+			Limits for the y-axis (frequency).
+		xlim : tuple of float, optional
+			Limits for the x-axis (time).
+		highlight : list of (x, y, w, h), optional
+			Rectangular regions to highlight, specified in data coordinates.
+		origin : {"lower", "upper"}, default "lower"
+			Origin position for the image (for flipping vertical axis).
+		show_colorbar : bool, default True
+			Whether to display the colorbar.
+		cax : matplotlib.axes.Axes, optional
+			Axis to draw the colorbar on. If None, uses default placement.
+		show_grid : bool, default True
+			Whether to show the major gridlines.
+		tick_mode : {"center", "edge"}, default "center"
+			Whether to place ticks at bin centers or edges.
+		n_ticks : tuple of int, optional
+			Number of ticks (y_ticks, x_ticks) to display on each axis.
+	
+		Returns
+		-------
+		matplotlib.figure.Figure
+			The figure object containing the plot.
+		"""
 		from modusa.io import Plotter
 		
 		title = title or self.title
@@ -216,14 +312,13 @@ class Spectrogram(ModusaSignal):
 		
 		return fig
 	
-	
 	#----------------------------
 	# Math ops
 	#----------------------------
 	
-	#----------------------------
-	# Math ops
-	#----------------------------
+	def __array__(self, dtype=None):
+		return np.asarray(self._S, dtype=dtype)
+	
 	def __add__(self, other):
 		other_data = other.S if isinstance(other, self.__class__) else other
 		result = np.add(self.S, other_data)
@@ -335,4 +430,36 @@ class Spectrogram(ModusaSignal):
 		"""Return the sum of the spectrogram values."""
 		return float(np.sum(self.S))
 	
+	#-----------------------------------
+	# Repr
+	#-----------------------------------
 	
+	def __str__(self):
+		cls = self.__class__.__name__
+		data = self.S
+		
+		arr_str = np.array2string(
+			data,
+			separator=", ",
+			threshold=50,       # limit number of elements shown
+			edgeitems=3,          # show first/last 3 rows and columns
+			max_line_width=120,   # avoid wrapping
+			formatter={'float_kind': lambda x: f"{x:.4g}"}
+		)
+		
+		return f"Signal({arr_str}, shape={data.shape}, kind={cls})"
+	
+	def __repr__(self):
+		cls = self.__class__.__name__
+		data = self.S
+		
+		arr_str = np.array2string(
+			data,
+			separator=", ",
+			threshold=50,       # limit number of elements shown
+			edgeitems=3,          # show first/last 3 rows and columns
+			max_line_width=120,   # avoid wrapping
+			formatter={'float_kind': lambda x: f"{x:.4g}"}
+		)
+		
+		return f"Signal({arr_str}, shape={data.shape}, kind={cls})"

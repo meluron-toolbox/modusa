@@ -7,3 +7,6 @@ Signals
 
    base
    audio_signal
+   time_domain_signal
+   frequency_domain_signal
+   spectrogram

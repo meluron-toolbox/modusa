@@ -1,6 +1,6 @@
 # modusa
 
-[**modusa**](https://meluron-toolbox.github.io/modusa/) is a modular framework for audio signal analysis and processing, designed to help researchers and developers build reusable DSP chains with minimal code.
+[**modusa**](https://meluron-toolbox.github.io/modusa/) is a modular framework for audio signal analysis and processing, designed to help audio researchers and developers build DSP chains with minimal code.
 
 ---
 
@@ -9,8 +9,8 @@
 - ⚙️ **modusa Signals**
 - 🧩 **modusa Plugins**
 - 📊 **modusa Genetators**
-- ♻️ **modusa Engines**
 - 📥 **modusa I/O**
+- ♻️ **modusa Engines**
 
 ---
 

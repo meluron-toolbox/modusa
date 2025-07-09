@@ -30,39 +30,5 @@ class ModusaSignal(ABC):
 	def __init__(self):
 		self._plugin_chain = []
 	
-	#----------------------------
-	# Properties
-	#----------------------------
-
-	def __str__(self):
-		cls = self.__class__.__name__
-		data = self._data
-		
-		arr_str = np.array2string(
-			data,
-			separator=", ",
-			threshold=50,       # limit number of elements shown
-			edgeitems=3,          # show first/last 3 rows and columns
-			max_line_width=120,   # avoid wrapping
-			formatter={'float_kind': lambda x: f"{x:.4g}"}
-		)
-		
-		return f"Signal({arr_str}, shape={data.shape}, kind={cls})"
-	
-	def __repr__(self):
-		cls = self.__class__.__name__
-		data = self._data
-		
-		arr_str = np.array2string(
-			data,
-			separator=", ",
-			threshold=50,       # limit number of elements shown
-			edgeitems=3,          # show first/last 3 rows and columns
-			max_line_width=120,   # avoid wrapping
-			formatter={'float_kind': lambda x: f"{x:.4g}"}
-		)
-		
-		return f"Signal({arr_str}, shape={data.shape}, kind={cls})"
-	
 
 	

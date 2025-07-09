@@ -25,3 +25,16 @@ class {class_name}(ModusaSignal):
 		super().__init__() # Instantiating `ModusaSignal` class
 	
 		self.title = "" # This title will be used as plot title by default
+		
+	#----------------------
+	# Properties
+	#----------------------
+		
+	
+	
+	
+	
+	
+	#----------------------
+	# Tools
+	#----------------------

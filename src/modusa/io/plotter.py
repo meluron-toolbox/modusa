@@ -184,11 +184,10 @@ class Plotter(ModusaIO):
 		# Show/Return the figure as per needed
 		if created_fig:
 			fig.tight_layout()
-			try:
-				get_ipython
-				plt.close(fig) # Without this, you will see two plots in the jupyter notebook
+			if Plotter._in_notebook():
+				plt.close(fig)
 				return fig
-			except NameError:
+			else:
 				plt.show()
 				return fig
 	
@@ -400,11 +399,10 @@ class Plotter(ModusaIO):
 		# Show/Return the figure as per needed
 		if created_fig:
 			fig.tight_layout()
-			try:
-				get_ipython
+			if Plotter._in_notebook():
 				plt.close(fig)
 				return fig
-			except NameError:
+			else:
 				plt.show()
 				return fig
 	
@@ -420,4 +418,13 @@ class Plotter(ModusaIO):
 		bottom = r[0] - dr / 2
 		top    = r[-1] + dr / 2
 		return [left, right, top, bottom] if origin == "upper" else [left, right, bottom, top]
+	
+	@staticmethod
+	def _in_notebook() -> bool:
+		try:
+			from IPython import get_ipython
+			shell = get_ipython()
+			return shell and shell.__class__.__name__ == "ZMQInteractiveShell"
+		except ImportError:
+			return False
 	

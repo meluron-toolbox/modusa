@@ -12,7 +12,29 @@ from pathlib import Path
 
 class AudioSignal(ModusaSignal):
 	"""
-	A subclass of `ModusaSignal` that represents audio data within the Modusa framework.
+	Represents a 1D audio signal within modusa framework.
+
+	Note
+	----
+	- It is highly recommended to use  :class:`~modusa.io.AudioLoader` to instantiate an object of this class.
+	- This class assumes audio is mono (1D numpy array).
+	- Either `sr` (sampling rate) or `t` (time axis) must be provided.
+	- If both `t` and `sr` are given, `t` takes precedence for timing and `sr` is computed from that.
+	- If `t` is provided but `sr` is missing, `sr` is estimated from the `t`.
+	- If `t` is provided, the starting time `t0` will be overridden by `t[0]`.
+
+	Parameters
+	----------
+	y : np.ndarray
+		1D numpy array representing the audio signal.
+	sr : int | None
+		Sampling rate in Hz. Required if `t` is not provided.
+	t : np.ndarray | None
+		Optional time axis corresponding to `y`. Must be the same length as `y`.
+	t0 : float, optional
+		Starting time in seconds. Defaults to 0.0. Set to `t[0]` if `t` is provided.
+	title : str | None, optional
+		Optional title for the signal. Defaults to `"Audio Signal"`.
 	"""
 
 	#--------Meta Information----------
@@ -51,37 +73,37 @@ class AudioSignal(ModusaSignal):
 	#----------------------
 	@immutable_property("Create a new object instead.")
 	def y(self) -> np.ndarray:
-		""""""
+		"""Audio data."""
 		return self._y
 	
 	@immutable_property("Create a new object instead.")
 	def sr(self) -> np.ndarray:
-		""""""
+		"""Sampling rate of the audio."""
 		return self._sr
 	
 	@immutable_property("Create a new object instead.")
 	def t0(self) -> np.ndarray:
-		""""""
+		"""Start timestamp of the audio."""
 		return self._t0
 	
 	@immutable_property("Create a new object instead.")
 	def t(self) -> np.ndarray:
-		""""""
+		"""Timestamp array of the audio."""
 		return self.t0 + np.arange(len(self.y)) / self.sr 
 	
 	@immutable_property("Mutation not allowed.")
 	def Ts(self) -> int:
-		""""""
+		"""Sampling Period of the audio."""
 		return 1.0 / self.sr
 
 	@immutable_property("Mutation not allowed.")
 	def duration(self) -> int:
-		""""""
+		"""Duration of the audio."""
 		return len(self.y) / self.sr
 	
 	@immutable_property("Mutation not allowed.")
 	def info(self) -> None:
-		""""""
+		"""Prints info about the audio."""
 		print("-" * 50)
 		print(f"{'Title':<20}: {self.title}")
 		print(f"{'Kind':<20}: {self._name}")
@@ -108,7 +130,13 @@ class AudioSignal(ModusaSignal):
 	@validate_args_type()
 	def crop(self, t_min: int | float | None = None, t_max: int | float | None = None) -> "AudioSignal":
 		"""
-		Crop the audio signal to a time range [t_min, t_max).
+		Crop the audio signal to a time range [t_min, t_max].
+
+		.. code-block:: python
+
+			from modusa.generators import AudioSignalGenerator
+			audio_example = AudioSignalGenerator.generate_example()
+			cropped_audio = audio_example.crop(1.5, 2)
 	
 		Parameters
 		----------
@@ -155,7 +183,47 @@ class AudioSignal(ModusaSignal):
 		highlight: list[tuple[float, float]] | None = None,
 	) -> plt.Figure:
 		"""
+		Plot the audio waveform using matplotlib.
 		
+		.. code-block:: python
+		
+			from modusa.generators import AudioSignalGenerator
+			audio_example = AudioSignalGenerator.generate_example()
+			audio_example.plot(color="orange", title="Example Audio")
+		
+		Parameters
+		----------
+		scale_y : tuple of float, optional
+			Range to scale the y-axis data before plotting. Useful for normalization.
+		ax : matplotlib.axes.Axes, optional
+			Pre-existing axes to plot into. If None, a new figure and axes are created.
+		color : str, optional
+			Color of the waveform line. Default is `"b"` (blue).
+		marker : str or None, optional
+			Marker style for each point. Follows matplotlib marker syntax.
+		linestyle : str or None, optional
+			Line style for the waveform. Follows matplotlib linestyle syntax.
+		stem : bool, optional
+			If True, use a stem plot instead of a continuous line.
+		legend_loc : str or None, optional
+			If provided, adds a legend at the specified location (e.g., "upper right").
+		title : str or None, optional
+			Plot title. Defaults to the signal’s title.
+		ylabel : str or None, optional
+			Label for the y-axis. Defaults to `"Amplitude"`.
+		xlabel : str or None, optional
+			Label for the x-axis. Defaults to `"Time (sec)"`.
+		ylim : tuple of float or None, optional
+			Limits for the y-axis.
+		xlim : tuple of float or None, optional
+			Limits for the x-axis.
+		highlight : list of tuple of float or None, optional
+			List of time intervals to highlight on the plot, each as (start, end).
+		
+		Returns
+		-------
+		matplotlib.figure.Figure
+			The figure object containing the plot.
 		"""
 		
 		from modusa.io import Plotter
@@ -165,6 +233,40 @@ class AudioSignal(ModusaSignal):
 		fig: plt.Figure | None = Plotter.plot_signal(y=self.y, x=self.t, scale_y=scale_y, ax=ax, color=color, marker=marker, linestyle=linestyle, stem=stem, legend_loc=legend_loc, title=title, ylabel=ylabel, xlabel=xlabel, ylim=ylim, xlim=xlim, highlight=highlight)
 		
 		return fig
+	
+	def play(self, regions: list[tuple[float, float], ...] | None = None, title: str | None = None):
+		"""
+		Play the audio signal inside a Jupyter Notebook.
+	
+		.. code-block:: python
+	
+			from modusa.generators import AudioSignalGenerator
+			audio = AudioSignalGenerator.generate_example()
+			audio.play(regions=[(0.0, 1.0), (2.0, 3.0)])
+	
+		Parameters
+		----------
+		regions : list of tuple of float, optional
+			List of (start_time, end_time) pairs in seconds specifying the regions to play.
+			If None, the entire signal is played.
+		title : str or None, optional
+			Optional title for the player interface. Defaults to the signal’s internal title.
+	
+		Returns
+		-------
+		IPython.display.Audio
+			An interactive audio player widget for Jupyter environments.
+
+		Note
+		----
+		- This method uses :class:`~modusa.io.AudioPlayer` to render an interactive audio player.
+		- Optionally, specific regions of the signal can be played back, each defined by a (start, end) time pair.
+		"""
+		
+		from modusa.io import AudioPlayer
+		audio_player = AudioPlayer.play(y=self.y, sr=self.sr, regions=regions, title=self.title)
+		
+		return audio_player
 	
 	def to_spectrogram(
 		self,
@@ -209,6 +311,9 @@ class AudioSignal(ModusaSignal):
 	#----------------------------
 	# Math ops
 	#----------------------------
+	
+	def __array__(self, dtype=None):
+		return np.asarray(self._S, dtype=dtype)
 	
 	def __add__(self, other):
 		other_data = other.y if isinstance(other, self.__class__) else other
@@ -336,3 +441,36 @@ class AudioSignal(ModusaSignal):
 		"""Compute the sum of the signal data."""
 		return float(np.sum(self.y))
 	
+	#-----------------------------------
+	# Repr
+	#-----------------------------------
+	
+	def __str__(self):
+		cls = self.__class__.__name__
+		data = self.y
+		
+		arr_str = np.array2string(
+			data,
+			separator=", ",
+			threshold=50,       # limit number of elements shown
+			edgeitems=3,          # show first/last 3 rows and columns
+			max_line_width=120,   # avoid wrapping
+			formatter={'float_kind': lambda x: f"{x:.4g}"}
+		)
+		
+		return f"Signal({arr_str}, shape={data.shape}, kind={cls})"
+	
+	def __repr__(self):
+		cls = self.__class__.__name__
+		data = self.y
+		
+		arr_str = np.array2string(
+			data,
+			separator=", ",
+			threshold=50,       # limit number of elements shown
+			edgeitems=3,          # show first/last 3 rows and columns
+			max_line_width=120,   # avoid wrapping
+			formatter={'float_kind': lambda x: f"{x:.4g}"}
+		)
+		
+		return f"Signal({arr_str}, shape={data.shape}, kind={cls})"
