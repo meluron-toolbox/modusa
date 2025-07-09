@@ -72,7 +72,7 @@ class AudioLoader(ModusaIO):
 			# Load the audio in memory and return that
 			audio_data, audio_sr = librosa.load(wav_audio_fp, sr=sr)
 		
-		audio = AudioSignal(y=audio_data, sr=sr, title=audio_fp.stem)
+		audio = AudioSignal(y=audio_data, sr=audio_sr, title=audio_fp.stem)
 
 		return audio
 	
@@ -106,6 +106,8 @@ class AudioLoader(ModusaIO):
 		
 		"""
 		import librosa
+		import warnings
+		warnings.filterwarnings("ignore", message="pkg_resources is deprecated as an API.")
 		
 		fp = Path(fp)
 		y, sr = librosa.load(fp, sr=sr)

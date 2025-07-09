@@ -313,7 +313,14 @@ class AudioSignal(ModusaSignal):
 	#----------------------------
 	
 	def __array__(self, dtype=None):
-		return np.asarray(self._S, dtype=dtype)
+		return np.asarray(self.y, dtype=dtype)
+	
+	def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+		if ufunc == np.abs and method == "__call__":
+			# Extract the actual array from self or others
+			result = ufunc(self.y, **kwargs)
+			return self.__class__(y=result, sr=self.sr, title=f"{self.title} (abs)")
+		return NotImplemented
 	
 	def __add__(self, other):
 		other_data = other.y if isinstance(other, self.__class__) else other

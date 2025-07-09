@@ -1,6 +1,6 @@
 [project]
 name = "modusa"
-version = "0.2.1"
+version = "0.2.2"
 description = "A modular signal analysis python library."
 authors = [
     {name = "Ankit Anand", email = "ankit0.anand0@gmail.com"},
