@@ -205,10 +205,10 @@
   <p class="caption" role="heading"><span class="caption-text">Quick Guide</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../examples/index.html">Examples</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/example1.html">Loading Audio Signal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/example2.html">Performing mathematical operations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/example3.html">Plotting signals</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/example4.html">Computing spectrogram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/ex1.html">Loading Audio Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/ex2.html">Performing mathematical operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/ex3.html">Plotting signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/ex4.html">Computing spectrogram</a></li>
 </ul>
 </li>
 </ul>
@@ -608,7 +608,14 @@
 	<span class="c1">#----------------------------</span>
 	
 	<span class="k">def</span><span class="w"> </span><span class="nf">__array__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-		<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_S</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+	
+	<span class="k">def</span><span class="w"> </span><span class="nf">__array_ufunc__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ufunc</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="o">*</span><span class="n">inputs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">ufunc</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span> <span class="ow">and</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;__call__&quot;</span><span class="p">:</span>
+			<span class="c1"># Extract the actual array from self or others</span>
+			<span class="n">result</span> <span class="o">=</span> <span class="n">ufunc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2"> (abs)&quot;</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">NotImplemented</span>
 	
 	<span class="k">def</span><span class="w"> </span><span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 		<span class="n">other_data</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">y</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span> <span class="k">else</span> <span class="n">other</span>

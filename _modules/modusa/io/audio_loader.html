@@ -205,10 +205,10 @@
   <p class="caption" role="heading"><span class="caption-text">Quick Guide</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../examples/index.html">Examples</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/example1.html">Loading Audio Signal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/example2.html">Performing mathematical operations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/example3.html">Plotting signals</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/example4.html">Computing spectrogram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/ex1.html">Loading Audio Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/ex2.html">Performing mathematical operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/ex3.html">Plotting signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/ex4.html">Computing spectrogram</a></li>
 </ul>
 </li>
 </ul>
@@ -357,7 +357,7 @@
 			<span class="c1"># Load the audio in memory and return that</span>
 			<span class="n">audio_data</span><span class="p">,</span> <span class="n">audio_sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">wav_audio_fp</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">)</span>
 		
-		<span class="n">audio</span> <span class="o">=</span> <span class="n">AudioSignal</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">audio_data</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">audio_fp</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span>
+		<span class="n">audio</span> <span class="o">=</span> <span class="n">AudioSignal</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">audio_data</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">audio_sr</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">audio_fp</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span>
 
 		<span class="k">return</span> <span class="n">audio</span></div>
 
@@ -394,6 +394,8 @@
 <span class="sd">		</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="kn">import</span><span class="w"> </span><span class="nn">librosa</span>
+		<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+		<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;pkg_resources is deprecated as an API.&quot;</span><span class="p">)</span>
 		
 		<span class="n">fp</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
 		<span class="n">y</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">)</span>
