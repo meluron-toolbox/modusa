@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Plugins" href="../plugins/index.html" /><link rel="prev" title="ModusaSignal" href="base.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Time Domain Signal" href="time_domain_signal.html" /><link rel="prev" title="Base Signal" href="base.html" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2024.08.06 -->
-        <title>AudioSignal - modusa 0.1.0 documentation</title>
+        <title>Audio Signal - modusa 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -216,8 +216,11 @@
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Signals</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Signals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="base.html">ModusaSignal</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">AudioSignal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base.html">Base Signal</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Audio Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_domain_signal.html">Time Domain Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="frequency_domain_signal.html">Frequency Domain Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spectrogram.html">Spectrogram</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../plugins/index.html">Plugins</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Plugins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -233,6 +236,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../io/base.html">ModusaIO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../io/audio_loader.html">AudioLoader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../io/audio_converter.html">AudioConverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../io/audio_player.html">Audio Player</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../io/plotter.html">Plotter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../io/youtube_downloader.html">YoutubeDownloader</a></li>
 </ul>
@@ -241,12 +245,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../engines/base.html">ModusaEngine</a></li>
 </ul>
 </li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">How to contribute</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../contrib/contribution_guidelines.html">Contributing to modusa</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../contrib/engine_creation_guide.html">Engine Creation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../contrib/plugin_creation_guide.html">Plugin Creation Guide</a></li>
 </ul>
 
 </div>
@@ -287,52 +285,86 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="audiosignal">
-<h1>AudioSignal<a class="headerlink" href="#audiosignal" title="Link to this heading">¶</a></h1>
+          <section id="audio-signal">
+<h1>Audio Signal<a class="headerlink" href="#audio-signal" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="modusa.signals.AudioSignal">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modusa.signals.</span></span><span class="sig-name descname"><span class="pre">AudioSignal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/signals/audio_signal.html#AudioSignal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.AudioSignal" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="base.html#modusa.signals.ModusaSignal" title="modusa.signals.base.ModusaSignal"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModusaSignal</span></code></a></p>
-<p>A subclass of <cite>ModusaSignal</cite> that represents audio data within the Modusa framework.</p>
+<p>Represents a 1D audio signal within modusa framework.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>It is highly recommended to use  <a class="reference internal" href="../io/audio_loader.html#modusa.io.AudioLoader" title="modusa.io.AudioLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioLoader</span></code></a> to instantiate an object of this class.</p></li>
+<li><p>This class assumes audio is mono (1D numpy array).</p></li>
+<li><p>Either <cite>sr</cite> (sampling rate) or <cite>t</cite> (time axis) must be provided.</p></li>
+<li><p>If both <cite>t</cite> and <cite>sr</cite> are given, <cite>t</cite> takes precedence for timing and <cite>sr</cite> is computed from that.</p></li>
+<li><p>If <cite>t</cite> is provided but <cite>sr</cite> is missing, <cite>sr</cite> is estimated from the <cite>t</cite>.</p></li>
+<li><p>If <cite>t</cite> is provided, the starting time <cite>t0</cite> will be overridden by <cite>t[0]</cite>.</p></li>
+</ul>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>np.ndarray</em>) – 1D numpy array representing the audio signal.</p></li>
+<li><p><strong>sr</strong> (<em>int</em><em> | </em><em>None</em>) – Sampling rate in Hz. Required if <cite>t</cite> is not provided.</p></li>
+<li><p><strong>t</strong> (<em>np.ndarray</em><em> | </em><em>None</em>) – Optional time axis corresponding to <cite>y</cite>. Must be the same length as <cite>y</cite>.</p></li>
+<li><p><strong>t0</strong> (<em>float</em><em>, </em><em>optional</em>) – Starting time in seconds. Defaults to 0.0. Set to <cite>t[0]</cite> if <cite>t</cite> is provided.</p></li>
+<li><p><strong>title</strong> (<em>str</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – Optional title for the signal. Defaults to <cite>“Audio Signal”</cite>.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="modusa.signals.AudioSignal.y">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#modusa.signals.AudioSignal.y" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Audio data.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="modusa.signals.AudioSignal.sr">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#modusa.signals.AudioSignal.sr" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Sampling rate of the audio.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="modusa.signals.AudioSignal.t0">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">t0</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#modusa.signals.AudioSignal.t0" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Start timestamp of the audio.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="modusa.signals.AudioSignal.t">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">t</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#modusa.signals.AudioSignal.t" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Timestamp array of the audio.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="modusa.signals.AudioSignal.Ts">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Ts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#modusa.signals.AudioSignal.Ts" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Sampling Period of the audio.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="modusa.signals.AudioSignal.duration">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">duration</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#modusa.signals.AudioSignal.duration" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Duration of the audio.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="modusa.signals.AudioSignal.info">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#modusa.signals.AudioSignal.info" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Prints info about the audio.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="modusa.signals.AudioSignal.crop">
 <span class="sig-name descname"><span class="pre">crop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#modusa.signals.AudioSignal" title="modusa.signals.audio_signal.AudioSignal"><span class="pre">AudioSignal</span></a></span></span><a class="reference internal" href="../_modules/modusa/signals/audio_signal.html#AudioSignal.crop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.AudioSignal.crop" title="Link to this definition">¶</a></dt>
-<dd><p>Crop the audio signal to a time range [t_min, t_max).</p>
+<dd><p>Crop the audio signal to a time range [t_min, t_max].</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">modusa.generators</span><span class="w"> </span><span class="kn">import</span> <span class="n">AudioSignalGenerator</span>
+<span class="n">audio_example</span> <span class="o">=</span> <span class="n">AudioSignalGenerator</span><span class="o">.</span><span class="n">generate_example</span><span class="p">()</span>
+<span class="n">cropped_audio</span> <span class="o">=</span> <span class="n">audio_example</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -352,11 +384,75 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="modusa.signals.AudioSignal.plot">
 <span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Axes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'b'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">marker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linestyle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stem</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend_loc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Amplitude'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Time</span> <span class="pre">(sec)'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">highlight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Figure</span></span></span><a class="reference internal" href="../_modules/modusa/signals/audio_signal.html#AudioSignal.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.AudioSignal.plot" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Plot the audio waveform using matplotlib.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">modusa.generators</span><span class="w"> </span><span class="kn">import</span> <span class="n">AudioSignalGenerator</span>
+<span class="n">audio_example</span> <span class="o">=</span> <span class="n">AudioSignalGenerator</span><span class="o">.</span><span class="n">generate_example</span><span class="p">()</span>
+<span class="n">audio_example</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Example Audio&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scale_y</strong> (<em>tuple</em><em> of </em><em>float</em><em>, </em><em>optional</em>) – Range to scale the y-axis data before plotting. Useful for normalization.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em><em>, </em><em>optional</em>) – Pre-existing axes to plot into. If None, a new figure and axes are created.</p></li>
+<li><p><strong>color</strong> (<em>str</em><em>, </em><em>optional</em>) – Color of the waveform line. Default is <cite>“b”</cite> (blue).</p></li>
+<li><p><strong>marker</strong> (<em>str</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Marker style for each point. Follows matplotlib marker syntax.</p></li>
+<li><p><strong>linestyle</strong> (<em>str</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Line style for the waveform. Follows matplotlib linestyle syntax.</p></li>
+<li><p><strong>stem</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, use a stem plot instead of a continuous line.</p></li>
+<li><p><strong>legend_loc</strong> (<em>str</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – If provided, adds a legend at the specified location (e.g., “upper right”).</p></li>
+<li><p><strong>title</strong> (<em>str</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Plot title. Defaults to the signal’s title.</p></li>
+<li><p><strong>ylabel</strong> (<em>str</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Label for the y-axis. Defaults to <cite>“Amplitude”</cite>.</p></li>
+<li><p><strong>xlabel</strong> (<em>str</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Label for the x-axis. Defaults to <cite>“Time (sec)”</cite>.</p></li>
+<li><p><strong>ylim</strong> (<em>tuple</em><em> of </em><em>float</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Limits for the y-axis.</p></li>
+<li><p><strong>xlim</strong> (<em>tuple</em><em> of </em><em>float</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Limits for the x-axis.</p></li>
+<li><p><strong>highlight</strong> (<em>list</em><em> of </em><em>tuple</em><em> of </em><em>float</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – List of time intervals to highlight on the plot, each as (start, end).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The figure object containing the plot.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>matplotlib.figure.Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modusa.signals.AudioSignal.play">
+<span class="sig-name descname"><span class="pre">play</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">regions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/signals/audio_signal.html#AudioSignal.play"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.AudioSignal.play" title="Link to this definition">¶</a></dt>
+<dd><p>Play the audio signal inside a Jupyter Notebook.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">modusa.generators</span><span class="w"> </span><span class="kn">import</span> <span class="n">AudioSignalGenerator</span>
+<span class="n">audio</span> <span class="o">=</span> <span class="n">AudioSignalGenerator</span><span class="o">.</span><span class="n">generate_example</span><span class="p">()</span>
+<span class="n">audio</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="n">regions</span><span class="o">=</span><span class="p">[(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)])</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>regions</strong> (<em>list</em><em> of </em><em>tuple</em><em> of </em><em>float</em><em>, </em><em>optional</em>) – List of (start_time, end_time) pairs in seconds specifying the regions to play.
+If None, the entire signal is played.</p></li>
+<li><p><strong>title</strong> (<em>str</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Optional title for the player interface. Defaults to the signal’s internal title.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An interactive audio player widget for Jupyter environments.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>IPython.display.Audio</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>This method uses <a class="reference internal" href="../io/audio_player.html#modusa.io.AudioPlayer" title="modusa.io.AudioPlayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioPlayer</span></code></a> to render an interactive audio player.</p></li>
+<li><p>Optionally, specific regions of the signal can be played back, each defined by a (start, end) time pair.</p></li>
+</ul>
+</div>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="modusa.signals.AudioSignal.to_spectrogram">
-<span class="sig-name descname"><span class="pre">to_spectrogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_fft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2048</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">win_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'hann'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Spectrogram</span></span></span><a class="reference internal" href="../_modules/modusa/signals/audio_signal.html#AudioSignal.to_spectrogram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.AudioSignal.to_spectrogram" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">to_spectrogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_fft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2048</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">win_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'hann'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="spectrogram.html#modusa.signals.Spectrogram" title="modusa.signals.Spectrogram"><span class="pre">Spectrogram</span></a></span></span><a class="reference internal" href="../_modules/modusa/signals/audio_signal.html#AudioSignal.to_spectrogram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.AudioSignal.to_spectrogram" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the Short-Time Fourier Transform (STFT) and return a Spectrogram object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -371,7 +467,7 @@
 <dd class="field-even"><p>Spectrogram object containing S (complex STFT), t (time bins), and f (frequency bins).</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Spectrogram</p>
+<dd class="field-odd"><p><a class="reference internal" href="spectrogram.html#modusa.signals.Spectrogram" title="modusa.signals.Spectrogram">Spectrogram</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -463,12 +559,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../plugins/index.html">
+          <a class="next-page" href="time_domain_signal.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Plugins</div>
+                <div class="title">Time Domain Signal</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -479,7 +575,7 @@
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">ModusaSignal</div>
+                <div class="title">Base Signal</div>
                 
               </div>
             </a>
@@ -513,7 +609,7 @@
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">AudioSignal</a><ul>
+<li><a class="reference internal" href="#">Audio Signal</a><ul>
 <li><a class="reference internal" href="#modusa.signals.AudioSignal"><code class="docutils literal notranslate"><span class="pre">AudioSignal</span></code></a><ul>
 <li><a class="reference internal" href="#modusa.signals.AudioSignal.y"><code class="docutils literal notranslate"><span class="pre">AudioSignal.y</span></code></a></li>
 <li><a class="reference internal" href="#modusa.signals.AudioSignal.sr"><code class="docutils literal notranslate"><span class="pre">AudioSignal.sr</span></code></a></li>
@@ -524,6 +620,7 @@
 <li><a class="reference internal" href="#modusa.signals.AudioSignal.info"><code class="docutils literal notranslate"><span class="pre">AudioSignal.info</span></code></a></li>
 <li><a class="reference internal" href="#modusa.signals.AudioSignal.crop"><code class="docutils literal notranslate"><span class="pre">AudioSignal.crop()</span></code></a></li>
 <li><a class="reference internal" href="#modusa.signals.AudioSignal.plot"><code class="docutils literal notranslate"><span class="pre">AudioSignal.plot()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.AudioSignal.play"><code class="docutils literal notranslate"><span class="pre">AudioSignal.play()</span></code></a></li>
 <li><a class="reference internal" href="#modusa.signals.AudioSignal.to_spectrogram"><code class="docutils literal notranslate"><span class="pre">AudioSignal.to_spectrogram()</span></code></a></li>
 <li><a class="reference internal" href="#modusa.signals.AudioSignal.sin"><code class="docutils literal notranslate"><span class="pre">AudioSignal.sin()</span></code></a></li>
 <li><a class="reference internal" href="#modusa.signals.AudioSignal.cos"><code class="docutils literal notranslate"><span class="pre">AudioSignal.cos()</span></code></a></li>

@@ -1,5 +1,5 @@
-AudioSignal
-===========
+Audio Signal
+============
 
 .. autoclass:: modusa.signals.AudioSignal
    :members:

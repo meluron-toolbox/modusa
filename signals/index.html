@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="ModusaSignal" href="base.html" /><link rel="prev" title="Computing spectrogram" href="../examples/example4.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Base Signal" href="base.html" /><link rel="prev" title="Computing spectrogram" href="../examples/example4.html" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2024.08.06 -->
         <title>Signals - modusa 0.1.0 documentation</title>
@@ -216,8 +216,11 @@
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current">
 <li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">Signals</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Signals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="base.html">ModusaSignal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="audio_signal.html">AudioSignal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base.html">Base Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_signal.html">Audio Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_domain_signal.html">Time Domain Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="frequency_domain_signal.html">Frequency Domain Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spectrogram.html">Spectrogram</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../plugins/index.html">Plugins</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Plugins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -233,6 +236,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../io/base.html">ModusaIO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../io/audio_loader.html">AudioLoader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../io/audio_converter.html">AudioConverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../io/audio_player.html">Audio Player</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../io/plotter.html">Plotter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../io/youtube_downloader.html">YoutubeDownloader</a></li>
 </ul>
@@ -241,12 +245,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../engines/base.html">ModusaEngine</a></li>
 </ul>
 </li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">How to contribute</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../contrib/contribution_guidelines.html">Contributing to modusa</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../contrib/engine_creation_guide.html">Engine Creation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../contrib/plugin_creation_guide.html">Plugin Creation Guide</a></li>
 </ul>
 
 </div>
@@ -292,8 +290,11 @@
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Signal Classes</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="base.html">ModusaSignal</a></li>
-<li class="toctree-l1"><a class="reference internal" href="audio_signal.html">AudioSignal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">Base Signal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="audio_signal.html">Audio Signal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time_domain_signal.html">Time Domain Signal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frequency_domain_signal.html">Frequency Domain Signal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spectrogram.html">Spectrogram</a></li>
 </ul>
 </div>
 </section>
@@ -308,7 +309,7 @@
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">ModusaSignal</div>
+                <div class="title">Base Signal</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>

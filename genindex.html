@@ -214,8 +214,11 @@
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="signals/index.html">Signals</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Signals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="signals/base.html">ModusaSignal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="signals/audio_signal.html">AudioSignal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals/base.html">Base Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals/audio_signal.html">Audio Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals/time_domain_signal.html">Time Domain Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals/frequency_domain_signal.html">Frequency Domain Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals/spectrogram.html">Spectrogram</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="plugins/index.html">Plugins</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Plugins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -231,6 +234,7 @@
 <li class="toctree-l2"><a class="reference internal" href="io/base.html">ModusaIO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="io/audio_loader.html">AudioLoader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="io/audio_converter.html">AudioConverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/audio_player.html">Audio Player</a></li>
 <li class="toctree-l2"><a class="reference internal" href="io/plotter.html">Plotter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="io/youtube_downloader.html">YoutubeDownloader</a></li>
 </ul>
@@ -239,12 +243,6 @@
 <li class="toctree-l2"><a class="reference internal" href="engines/base.html">ModusaEngine</a></li>
 </ul>
 </li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">How to contribute</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="contrib/contribution_guidelines.html">Contributing to modusa</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contrib/engine_creation_guide.html">Engine Creation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contrib/plugin_creation_guide.html">Plugin Creation Guide</a></li>
 </ul>
 
 </div>
@@ -282,7 +280,7 @@
           
 <section class="genindex-section">
   <h1 id="index">Index</h1>
-  <div class="genindex-jumpbox"><a href="#A"><strong>A</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#D"><strong>D</strong></a> | <a href="#E"><strong>E</strong></a> | <a href="#F"><strong>F</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#L"><strong>L</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#P"><strong>P</strong></a> | <a href="#R"><strong>R</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a> | <a href="#Y"><strong>Y</strong></a></div>
+  <div class="genindex-jumpbox"><a href="#A"><strong>A</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#D"><strong>D</strong></a> | <a href="#E"><strong>E</strong></a> | <a href="#F"><strong>F</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#L"><strong>L</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#N"><strong>N</strong></a> | <a href="#P"><strong>P</strong></a> | <a href="#R"><strong>R</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a> | <a href="#Y"><strong>Y</strong></a></div>
 </section>
 <section id="A" class="genindex-section">
   <h2>A</h2>
@@ -294,11 +292,13 @@
 </li>
         <li><a href="plugins/base.html#modusa.plugins.base.ModusaPlugin.apply">apply() (modusa.plugins.base.ModusaPlugin method)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="io/audio_converter.html#modusa.io.AudioConverter">AudioConverter (class in modusa.io)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="io/audio_loader.html#modusa.io.AudioLoader">AudioLoader (class in modusa.io)</a>
+</li>
+        <li><a href="io/audio_player.html#modusa.io.AudioPlayer">AudioPlayer (class in modusa.io)</a>
 </li>
         <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal">AudioSignal (class in modusa.signals)</a>
 </li>
@@ -314,12 +314,24 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="io/audio_converter.html#modusa.io.AudioConverter.convert">convert() (modusa.io.AudioConverter static method)</a>
 </li>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.cos">cos() (modusa.signals.AudioSignal method)</a>
+
+        <ul>
+          <li><a href="signals/frequency_domain_signal.html#modusa.signals.FrequencyDomainSignal.cos">(modusa.signals.FrequencyDomainSignal method)</a>
+</li>
+          <li><a href="signals/spectrogram.html#modusa.signals.Spectrogram.cos">(modusa.signals.Spectrogram method)</a>
+</li>
+          <li><a href="signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.cos">(modusa.signals.TimeDomainSignal method)</a>
+</li>
+        </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.cos">cos() (modusa.signals.AudioSignal method)</a>
-</li>
         <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.crop">crop() (modusa.signals.AudioSignal method)</a>
+
+        <ul>
+          <li><a href="signals/spectrogram.html#modusa.signals.Spectrogram.crop">(modusa.signals.Spectrogram method)</a>
 </li>
+        </ul></li>
     </ul></td>
   </tr></table>
 </section>
@@ -343,7 +355,15 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.exp">exp() (modusa.signals.AudioSignal method)</a>
+
+        <ul>
+          <li><a href="signals/frequency_domain_signal.html#modusa.signals.FrequencyDomainSignal.exp">(modusa.signals.FrequencyDomainSignal method)</a>
 </li>
+          <li><a href="signals/spectrogram.html#modusa.signals.Spectrogram.exp">(modusa.signals.Spectrogram method)</a>
+</li>
+          <li><a href="signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.exp">(modusa.signals.TimeDomainSignal method)</a>
+</li>
+        </ul></li>
     </ul></td>
   </tr></table>
 </section>
@@ -352,12 +372,20 @@
   <h2>F</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="io/audio_loader.html#modusa.io.AudioLoader.from_array">from_array() (modusa.io.AudioLoader static method)</a>
+        <li><a href="signals/frequency_domain_signal.html#modusa.signals.FrequencyDomainSignal.f">f (modusa.signals.FrequencyDomainSignal property)</a>
+
+        <ul>
+          <li><a href="signals/spectrogram.html#modusa.signals.Spectrogram.f">(modusa.signals.Spectrogram property)</a>
 </li>
-        <li><a href="io/audio_loader.html#modusa.io.AudioLoader.from_array_with_sr">from_array_with_sr() (modusa.io.AudioLoader static method)</a>
+        </ul></li>
+        <li><a href="signals/frequency_domain_signal.html#modusa.signals.FrequencyDomainSignal">FrequencyDomainSignal (class in modusa.signals)</a>
+</li>
+        <li><a href="io/audio_loader.html#modusa.io.AudioLoader.from_array">from_array() (modusa.io.AudioLoader static method)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="io/audio_loader.html#modusa.io.AudioLoader.from_array_with_sr">from_array_with_sr() (modusa.io.AudioLoader static method)</a>
+</li>
         <li><a href="io/audio_loader.html#modusa.io.AudioLoader.from_fp">from_fp() (modusa.io.AudioLoader static method)</a>
 </li>
         <li><a href="io/audio_loader.html#modusa.io.AudioLoader.from_list">from_list() (modusa.io.AudioLoader static method)</a>
@@ -395,7 +423,11 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.info">info (modusa.signals.AudioSignal property)</a>
+
+        <ul>
+          <li><a href="signals/spectrogram.html#modusa.signals.Spectrogram.info">(modusa.signals.Spectrogram property)</a>
 </li>
+        </ul></li>
     </ul></td>
   </tr></table>
 </section>
@@ -405,15 +437,47 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.log">log() (modusa.signals.AudioSignal method)</a>
+
+        <ul>
+          <li><a href="signals/frequency_domain_signal.html#modusa.signals.FrequencyDomainSignal.log">(modusa.signals.FrequencyDomainSignal method)</a>
 </li>
+          <li><a href="signals/spectrogram.html#modusa.signals.Spectrogram.log">(modusa.signals.Spectrogram method)</a>
+</li>
+          <li><a href="signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.log">(modusa.signals.TimeDomainSignal method)</a>
+</li>
+        </ul></li>
         <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.log10">log10() (modusa.signals.AudioSignal method)</a>
+
+        <ul>
+          <li><a href="signals/frequency_domain_signal.html#modusa.signals.FrequencyDomainSignal.log10">(modusa.signals.FrequencyDomainSignal method)</a>
 </li>
+          <li><a href="signals/spectrogram.html#modusa.signals.Spectrogram.log10">(modusa.signals.Spectrogram method)</a>
+</li>
+          <li><a href="signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.log10">(modusa.signals.TimeDomainSignal method)</a>
+</li>
+        </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.log1p">log1p() (modusa.signals.AudioSignal method)</a>
+
+        <ul>
+          <li><a href="signals/frequency_domain_signal.html#modusa.signals.FrequencyDomainSignal.log1p">(modusa.signals.FrequencyDomainSignal method)</a>
 </li>
+          <li><a href="signals/spectrogram.html#modusa.signals.Spectrogram.log1p">(modusa.signals.Spectrogram method)</a>
+</li>
+          <li><a href="signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.log1p">(modusa.signals.TimeDomainSignal method)</a>
+</li>
+        </ul></li>
         <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.log2">log2() (modusa.signals.AudioSignal method)</a>
+
+        <ul>
+          <li><a href="signals/frequency_domain_signal.html#modusa.signals.FrequencyDomainSignal.log2">(modusa.signals.FrequencyDomainSignal method)</a>
 </li>
+          <li><a href="signals/spectrogram.html#modusa.signals.Spectrogram.log2">(modusa.signals.Spectrogram method)</a>
+</li>
+          <li><a href="signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.log2">(modusa.signals.TimeDomainSignal method)</a>
+</li>
+        </ul></li>
     </ul></td>
   </tr></table>
 </section>
@@ -423,15 +487,39 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.max">max() (modusa.signals.AudioSignal method)</a>
+
+        <ul>
+          <li><a href="signals/frequency_domain_signal.html#modusa.signals.FrequencyDomainSignal.max">(modusa.signals.FrequencyDomainSignal method)</a>
 </li>
+          <li><a href="signals/spectrogram.html#modusa.signals.Spectrogram.max">(modusa.signals.Spectrogram method)</a>
+</li>
+          <li><a href="signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.max">(modusa.signals.TimeDomainSignal method)</a>
+</li>
+        </ul></li>
         <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.mean">mean() (modusa.signals.AudioSignal method)</a>
+
+        <ul>
+          <li><a href="signals/frequency_domain_signal.html#modusa.signals.FrequencyDomainSignal.mean">(modusa.signals.FrequencyDomainSignal method)</a>
 </li>
-        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.min">min() (modusa.signals.AudioSignal method)</a>
+          <li><a href="signals/spectrogram.html#modusa.signals.Spectrogram.mean">(modusa.signals.Spectrogram method)</a>
 </li>
-        <li><a href="engines/base.html#modusa.engines.base.ModusaEngine">ModusaEngine (class in modusa.engines.base)</a>
+          <li><a href="signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.mean">(modusa.signals.TimeDomainSignal method)</a>
 </li>
+        </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.min">min() (modusa.signals.AudioSignal method)</a>
+
+        <ul>
+          <li><a href="signals/frequency_domain_signal.html#modusa.signals.FrequencyDomainSignal.min">(modusa.signals.FrequencyDomainSignal method)</a>
+</li>
+          <li><a href="signals/spectrogram.html#modusa.signals.Spectrogram.min">(modusa.signals.Spectrogram method)</a>
+</li>
+          <li><a href="signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.min">(modusa.signals.TimeDomainSignal method)</a>
+</li>
+        </ul></li>
+        <li><a href="engines/base.html#modusa.engines.base.ModusaEngine">ModusaEngine (class in modusa.engines.base)</a>
+</li>
         <li><a href="generators/base.html#modusa.generators.base.ModusaGenerator">ModusaGenerator (class in modusa.generators.base)</a>
 </li>
         <li><a href="io/base.html#modusa.io.ModusaIO">ModusaIO (class in modusa.io)</a>
@@ -444,16 +532,40 @@
   </tr></table>
 </section>
 
+<section id="N" class="genindex-section">
+  <h2>N</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="signals/spectrogram.html#modusa.signals.Spectrogram.ndim">ndim (modusa.signals.Spectrogram property)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
 <section id="P" class="genindex-section">
   <h2>P</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="io/audio_player.html#modusa.io.AudioPlayer.play">play() (modusa.io.AudioPlayer static method)</a>
+
+        <ul>
+          <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.play">(modusa.signals.AudioSignal method)</a>
+</li>
+        </ul></li>
         <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.plot">plot() (modusa.signals.AudioSignal method)</a>
+
+        <ul>
+          <li><a href="signals/frequency_domain_signal.html#modusa.signals.FrequencyDomainSignal.plot">(modusa.signals.FrequencyDomainSignal method)</a>
 </li>
-        <li><a href="io/plotter.html#modusa.io.Plotter.plot_matrix">plot_matrix() (modusa.io.Plotter static method)</a>
+          <li><a href="signals/spectrogram.html#modusa.signals.Spectrogram.plot">(modusa.signals.Spectrogram method)</a>
 </li>
+          <li><a href="signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.plot">(modusa.signals.TimeDomainSignal method)</a>
+</li>
+        </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="io/plotter.html#modusa.io.Plotter.plot_matrix">plot_matrix() (modusa.io.Plotter static method)</a>
+</li>
         <li><a href="io/plotter.html#modusa.io.Plotter.plot_signal">plot_signal() (modusa.io.Plotter static method)</a>
 </li>
         <li><a href="io/plotter.html#modusa.io.Plotter">Plotter (class in modusa.io)</a>
@@ -476,16 +588,52 @@
   <h2>S</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="signals/spectrogram.html#modusa.signals.Spectrogram.S">S (modusa.signals.Spectrogram property)</a>
+</li>
+        <li><a href="signals/spectrogram.html#modusa.signals.Spectrogram.shape">shape (modusa.signals.Spectrogram property)</a>
+</li>
         <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.sin">sin() (modusa.signals.AudioSignal method)</a>
+
+        <ul>
+          <li><a href="signals/frequency_domain_signal.html#modusa.signals.FrequencyDomainSignal.sin">(modusa.signals.FrequencyDomainSignal method)</a>
+</li>
+          <li><a href="signals/spectrogram.html#modusa.signals.Spectrogram.sin">(modusa.signals.Spectrogram method)</a>
+</li>
+          <li><a href="signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.sin">(modusa.signals.TimeDomainSignal method)</a>
+</li>
+        </ul></li>
+        <li><a href="signals/spectrogram.html#modusa.signals.Spectrogram">Spectrogram (class in modusa.signals)</a>
+</li>
+        <li><a href="signals/frequency_domain_signal.html#modusa.signals.FrequencyDomainSignal.spectrum">spectrum (modusa.signals.FrequencyDomainSignal property)</a>
 </li>
         <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.sr">sr (modusa.signals.AudioSignal property)</a>
+
+        <ul>
+          <li><a href="signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.sr">(modusa.signals.TimeDomainSignal property)</a>
 </li>
+        </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.std">std() (modusa.signals.AudioSignal method)</a>
+
+        <ul>
+          <li><a href="signals/frequency_domain_signal.html#modusa.signals.FrequencyDomainSignal.std">(modusa.signals.FrequencyDomainSignal method)</a>
 </li>
+          <li><a href="signals/spectrogram.html#modusa.signals.Spectrogram.std">(modusa.signals.Spectrogram method)</a>
+</li>
+          <li><a href="signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.std">(modusa.signals.TimeDomainSignal method)</a>
+</li>
+        </ul></li>
         <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.sum">sum() (modusa.signals.AudioSignal method)</a>
+
+        <ul>
+          <li><a href="signals/frequency_domain_signal.html#modusa.signals.FrequencyDomainSignal.sum">(modusa.signals.FrequencyDomainSignal method)</a>
 </li>
+          <li><a href="signals/spectrogram.html#modusa.signals.Spectrogram.sum">(modusa.signals.Spectrogram method)</a>
+</li>
+          <li><a href="signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.sum">(modusa.signals.TimeDomainSignal method)</a>
+</li>
+        </ul></li>
     </ul></td>
   </tr></table>
 </section>
@@ -495,12 +643,34 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.t">t (modusa.signals.AudioSignal property)</a>
+
+        <ul>
+          <li><a href="signals/spectrogram.html#modusa.signals.Spectrogram.t">(modusa.signals.Spectrogram property)</a>
 </li>
+          <li><a href="signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.t">(modusa.signals.TimeDomainSignal property)</a>
+</li>
+        </ul></li>
         <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.t0">t0 (modusa.signals.AudioSignal property)</a>
+
+        <ul>
+          <li><a href="signals/frequency_domain_signal.html#modusa.signals.FrequencyDomainSignal.t0">(modusa.signals.FrequencyDomainSignal property)</a>
 </li>
+          <li><a href="signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.t0">(modusa.signals.TimeDomainSignal property)</a>
+</li>
+        </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.tanh">tanh() (modusa.signals.AudioSignal method)</a>
+
+        <ul>
+          <li><a href="signals/frequency_domain_signal.html#modusa.signals.FrequencyDomainSignal.tanh">(modusa.signals.FrequencyDomainSignal method)</a>
+</li>
+          <li><a href="signals/spectrogram.html#modusa.signals.Spectrogram.tanh">(modusa.signals.Spectrogram method)</a>
+</li>
+          <li><a href="signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.tanh">(modusa.signals.TimeDomainSignal method)</a>
+</li>
+        </ul></li>
+        <li><a href="signals/time_domain_signal.html#modusa.signals.TimeDomainSignal">TimeDomainSignal (class in modusa.signals)</a>
 </li>
         <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.to_spectrogram">to_spectrogram() (modusa.signals.AudioSignal method)</a>
 </li>
@@ -515,7 +685,11 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="signals/audio_signal.html#modusa.signals.AudioSignal.y">y (modusa.signals.AudioSignal property)</a>
+
+        <ul>
+          <li><a href="signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.y">(modusa.signals.TimeDomainSignal property)</a>
 </li>
+        </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="io/youtube_downloader.html#modusa.io.YoutubeDownloader">YoutubeDownloader (class in modusa.io)</a>

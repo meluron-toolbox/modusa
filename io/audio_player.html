@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="ModusaIO" href="base.html" /><link rel="prev" title="BasicWaveformGenerator" href="../generators/audio_waveforms.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Plotter" href="plotter.html" /><link rel="prev" title="AudioConverter" href="audio_converter.html" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2024.08.06 -->
-        <title>IO - modusa 0.1.0 documentation</title>
+        <title>Audio Player - modusa 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -180,7 +180,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -232,11 +232,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../generators/audio_waveforms.html">BasicWaveformGenerator</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">IO</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of IO</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">IO</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of IO</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="base.html">ModusaIO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="audio_loader.html">AudioLoader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="audio_converter.html">AudioConverter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="audio_player.html">Audio Player</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Audio Player</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plotter.html">Plotter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="youtube_downloader.html">YoutubeDownloader</a></li>
 </ul>
@@ -265,7 +265,7 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="../_sources/io/index.rst.txt" title="View this page">
+  <a class="muted-link" href="../_sources/io/audio_player.rst.txt" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
@@ -279,25 +279,39 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="io">
-<h1>IO<a class="headerlink" href="#io" title="Link to this heading">¶</a></h1>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Engine Classes</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="base.html">ModusaIO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="audio_loader.html">AudioLoader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="audio_converter.html">AudioConverter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="audio_player.html">Audio Player</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plotter.html">Plotter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="youtube_downloader.html">YoutubeDownloader</a></li>
+          <section id="audio-player">
+<h1>Audio Player<a class="headerlink" href="#audio-player" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="modusa.io.AudioPlayer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modusa.io.</span></span><span class="sig-name descname"><span class="pre">AudioPlayer</span></span><a class="reference internal" href="../_modules/modusa/io/audio_player.html#AudioPlayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.io.AudioPlayer" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="base.html#modusa.io.ModusaIO" title="modusa.io.base.ModusaIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModusaIO</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="modusa.io.AudioPlayer.play">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">play</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/modusa/io/audio_player.html#AudioPlayer.play"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.io.AudioPlayer.play" title="Link to this definition">¶</a></dt>
+<dd><p>Plays audio clips for given regions in Jupyter Notebooks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>np.ndarray</em>) – Audio time series.</p></li>
+<li><p><strong>sr</strong> (<em>int</em>) – Sampling rate.</p></li>
+<li><p><strong>regions</strong> (<em>list</em><em> of </em><em>(</em><em>float</em><em>, </em><em>float</em><em>)</em><em>, </em><em>optional</em>) – Regions to extract and play (in seconds).</p></li>
+<li><p><strong>title</strong> (<em>str</em><em>, </em><em>optional</em>) – Title to display above audio players.</p></li>
 </ul>
-</div>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
         </article>
@@ -305,23 +319,23 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="base.html">
+          <a class="next-page" href="plotter.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">ModusaIO</div>
+                <div class="title">Plotter</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../generators/audio_waveforms.html">
+          <a class="prev-page" href="audio_converter.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">BasicWaveformGenerator</div>
+                <div class="title">AudioConverter</div>
                 
               </div>
             </a>
@@ -343,8 +357,30 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Audio Player</a><ul>
+<li><a class="reference internal" href="#modusa.io.AudioPlayer"><code class="docutils literal notranslate"><span class="pre">AudioPlayer</span></code></a><ul>
+<li><a class="reference internal" href="#modusa.io.AudioPlayer.play"><code class="docutils literal notranslate"><span class="pre">AudioPlayer.play()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>

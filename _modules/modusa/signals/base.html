@@ -215,8 +215,11 @@
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../signals/index.html">Signals</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Signals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../signals/base.html">ModusaSignal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../signals/audio_signal.html">AudioSignal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../signals/base.html">Base Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../signals/audio_signal.html">Audio Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../signals/time_domain_signal.html">Time Domain Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../signals/frequency_domain_signal.html">Frequency Domain Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../signals/spectrogram.html">Spectrogram</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../plugins/index.html">Plugins</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Plugins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -232,6 +235,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../io/base.html">ModusaIO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../io/audio_loader.html">AudioLoader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../io/audio_converter.html">AudioConverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../io/audio_player.html">Audio Player</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../io/plotter.html">Plotter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../io/youtube_downloader.html">YoutubeDownloader</a></li>
 </ul>
@@ -240,12 +244,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../engines/base.html">ModusaEngine</a></li>
 </ul>
 </li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">How to contribute</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../contrib/contribution_guidelines.html">Contributing to modusa</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../contrib/engine_creation_guide.html">Engine Creation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../contrib/plugin_creation_guide.html">Plugin Creation Guide</a></li>
 </ul>
 
 </div>
@@ -313,41 +311,7 @@
 	
 	<span class="nd">@validate_args_type</span><span class="p">()</span>
 	<span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">_plugin_chain</span> <span class="o">=</span> <span class="p">[]</span>
-	
-	<span class="c1">#----------------------------</span>
-	<span class="c1"># Properties</span>
-	<span class="c1">#----------------------------</span>
-
-	<span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="bp">cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
-		<span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
-		
-		<span class="n">arr_str</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array2string</span><span class="p">(</span>
-			<span class="n">data</span><span class="p">,</span>
-			<span class="n">separator</span><span class="o">=</span><span class="s2">&quot;, &quot;</span><span class="p">,</span>
-			<span class="n">threshold</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>       <span class="c1"># limit number of elements shown</span>
-			<span class="n">edgeitems</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>          <span class="c1"># show first/last 3 rows and columns</span>
-			<span class="n">max_line_width</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>   <span class="c1"># avoid wrapping</span>
-			<span class="n">formatter</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;float_kind&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
-		<span class="p">)</span>
-		
-		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Signal(</span><span class="si">{</span><span class="n">arr_str</span><span class="si">}</span><span class="s2">, shape=</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, kind=</span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s2">)&quot;</span>
-	
-	<span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="bp">cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
-		<span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
-		
-		<span class="n">arr_str</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array2string</span><span class="p">(</span>
-			<span class="n">data</span><span class="p">,</span>
-			<span class="n">separator</span><span class="o">=</span><span class="s2">&quot;, &quot;</span><span class="p">,</span>
-			<span class="n">threshold</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>       <span class="c1"># limit number of elements shown</span>
-			<span class="n">edgeitems</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>          <span class="c1"># show first/last 3 rows and columns</span>
-			<span class="n">max_line_width</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>   <span class="c1"># avoid wrapping</span>
-			<span class="n">formatter</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;float_kind&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
-		<span class="p">)</span>
-		
-		<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Signal(</span><span class="si">{</span><span class="n">arr_str</span><span class="si">}</span><span class="s2">, shape=</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, kind=</span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_plugin_chain</span> <span class="o">=</span> <span class="p">[]</span></div>
 
 	
 

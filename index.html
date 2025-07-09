@@ -216,8 +216,11 @@
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="signals/index.html">Signals</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Signals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="signals/base.html">ModusaSignal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="signals/audio_signal.html">AudioSignal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals/base.html">Base Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals/audio_signal.html">Audio Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals/time_domain_signal.html">Time Domain Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals/frequency_domain_signal.html">Frequency Domain Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals/spectrogram.html">Spectrogram</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="plugins/index.html">Plugins</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Plugins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -233,6 +236,7 @@
 <li class="toctree-l2"><a class="reference internal" href="io/base.html">ModusaIO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="io/audio_loader.html">AudioLoader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="io/audio_converter.html">AudioConverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/audio_player.html">Audio Player</a></li>
 <li class="toctree-l2"><a class="reference internal" href="io/plotter.html">Plotter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="io/youtube_downloader.html">YoutubeDownloader</a></li>
 </ul>
@@ -241,12 +245,6 @@
 <li class="toctree-l2"><a class="reference internal" href="engines/base.html">ModusaEngine</a></li>
 </ul>
 </li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">How to contribute</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="contrib/contribution_guidelines.html">Contributing to modusa</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contrib/engine_creation_guide.html">Engine Creation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contrib/plugin_creation_guide.html">Plugin Creation Guide</a></li>
 </ul>
 
 </div>
@@ -289,16 +287,18 @@
         <article role="main" id="furo-main-content">
           <section id="modusa">
 <h1>modusa<a class="headerlink" href="#modusa" title="Link to this heading">¶</a></h1>
-<p><strong>modusa</strong> is a modular framework for audio signal analysis and processing, designed to help researchers and developers build reusable DSP chains with minimal code.</p>
+<p><strong>modusa</strong> is a modular framework for audio signal analysis and processing, designed to help researchers and developers build DSP chains with minimal code.</p>
 <a class="reference external image-reference" href="index.html"><img alt="modusa components diagram" class="responsive-img align-center" src="_images/core_components_nobg.png" style="width: 60%;" />
 </a>
-<div class="admonition-these-are-the-4-core-components-of-modusa-architecture admonition">
-<p class="admonition-title"><strong>These are the 4 core components of modusa architecture</strong></p>
+<div class="admonition-these-are-the-6-core-components-of-modusa-architecture admonition">
+<p class="admonition-title"><strong>These are the 6 core components of modusa architecture</strong></p>
 <ul class="simple">
-<li><p>modusa <strong>Engine</strong>: Contains the core logic for processing and transforming signals.</p></li>
-<li><p>modusa <strong>Plugin</strong>: A thin layer that connects engines to signals for execution.</p></li>
-<li><p>modusa <strong>Signal</strong>: Represents data with domain-specific tools (e.g., audio, music, etc).</p></li>
-<li><p>modusa <strong>Generator</strong>: Creates new signals using predefined rules or patterns.</p></li>
+<li><p>modusa <strong>Signal</strong>: Represents data with domain-specific tools (e.g., audio, music).</p></li>
+<li><p>modusa <strong>Plugin</strong>: Connects engines to signals for execution.</p></li>
+<li><p>modusa <strong>Generator</strong>: Creates new signals using rules or patterns.</p></li>
+<li><p>modusa <strong>IO</strong>: Handles input/output, plotting, and playback.</p></li>
+<li><p>modusa <strong>Engine</strong>: Core logic for processing and transforming signals.</p></li>
+<li><p>modusa <strong>Test</strong>: Contains tests and fixtures.</p></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
@@ -311,8 +311,11 @@
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="signals/index.html">Signals</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="signals/base.html">ModusaSignal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="signals/audio_signal.html">AudioSignal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals/base.html">Base Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals/audio_signal.html">Audio Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals/time_domain_signal.html">Time Domain Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals/frequency_domain_signal.html">Frequency Domain Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals/spectrogram.html">Spectrogram</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="plugins/index.html">Plugins</a><ul>
@@ -328,6 +331,7 @@
 <li class="toctree-l2"><a class="reference internal" href="io/base.html">ModusaIO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="io/audio_loader.html">AudioLoader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="io/audio_converter.html">AudioConverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/audio_player.html">Audio Player</a></li>
 <li class="toctree-l2"><a class="reference internal" href="io/plotter.html">Plotter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="io/youtube_downloader.html">YoutubeDownloader</a></li>
 </ul>
@@ -338,14 +342,13 @@
 </li>
 </ul>
 </div>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">How to contribute</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="contrib/contribution_guidelines.html">Contributing to modusa</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contrib/engine_creation_guide.html">Engine Creation Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contrib/plugin_creation_guide.html">Plugin Creation Guide</a></li>
-</ul>
-</div>
+<p>#.. toctree::
+#  :maxdepth: 1
+#  :caption: How to contribute
+#
+#  contrib/contribution_guidelines
+#  contrib/engine_creation_guide
+#  contrib/plugin_creation_guide</p>
 </section>
 
         </article>

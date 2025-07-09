@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2024.08.06 -->
-        <title>modusa.signals.audio_signal - modusa 0.1.0 documentation</title>
+        <title>modusa.signals.time_domain_signal - modusa 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -278,181 +278,95 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Source code for modusa.signals.audio_signal</h1><div class="highlight"><pre>
+          <h1>Source code for modusa.signals.time_domain_signal</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">modusa</span><span class="w"> </span><span class="kn">import</span> <span class="n">excp</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">modusa.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">immutable_property</span><span class="p">,</span> <span class="n">validate_args_type</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">modusa.signals.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModusaSignal</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">modusa.signals.signal_ops</span><span class="w"> </span><span class="kn">import</span> <span class="n">SignalOps</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Self</span><span class="p">,</span> <span class="n">Any</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
-<div class="viewcode-block" id="AudioSignal">
-<a class="viewcode-back" href="../../../signals/audio_signal.html#modusa.signals.AudioSignal">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">AudioSignal</span><span class="p">(</span><span class="n">ModusaSignal</span><span class="p">):</span>
+<div class="viewcode-block" id="TimeDomainSignal">
+<a class="viewcode-back" href="../../../signals/time_domain_signal.html#modusa.signals.TimeDomainSignal">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TimeDomainSignal</span><span class="p">(</span><span class="n">ModusaSignal</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Represents a 1D audio signal within modusa framework.</span>
-
-<span class="sd">	Note</span>
-<span class="sd">	----</span>
-<span class="sd">	- It is highly recommended to use  :class:`~modusa.io.AudioLoader` to instantiate an object of this class.</span>
-<span class="sd">	- This class assumes audio is mono (1D numpy array).</span>
-<span class="sd">	- Either `sr` (sampling rate) or `t` (time axis) must be provided.</span>
-<span class="sd">	- If both `t` and `sr` are given, `t` takes precedence for timing and `sr` is computed from that.</span>
-<span class="sd">	- If `t` is provided but `sr` is missing, `sr` is estimated from the `t`.</span>
-<span class="sd">	- If `t` is provided, the starting time `t0` will be overridden by `t[0]`.</span>
-
+<span class="sd">	Initialize a uniformly sampled 1D time-domain signal.</span>
+<span class="sd">	</span>
+<span class="sd">	This class is specifically designed to hold 1D signals that result</span>
+<span class="sd">	from slicing a 2D representation like a spectrogram. For example,</span>
+<span class="sd">	if you have a spectrogram `S` and you perform `S[10, :]`, the result</span>
+<span class="sd">	is a 1D signal over time, this class provides a clean and consistent</span>
+<span class="sd">	way to handle such slices.</span>
+<span class="sd">	</span>
 <span class="sd">	Parameters</span>
 <span class="sd">	----------</span>
 <span class="sd">	y : np.ndarray</span>
-<span class="sd">		1D numpy array representing the audio signal.</span>
-<span class="sd">	sr : int | None</span>
-<span class="sd">		Sampling rate in Hz. Required if `t` is not provided.</span>
-<span class="sd">	t : np.ndarray | None</span>
-<span class="sd">		Optional time axis corresponding to `y`. Must be the same length as `y`.</span>
+<span class="sd">		The 1D signal values sampled uniformly over time.</span>
+<span class="sd">	sr : float</span>
+<span class="sd">		The sampling rate in Hz (samples per second).</span>
 <span class="sd">	t0 : float, optional</span>
-<span class="sd">		Starting time in seconds. Defaults to 0.0. Set to `t[0]` if `t` is provided.</span>
-<span class="sd">	title : str | None, optional</span>
-<span class="sd">		Optional title for the signal. Defaults to `&quot;Audio Signal&quot;`.</span>
+<span class="sd">		The starting time of the signal in seconds (default is 0.0).</span>
+<span class="sd">	title : str, optional</span>
+<span class="sd">		An optional title used for labeling or plotting purposes.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
-
+	
+	
 	<span class="c1">#--------Meta Information----------</span>
-	<span class="n">_name</span> <span class="o">=</span> <span class="s2">&quot;Audio Signal&quot;</span>
+	<span class="n">_name</span> <span class="o">=</span> <span class="s2">&quot;Time Domain Signal&quot;</span>
 	<span class="n">_description</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 	<span class="n">_author_name</span> <span class="o">=</span> <span class="s2">&quot;Ankit Anand&quot;</span>
 	<span class="n">_author_email</span> <span class="o">=</span> <span class="s2">&quot;ankit0.anand0@gmail.com&quot;</span>
-	<span class="n">_created_at</span> <span class="o">=</span> <span class="s2">&quot;2025-07-04&quot;</span>
+	<span class="n">_created_at</span> <span class="o">=</span> <span class="s2">&quot;2025-07-09&quot;</span>
 	<span class="c1">#----------------------------------</span>
 	
 	<span class="nd">@validate_args_type</span><span class="p">()</span>
-	<span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sr</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">t0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-		
-		<span class="k">if</span> <span class="n">y</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="n">excp</span><span class="o">.</span><span class="n">InputValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`y` must have 1 dimension, not </span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
-			
-		<span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
-				<span class="k">raise</span> <span class="n">excp</span><span class="o">.</span><span class="n">InputValueError</span><span class="p">(</span><span class="s2">&quot;Length of `t` must match `y`.&quot;</span><span class="p">)</span>
-			<span class="k">if</span> <span class="n">sr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-				<span class="c1"># Estimate sr from t if not provided</span>
-				<span class="n">dt</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-				<span class="n">sr</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">dt</span><span class="p">)</span>  <span class="c1"># Round to avoid floating-point drift</span>
-			<span class="n">t0</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># Override t0 from first timestamp</span>
-			
-		<span class="k">elif</span> <span class="n">sr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="n">excp</span><span class="o">.</span><span class="n">InputValueError</span><span class="p">(</span><span class="s2">&quot;Either `sr` or `t` must be provided.&quot;</span><span class="p">)</span>
-			
+	<span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sr</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">t0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span> <span class="c1"># Instantiating `ModusaSignal` class</span>
+	
 		<span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">=</span> <span class="n">y</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_sr</span> <span class="o">=</span> <span class="n">sr</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_t0</span> <span class="o">=</span> <span class="n">t0</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
-			
+		<span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="c1"># This title will be used as plot title by default</span>
+	
+	
 	<span class="c1">#----------------------</span>
 	<span class="c1"># Properties</span>
 	<span class="c1">#----------------------</span>
+	
 	<span class="nd">@immutable_property</span><span class="p">(</span><span class="s2">&quot;Create a new object instead.&quot;</span><span class="p">)</span>
 	<span class="k">def</span><span class="w"> </span><span class="nf">y</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Audio data.&quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span>
 	
 	<span class="nd">@immutable_property</span><span class="p">(</span><span class="s2">&quot;Create a new object instead.&quot;</span><span class="p">)</span>
 	<span class="k">def</span><span class="w"> </span><span class="nf">sr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Sampling rate of the audio.&quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sr</span>
 	
 	<span class="nd">@immutable_property</span><span class="p">(</span><span class="s2">&quot;Create a new object instead.&quot;</span><span class="p">)</span>
 	<span class="k">def</span><span class="w"> </span><span class="nf">t0</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Start timestamp of the audio.&quot;&quot;&quot;</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_t0</span>
 	
 	<span class="nd">@immutable_property</span><span class="p">(</span><span class="s2">&quot;Create a new object instead.&quot;</span><span class="p">)</span>
 	<span class="k">def</span><span class="w"> </span><span class="nf">t</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Timestamp array of the audio.&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">))</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">sr</span> 
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">))</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">sr</span>
 	
-	<span class="nd">@immutable_property</span><span class="p">(</span><span class="s2">&quot;Mutation not allowed.&quot;</span><span class="p">)</span>
-	<span class="k">def</span><span class="w"> </span><span class="nf">Ts</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Sampling Period of the audio.&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">sr</span>
-
-	<span class="nd">@immutable_property</span><span class="p">(</span><span class="s2">&quot;Mutation not allowed.&quot;</span><span class="p">)</span>
-	<span class="k">def</span><span class="w"> </span><span class="nf">duration</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Duration of the audio.&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">sr</span>
-	
-	<span class="nd">@immutable_property</span><span class="p">(</span><span class="s2">&quot;Mutation not allowed.&quot;</span><span class="p">)</span>
-	<span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;Prints info about the audio.&quot;&quot;&quot;</span>
-		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
-		<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Title&#39;</span><span class="si">:</span><span class="s2">&lt;20</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-		<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Kind&#39;</span><span class="si">:</span><span class="s2">&lt;20</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-		<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Duration&#39;</span><span class="si">:</span><span class="s2">&lt;20</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> sec&quot;</span><span class="p">)</span>
-		<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Sampling Rate&#39;</span><span class="si">:</span><span class="s2">&lt;20</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="si">}</span><span class="s2"> Hz&quot;</span><span class="p">)</span>
-		<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Sampling Period&#39;</span><span class="si">:</span><span class="s2">&lt;20</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Ts</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span><span class="w"> </span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ms&quot;</span><span class="p">)</span>
-		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+	<span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">)</span>
 	
 	<span class="c1">#----------------------</span>
-	<span class="c1"># Methods</span>
+	<span class="c1"># Tools</span>
 	<span class="c1">#----------------------</span>
-	<span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">slice</span><span class="p">)):</span>
-			<span class="c1"># Basic slicing of 1D signals</span>
-			<span class="n">sliced_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-			<span class="n">sliced_axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>  <span class="c1"># assumes only 1 axis</span>
-			
-			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">sliced_data</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="n">sliced_axis</span><span class="p">,</span> <span class="p">))</span>
-		<span class="k">else</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-				<span class="sa">f</span><span class="s2">&quot;Indexing with type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="si">}</span><span class="s2"> is not supported. Use int or slice.&quot;</span>
-			<span class="p">)</span>
-			
-<div class="viewcode-block" id="AudioSignal.crop">
-<a class="viewcode-back" href="../../../signals/audio_signal.html#modusa.signals.AudioSignal.crop">[docs]</a>
-	<span class="nd">@validate_args_type</span><span class="p">()</span>
-	<span class="k">def</span><span class="w"> </span><span class="nf">crop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_min</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">t_max</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;AudioSignal&quot;</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Crop the audio signal to a time range [t_min, t_max].</span>
-
-<span class="sd">		.. code-block:: python</span>
-
-<span class="sd">			from modusa.generators import AudioSignalGenerator</span>
-<span class="sd">			audio_example = AudioSignalGenerator.generate_example()</span>
-<span class="sd">			cropped_audio = audio_example.crop(1.5, 2)</span>
-<span class="sd">	</span>
-<span class="sd">		Parameters</span>
-<span class="sd">		----------</span>
-<span class="sd">		t_min : float or None</span>
-<span class="sd">			Inclusive lower time bound. If None, no lower bound.</span>
-<span class="sd">		t_max : float or None</span>
-<span class="sd">			Exclusive upper time bound. If None, no upper bound.</span>
-<span class="sd">	</span>
-<span class="sd">		Returns</span>
-<span class="sd">		-------</span>
-<span class="sd">		AudioSignal</span>
-<span class="sd">			Cropped audio signal.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
-		<span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span>
-		
-		<span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
-		<span class="k">if</span> <span class="n">t_min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">mask</span> <span class="o">&amp;=</span> <span class="p">(</span><span class="n">t</span> <span class="o">&gt;=</span> <span class="n">t_min</span><span class="p">)</span>
-		<span class="k">if</span> <span class="n">t_max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">mask</span> <span class="o">&amp;=</span> <span class="p">(</span><span class="n">t</span> <span class="o">&lt;</span> <span class="n">t_max</span><span class="p">)</span>
-			
-		<span class="n">cropped_y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
-		<span class="n">new_t0</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">mask</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span>  <span class="c1"># fallback to original t0 if mask is empty</span>
-		
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">cropped_y</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="n">new_t0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span></div>
-
 	
-	
-<div class="viewcode-block" id="AudioSignal.plot">
-<a class="viewcode-back" href="../../../signals/audio_signal.html#modusa.signals.AudioSignal.plot">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">slice</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+		<span class="n">sliced_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+		<span class="n">t0_new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">start</span><span class="p">]</span> <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span>
+		<span class="k">return</span> <span class="n">TimeDomainSignal</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">sliced_y</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="n">t0_new</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+		
+<div class="viewcode-block" id="TimeDomainSignal.plot">
+<a class="viewcode-back" href="../../../signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.plot">[docs]</a>
 	<span class="nd">@validate_args_type</span><span class="p">()</span>
 	<span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span>
 		<span class="bp">self</span><span class="p">,</span>
@@ -471,47 +385,37 @@
 		<span class="n">highlight</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 	<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Plot the audio waveform using matplotlib.</span>
+<span class="sd">		Plot the time-domain signal.</span>
 <span class="sd">		</span>
 <span class="sd">		.. code-block:: python</span>
-<span class="sd">		</span>
-<span class="sd">			from modusa.generators import AudioSignalGenerator</span>
-<span class="sd">			audio_example = AudioSignalGenerator.generate_example()</span>
-<span class="sd">			audio_example.plot(color=&quot;orange&quot;, title=&quot;Example Audio&quot;)</span>
+
+<span class="sd">			signal.plot(color=&#39;g&#39;, marker=&#39;o&#39;, stem=True)</span>
 <span class="sd">		</span>
 <span class="sd">		Parameters</span>
 <span class="sd">		----------</span>
-<span class="sd">		scale_y : tuple of float, optional</span>
-<span class="sd">			Range to scale the y-axis data before plotting. Useful for normalization.</span>
+<span class="sd">		scale_y : tuple[float, float], optional</span>
+<span class="sd">			Min-max values to scale the y-axis data.</span>
 <span class="sd">		ax : matplotlib.axes.Axes, optional</span>
-<span class="sd">			Pre-existing axes to plot into. If None, a new figure and axes are created.</span>
-<span class="sd">		color : str, optional</span>
-<span class="sd">			Color of the waveform line. Default is `&quot;b&quot;` (blue).</span>
-<span class="sd">		marker : str or None, optional</span>
-<span class="sd">			Marker style for each point. Follows matplotlib marker syntax.</span>
-<span class="sd">		linestyle : str or None, optional</span>
-<span class="sd">			Line style for the waveform. Follows matplotlib linestyle syntax.</span>
-<span class="sd">		stem : bool, optional</span>
-<span class="sd">			If True, use a stem plot instead of a continuous line.</span>
-<span class="sd">		legend_loc : str or None, optional</span>
-<span class="sd">			If provided, adds a legend at the specified location (e.g., &quot;upper right&quot;).</span>
-<span class="sd">		title : str or None, optional</span>
-<span class="sd">			Plot title. Defaults to the signal’s title.</span>
-<span class="sd">		ylabel : str or None, optional</span>
-<span class="sd">			Label for the y-axis. Defaults to `&quot;Amplitude&quot;`.</span>
-<span class="sd">		xlabel : str or None, optional</span>
-<span class="sd">			Label for the x-axis. Defaults to `&quot;Time (sec)&quot;`.</span>
-<span class="sd">		ylim : tuple of float or None, optional</span>
-<span class="sd">			Limits for the y-axis.</span>
-<span class="sd">		xlim : tuple of float or None, optional</span>
-<span class="sd">			Limits for the x-axis.</span>
-<span class="sd">		highlight : list of tuple of float or None, optional</span>
-<span class="sd">			List of time intervals to highlight on the plot, each as (start, end).</span>
+<span class="sd">			Axes to plot on; if None, creates a new figure.</span>
+<span class="sd">		color : str, default=&#39;b&#39;</span>
+<span class="sd">			Line or stem color.</span>
+<span class="sd">		marker : str, optional</span>
+<span class="sd">			Marker style for each data point.</span>
+<span class="sd">		linestyle : str, optional</span>
+<span class="sd">			Line style to use if not using stem plot.</span>
+<span class="sd">		stem : bool, default=False</span>
+<span class="sd">			Whether to draw a stem plot instead of a line plot.</span>
+<span class="sd">		legend_loc : str, optional</span>
+<span class="sd">			If given, adds a legend at the specified location.</span>
 <span class="sd">		</span>
 <span class="sd">		Returns</span>
 <span class="sd">		-------</span>
-<span class="sd">		matplotlib.figure.Figure</span>
-<span class="sd">			The figure object containing the plot.</span>
+<span class="sd">		matplotlib.axes.Axes</span>
+<span class="sd">			The axes object containing the plot.</span>
+<span class="sd">		</span>
+<span class="sd">		Note</span>
+<span class="sd">		----</span>
+<span class="sd">		This is useful for visualizing 1D signals obtained from time slices of spectrograms.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		
 		<span class="kn">from</span><span class="w"> </span><span class="nn">modusa.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">Plotter</span>
@@ -523,147 +427,67 @@
 		<span class="k">return</span> <span class="n">fig</span></div>
 
 	
-<div class="viewcode-block" id="AudioSignal.play">
-<a class="viewcode-back" href="../../../signals/audio_signal.html#modusa.signals.AudioSignal.play">[docs]</a>
-	<span class="k">def</span><span class="w"> </span><span class="nf">play</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Play the audio signal inside a Jupyter Notebook.</span>
-<span class="sd">	</span>
-<span class="sd">		.. code-block:: python</span>
-<span class="sd">	</span>
-<span class="sd">			from modusa.generators import AudioSignalGenerator</span>
-<span class="sd">			audio = AudioSignalGenerator.generate_example()</span>
-<span class="sd">			audio.play(regions=[(0.0, 1.0), (2.0, 3.0)])</span>
-<span class="sd">	</span>
-<span class="sd">		Parameters</span>
-<span class="sd">		----------</span>
-<span class="sd">		regions : list of tuple of float, optional</span>
-<span class="sd">			List of (start_time, end_time) pairs in seconds specifying the regions to play.</span>
-<span class="sd">			If None, the entire signal is played.</span>
-<span class="sd">		title : str or None, optional</span>
-<span class="sd">			Optional title for the player interface. Defaults to the signal’s internal title.</span>
-<span class="sd">	</span>
-<span class="sd">		Returns</span>
-<span class="sd">		-------</span>
-<span class="sd">		IPython.display.Audio</span>
-<span class="sd">			An interactive audio player widget for Jupyter environments.</span>
-
-<span class="sd">		Note</span>
-<span class="sd">		----</span>
-<span class="sd">		- This method uses :class:`~modusa.io.AudioPlayer` to render an interactive audio player.</span>
-<span class="sd">		- Optionally, specific regions of the signal can be played back, each defined by a (start, end) time pair.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		
-		<span class="kn">from</span><span class="w"> </span><span class="nn">modusa.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">AudioPlayer</span>
-		<span class="n">audio_player</span> <span class="o">=</span> <span class="n">AudioPlayer</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">regions</span><span class="o">=</span><span class="n">regions</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
-		
-		<span class="k">return</span> <span class="n">audio_player</span></div>
-
-	
-<div class="viewcode-block" id="AudioSignal.to_spectrogram">
-<a class="viewcode-back" href="../../../signals/audio_signal.html#modusa.signals.AudioSignal.to_spectrogram">[docs]</a>
-	<span class="k">def</span><span class="w"> </span><span class="nf">to_spectrogram</span><span class="p">(</span>
-		<span class="bp">self</span><span class="p">,</span>
-		<span class="n">n_fft</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2048</span><span class="p">,</span>
-		<span class="n">hop_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span>
-		<span class="n">win_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-		<span class="n">window</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;hann&quot;</span>
-	<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Spectrogram&quot;</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Compute the Short-Time Fourier Transform (STFT) and return a Spectrogram object.</span>
-<span class="sd">		</span>
-<span class="sd">		Parameters</span>
-<span class="sd">		----------</span>
-<span class="sd">		n_fft : int</span>
-<span class="sd">			FFT size.</span>
-<span class="sd">		win_length : int or None</span>
-<span class="sd">			Window length. Defaults to `n_fft` if None.</span>
-<span class="sd">		hop_length : int</span>
-<span class="sd">			Hop length between frames.</span>
-<span class="sd">		window : str</span>
-<span class="sd">			Type of window function to use (e.g., &#39;hann&#39;, &#39;hamming&#39;).</span>
-<span class="sd">		</span>
-<span class="sd">		Returns</span>
-<span class="sd">		-------</span>
-<span class="sd">		Spectrogram</span>
-<span class="sd">			Spectrogram object containing S (complex STFT), t (time bins), and f (frequency bins).</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="kn">from</span><span class="w"> </span><span class="nn">modusa.signals.spectrogram</span><span class="w"> </span><span class="kn">import</span> <span class="n">Spectrogram</span>
-		<span class="kn">import</span><span class="w"> </span><span class="nn">librosa</span>
-		
-		<span class="n">S</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">stft</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">n_fft</span><span class="o">=</span><span class="n">n_fft</span><span class="p">,</span> <span class="n">win_length</span><span class="o">=</span><span class="n">win_length</span><span class="p">,</span> <span class="n">hop_length</span><span class="o">=</span><span class="n">hop_length</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="n">window</span><span class="p">)</span>
-		<span class="n">f</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">fft_frequencies</span><span class="p">(</span><span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">n_fft</span><span class="o">=</span><span class="n">n_fft</span><span class="p">)</span>
-		<span class="n">t</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">frames_to_time</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">hop_length</span><span class="o">=</span><span class="n">hop_length</span><span class="p">)</span>
-		<span class="n">t</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span>
-		<span class="n">spec</span> <span class="o">=</span> <span class="n">Spectrogram</span><span class="p">(</span><span class="n">S</span><span class="o">=</span><span class="n">S</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">t</span><span class="p">)</span>
-		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">:</span> <span class="c1"># Means title of the audio was reset so we pass that info to spec</span>
-			<span class="n">spec</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span>
-			
-		<span class="k">return</span> <span class="n">spec</span></div>
-
-	
-	
 	<span class="c1">#----------------------------</span>
 	<span class="c1"># Math ops</span>
 	<span class="c1">#----------------------------</span>
 	
 	<span class="k">def</span><span class="w"> </span><span class="nf">__array__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-		<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_S</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
 	
 	<span class="k">def</span><span class="w"> </span><span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 		<span class="n">other_data</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">y</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span> <span class="k">else</span> <span class="n">other</span>
 		<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">other_data</span><span class="p">)</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
-
+	
 	<span class="k">def</span><span class="w"> </span><span class="fm">__radd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 		<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
-
+	
 	<span class="k">def</span><span class="w"> </span><span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 		<span class="n">other_data</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">y</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span> <span class="k">else</span> <span class="n">other</span>
 		<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">other_data</span><span class="p">)</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
-
+	
 	<span class="k">def</span><span class="w"> </span><span class="fm">__rsub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 		<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
-
+	
 	<span class="k">def</span><span class="w"> </span><span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 		<span class="n">other_data</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">y</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span> <span class="k">else</span> <span class="n">other</span>
 		<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">other_data</span><span class="p">)</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
-
+	
 	<span class="k">def</span><span class="w"> </span><span class="fm">__rmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 		<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
-
+	
 	<span class="k">def</span><span class="w"> </span><span class="fm">__truediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 		<span class="n">other_data</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">y</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span> <span class="k">else</span> <span class="n">other</span>
 		<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">true_divide</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">other_data</span><span class="p">)</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
-
+	
 	<span class="k">def</span><span class="w"> </span><span class="fm">__rtruediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 		<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">true_divide</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
-
+	
 	<span class="k">def</span><span class="w"> </span><span class="fm">__floordiv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-		<span class="n">other_data</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">_y</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span> <span class="k">else</span> <span class="n">other</span>
+		<span class="n">other_data</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">y</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span> <span class="k">else</span> <span class="n">other</span>
 		<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor_divide</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">other_data</span><span class="p">)</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
-
+	
 	<span class="k">def</span><span class="w"> </span><span class="fm">__rfloordiv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 		<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor_divide</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
-
+	
 	<span class="k">def</span><span class="w"> </span><span class="fm">__pow__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 		<span class="n">other_data</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">y</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span> <span class="k">else</span> <span class="n">other</span>
 		<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">other_data</span><span class="p">)</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
-
+	
 	<span class="k">def</span><span class="w"> </span><span class="fm">__rpow__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 		<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
-
+	
 	<span class="k">def</span><span class="w"> </span><span class="fm">__abs__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
@@ -672,104 +496,104 @@
 	<span class="c1">#--------------------------</span>
 	<span class="c1"># Other signal ops</span>
 	<span class="c1">#--------------------------</span>
-<div class="viewcode-block" id="AudioSignal.sin">
-<a class="viewcode-back" href="../../../signals/audio_signal.html#modusa.signals.AudioSignal.sin">[docs]</a>
+<div class="viewcode-block" id="TimeDomainSignal.sin">
+<a class="viewcode-back" href="../../../signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.sin">[docs]</a>
 	<span class="k">def</span><span class="w"> </span><span class="nf">sin</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Compute the element-wise sine of the signal data.&quot;&quot;&quot;</span>
 		<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="AudioSignal.cos">
-<a class="viewcode-back" href="../../../signals/audio_signal.html#modusa.signals.AudioSignal.cos">[docs]</a>
+	
+<div class="viewcode-block" id="TimeDomainSignal.cos">
+<a class="viewcode-back" href="../../../signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.cos">[docs]</a>
 	<span class="k">def</span><span class="w"> </span><span class="nf">cos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Compute the element-wise cosine of the signal data.&quot;&quot;&quot;</span>
 		<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="AudioSignal.exp">
-<a class="viewcode-back" href="../../../signals/audio_signal.html#modusa.signals.AudioSignal.exp">[docs]</a>
+	
+<div class="viewcode-block" id="TimeDomainSignal.exp">
+<a class="viewcode-back" href="../../../signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.exp">[docs]</a>
 	<span class="k">def</span><span class="w"> </span><span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Compute the element-wise exponential of the signal data.&quot;&quot;&quot;</span>
 		<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="AudioSignal.tanh">
-<a class="viewcode-back" href="../../../signals/audio_signal.html#modusa.signals.AudioSignal.tanh">[docs]</a>
+	
+<div class="viewcode-block" id="TimeDomainSignal.tanh">
+<a class="viewcode-back" href="../../../signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.tanh">[docs]</a>
 	<span class="k">def</span><span class="w"> </span><span class="nf">tanh</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Compute the element-wise hyperbolic tangent of the signal data.&quot;&quot;&quot;</span>
 		<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="AudioSignal.log">
-<a class="viewcode-back" href="../../../signals/audio_signal.html#modusa.signals.AudioSignal.log">[docs]</a>
+	
+<div class="viewcode-block" id="TimeDomainSignal.log">
+<a class="viewcode-back" href="../../../signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.log">[docs]</a>
 	<span class="k">def</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Compute the element-wise natural logarithm of the signal data.&quot;&quot;&quot;</span>
 		<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="AudioSignal.log1p">
-<a class="viewcode-back" href="../../../signals/audio_signal.html#modusa.signals.AudioSignal.log1p">[docs]</a>
+	
+<div class="viewcode-block" id="TimeDomainSignal.log1p">
+<a class="viewcode-back" href="../../../signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.log1p">[docs]</a>
 	<span class="k">def</span><span class="w"> </span><span class="nf">log1p</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Compute the element-wise natural logarithm of (1 + signal data).&quot;&quot;&quot;</span>
 		<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="AudioSignal.log10">
-<a class="viewcode-back" href="../../../signals/audio_signal.html#modusa.signals.AudioSignal.log10">[docs]</a>
+	
+<div class="viewcode-block" id="TimeDomainSignal.log10">
+<a class="viewcode-back" href="../../../signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.log10">[docs]</a>
 	<span class="k">def</span><span class="w"> </span><span class="nf">log10</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Compute the element-wise base-10 logarithm of the signal data.&quot;&quot;&quot;</span>
 		<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="AudioSignal.log2">
-<a class="viewcode-back" href="../../../signals/audio_signal.html#modusa.signals.AudioSignal.log2">[docs]</a>
+	
+<div class="viewcode-block" id="TimeDomainSignal.log2">
+<a class="viewcode-back" href="../../../signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.log2">[docs]</a>
 	<span class="k">def</span><span class="w"> </span><span class="nf">log2</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Compute the element-wise base-2 logarithm of the signal data.&quot;&quot;&quot;</span>
 		<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span></div>
 
 	
-
+	
 	<span class="c1">#--------------------------</span>
 	<span class="c1"># Aggregation signal ops</span>
 	<span class="c1">#--------------------------</span>
-<div class="viewcode-block" id="AudioSignal.mean">
-<a class="viewcode-back" href="../../../signals/audio_signal.html#modusa.signals.AudioSignal.mean">[docs]</a>
+<div class="viewcode-block" id="TimeDomainSignal.mean">
+<a class="viewcode-back" href="../../../signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.mean">[docs]</a>
 	<span class="k">def</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Compute the mean of the signal data.&quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">))</span></div>
 
 	
-<div class="viewcode-block" id="AudioSignal.std">
-<a class="viewcode-back" href="../../../signals/audio_signal.html#modusa.signals.AudioSignal.std">[docs]</a>
+<div class="viewcode-block" id="TimeDomainSignal.std">
+<a class="viewcode-back" href="../../../signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.std">[docs]</a>
 	<span class="k">def</span><span class="w"> </span><span class="nf">std</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Compute the standard deviation of the signal data.&quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">))</span></div>
 
 	
-<div class="viewcode-block" id="AudioSignal.min">
-<a class="viewcode-back" href="../../../signals/audio_signal.html#modusa.signals.AudioSignal.min">[docs]</a>
+<div class="viewcode-block" id="TimeDomainSignal.min">
+<a class="viewcode-back" href="../../../signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.min">[docs]</a>
 	<span class="k">def</span><span class="w"> </span><span class="nf">min</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Compute the minimum value in the signal data.&quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">))</span></div>
 
 	
-<div class="viewcode-block" id="AudioSignal.max">
-<a class="viewcode-back" href="../../../signals/audio_signal.html#modusa.signals.AudioSignal.max">[docs]</a>
+<div class="viewcode-block" id="TimeDomainSignal.max">
+<a class="viewcode-back" href="../../../signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.max">[docs]</a>
 	<span class="k">def</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Compute the maximum value in the signal data.&quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">))</span></div>
 
 	
-<div class="viewcode-block" id="AudioSignal.sum">
-<a class="viewcode-back" href="../../../signals/audio_signal.html#modusa.signals.AudioSignal.sum">[docs]</a>
+<div class="viewcode-block" id="TimeDomainSignal.sum">
+<a class="viewcode-back" href="../../../signals/time_domain_signal.html#modusa.signals.TimeDomainSignal.sum">[docs]</a>
 	<span class="k">def</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Compute the sum of the signal data.&quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">))</span></div>
