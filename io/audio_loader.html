@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="AudioConverter" href="audio_converter.html" /><link rel="prev" title="ModusaIO" href="base.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Tools" href="../tools/index.html" /><link rel="prev" title="ModusaIO" href="base.html" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2024.08.06 -->
         <title>AudioLoader - modusa 0.1.0 documentation</title>
@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=3e3f2cfa" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=3357cc09" />
     
     
 
@@ -207,20 +207,21 @@
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../examples/index.html">Examples</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../examples/ex1.html">Loading Audio Signal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/ex2.html">Performing mathematical operations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/ex3.html">Plotting signals</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/ex4.html">Computing spectrogram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/ex1.html#Generating-Audio-Waveforms">Generating Audio Waveforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/ex2.html">Plotting signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/ex3.html">Computing spectrogram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/ex4.html">Experimenting with waveforms</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../signals/index.html">Signals</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Signals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../signals/base.html">Base Signal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../signals/audio_signal.html">Audio Signal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../signals/time_domain_signal.html">Time Domain Signal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../signals/frequency_domain_signal.html">Frequency Domain Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../signals/base.html">ModusaSignal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../signals/audio_signal.html">AudioSignal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../signals/frequency_domain_signal.html">FrequencyDomainSignal</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../signals/spectrogram.html">Spectrogram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../signals/time_domain_signal.html">TimeDomainSignal</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../plugins/index.html">Plugins</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Plugins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -229,20 +230,22 @@
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../generators/index.html">Generators</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Generators</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../generators/base.html">ModusaGenerator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../generators/audio_waveforms.html">BasicWaveformGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generators/audio_waveforms.html">AudioWaveformGenerator</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">IO</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of IO</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="base.html">ModusaIO</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">AudioLoader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="audio_converter.html">AudioConverter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="audio_player.html">Audio Player</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plotter.html">Plotter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="youtube_downloader.html">YoutubeDownloader</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../engines/index.html">Engines</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Engines</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../engines/base.html">ModusaEngine</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tools/index.html">Tools</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Tools</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tools/base.html">ModusaTool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/audio_converter.html">AudioConverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/audio_player.html">AudioPlayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/fourier_tranform.html">FourierTransform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/math_ops.html">MathOps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/plotter.html">Plotter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/youtube_downloader.html">YoutubeDownloader</a></li>
 </ul>
 </li>
 </ul>
@@ -288,21 +291,21 @@
           <section id="audioloader">
 <h1>AudioLoader<a class="headerlink" href="#audioloader" title="Link to this heading">¶</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="modusa.io.AudioLoader">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modusa.io.</span></span><span class="sig-name descname"><span class="pre">AudioLoader</span></span><a class="reference internal" href="../_modules/modusa/io/audio_loader.html#AudioLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.io.AudioLoader" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="base.html#modusa.io.ModusaIO" title="modusa.io.base.ModusaIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModusaIO</span></code></a></p>
+<dt class="sig sig-object py" id="modusa.io.audio_loader.AudioLoader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modusa.io.audio_loader.</span></span><span class="sig-name descname"><span class="pre">AudioLoader</span></span><a class="reference internal" href="../_modules/modusa/io/audio_loader.html#AudioLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.io.audio_loader.AudioLoader" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="base.html#modusa.io.base.ModusaIO" title="modusa.io.base.ModusaIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModusaIO</span></code></a></p>
 <p>Loads audio from various sources like filepath, YouTube, etc.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul class="simple">
-<li><p>All <cite>from_</cite> methods return <a class="reference internal" href="../signals/audio_signal.html#modusa.signals.AudioSignal" title="modusa.signals.AudioSignal"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioSignal</span></code></a> instance.</p></li>
+<li><p>All <cite>from_</cite> methods return <code class="xref py py-class docutils literal notranslate"><span class="pre">AudioSignal</span></code> instance.</p></li>
 </ul>
 </div>
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.io.AudioLoader.from_youtube">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_youtube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../signals/audio_signal.html#modusa.signals.AudioSignal" title="modusa.signals.audio_signal.AudioSignal"><span class="pre">AudioSignal</span></a></span></span><a class="reference internal" href="../_modules/modusa/io/audio_loader.html#AudioLoader.from_youtube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.io.AudioLoader.from_youtube" title="Link to this definition">¶</a></dt>
-<dd><p>Loads audio from youtube url using <a class="reference internal" href="youtube_downloader.html#modusa.io.YoutubeDownloader" title="modusa.io.YoutubeDownloader"><code class="xref py py-class docutils literal notranslate"><span class="pre">YoutubeDownloader</span></code></a>,
-<a class="reference internal" href="audio_converter.html#modusa.io.AudioConverter" title="modusa.io.AudioConverter"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioConverter</span></code></a> and <cite>librosa</cite>.</p>
+<dt class="sig sig-object py" id="modusa.io.audio_loader.AudioLoader.from_youtube">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_youtube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../signals/audio_signal.html#modusa.signals.audio_signal.AudioSignal" title="modusa.signals.audio_signal.AudioSignal"><span class="pre">AudioSignal</span></a></span></span><a class="reference internal" href="../_modules/modusa/io/audio_loader.html#AudioLoader.from_youtube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.io.audio_loader.AudioLoader.from_youtube" title="Link to this definition">¶</a></dt>
+<dd><p>Loads audio from youtube url using <code class="xref py py-class docutils literal notranslate"><span class="pre">YoutubeDownloader</span></code>,
+<code class="xref py py-class docutils literal notranslate"><span class="pre">AudioConverter</span></code> and <cite>librosa</cite>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">modusa.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">AudioSignalLoader</span>
 
 <span class="c1"># From youtube</span>
@@ -323,14 +326,14 @@
 <dd class="field-even"><p><cite>Audio signal</cite> instance with loaded audio content from YouTube.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="../signals/audio_signal.html#modusa.signals.AudioSignal" title="modusa.signals.AudioSignal">AudioSignal</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="../signals/audio_signal.html#modusa.signals.audio_signal.AudioSignal" title="modusa.signals.audio_signal.AudioSignal">AudioSignal</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.io.AudioLoader.from_fp">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_fp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../signals/audio_signal.html#modusa.signals.AudioSignal" title="modusa.signals.audio_signal.AudioSignal"><span class="pre">AudioSignal</span></a></span></span><a class="reference internal" href="../_modules/modusa/io/audio_loader.html#AudioLoader.from_fp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.io.AudioLoader.from_fp" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.io.audio_loader.AudioLoader.from_fp">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_fp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../signals/audio_signal.html#modusa.signals.audio_signal.AudioSignal" title="modusa.signals.audio_signal.AudioSignal"><span class="pre">AudioSignal</span></a></span></span><a class="reference internal" href="../_modules/modusa/io/audio_loader.html#AudioLoader.from_fp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.io.audio_loader.AudioLoader.from_fp" title="Link to this definition">¶</a></dt>
 <dd><p>Loads audio from a filepath using <cite>librosa</cite>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">modusa.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">AudioSignalLoader</span>
 
@@ -352,44 +355,14 @@
 <dd class="field-even"><p><cite>Audio signal</cite> instance with loaded audio content from filepath.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="../signals/audio_signal.html#modusa.signals.AudioSignal" title="modusa.signals.AudioSignal">AudioSignal</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="../signals/audio_signal.html#modusa.signals.audio_signal.AudioSignal" title="modusa.signals.audio_signal.AudioSignal">AudioSignal</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.io.AudioLoader.from_array">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../signals/audio_signal.html#modusa.signals.AudioSignal" title="modusa.signals.audio_signal.AudioSignal"><span class="pre">AudioSignal</span></a></span></span><a class="reference internal" href="../_modules/modusa/io/audio_loader.html#AudioLoader.from_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.io.AudioLoader.from_array" title="Link to this definition">¶</a></dt>
-<dd><p>Loads audio from numpy arrays.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">modusa.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">AudioSignalLoader</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-<span class="c1"># From numpy array</span>
-<span class="n">audio_signal</span> <span class="o">=</span> <span class="n">AudioSignalLoader</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span>
-        <span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">100</span><span class="p">,</span> <span class="p">)),</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># Automatically creates time index (integer)</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>y</strong> (<em>np.ndarray</em>) – Data of the audio signal.</p></li>
-<li><p><strong>t</strong> (<em>np.ndarray</em><em> | </em><em>None</em>) – Corresponding time stamps of the audio signal.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><cite>Audio signal</cite> instance with loaded audio content from arrays.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="../signals/audio_signal.html#modusa.signals.AudioSignal" title="modusa.signals.AudioSignal">AudioSignal</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modusa.io.AudioLoader.from_array_with_sr">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_array_with_sr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../signals/audio_signal.html#modusa.signals.AudioSignal" title="modusa.signals.audio_signal.AudioSignal"><span class="pre">AudioSignal</span></a></span></span><a class="reference internal" href="../_modules/modusa/io/audio_loader.html#AudioLoader.from_array_with_sr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.io.AudioLoader.from_array_with_sr" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.io.audio_loader.AudioLoader.from_array">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../signals/audio_signal.html#modusa.signals.audio_signal.AudioSignal" title="modusa.signals.audio_signal.AudioSignal"><span class="pre">AudioSignal</span></a></span></span><a class="reference internal" href="../_modules/modusa/io/audio_loader.html#AudioLoader.from_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.io.audio_loader.AudioLoader.from_array" title="Link to this definition">¶</a></dt>
 <dd><p>Loads audio with a given sampling rate.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">modusa.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">AudioSignalLoader</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -412,14 +385,14 @@
 <dd class="field-even"><p><cite>Audio signal</cite> instance with loaded audio content from sampling rate.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="../signals/audio_signal.html#modusa.signals.AudioSignal" title="modusa.signals.AudioSignal">AudioSignal</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="../signals/audio_signal.html#modusa.signals.audio_signal.AudioSignal" title="modusa.signals.audio_signal.AudioSignal">AudioSignal</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.io.AudioLoader.from_list">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../signals/audio_signal.html#modusa.signals.AudioSignal" title="modusa.signals.audio_signal.AudioSignal"><span class="pre">AudioSignal</span></a></span></span><a class="reference internal" href="../_modules/modusa/io/audio_loader.html#AudioLoader.from_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.io.AudioLoader.from_list" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.io.audio_loader.AudioLoader.from_list">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../signals/audio_signal.html#modusa.signals.audio_signal.AudioSignal" title="modusa.signals.audio_signal.AudioSignal"><span class="pre">AudioSignal</span></a></span></span><a class="reference internal" href="../_modules/modusa/io/audio_loader.html#AudioLoader.from_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.io.audio_loader.AudioLoader.from_list" title="Link to this definition">¶</a></dt>
 <dd><p>Loads <cite>AudioSignal</cite> instance from python list.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">modusa.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">AudioSignalLoader</span>
 
@@ -441,7 +414,7 @@
 <dd class="field-even"><p><cite>Audio signal</cite> instance with loaded audio content from python list.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="../signals/audio_signal.html#modusa.signals.AudioSignal" title="modusa.signals.AudioSignal">AudioSignal</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="../signals/audio_signal.html#modusa.signals.audio_signal.AudioSignal" title="modusa.signals.audio_signal.AudioSignal">AudioSignal</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -455,12 +428,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="audio_converter.html">
+          <a class="next-page" href="../tools/index.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">AudioConverter</div>
+                <div class="title">Tools</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -506,12 +479,11 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">AudioLoader</a><ul>
-<li><a class="reference internal" href="#modusa.io.AudioLoader"><code class="docutils literal notranslate"><span class="pre">AudioLoader</span></code></a><ul>
-<li><a class="reference internal" href="#modusa.io.AudioLoader.from_youtube"><code class="docutils literal notranslate"><span class="pre">AudioLoader.from_youtube()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.io.AudioLoader.from_fp"><code class="docutils literal notranslate"><span class="pre">AudioLoader.from_fp()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.io.AudioLoader.from_array"><code class="docutils literal notranslate"><span class="pre">AudioLoader.from_array()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.io.AudioLoader.from_array_with_sr"><code class="docutils literal notranslate"><span class="pre">AudioLoader.from_array_with_sr()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.io.AudioLoader.from_list"><code class="docutils literal notranslate"><span class="pre">AudioLoader.from_list()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.io.audio_loader.AudioLoader"><code class="docutils literal notranslate"><span class="pre">AudioLoader</span></code></a><ul>
+<li><a class="reference internal" href="#modusa.io.audio_loader.AudioLoader.from_youtube"><code class="docutils literal notranslate"><span class="pre">AudioLoader.from_youtube()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.io.audio_loader.AudioLoader.from_fp"><code class="docutils literal notranslate"><span class="pre">AudioLoader.from_fp()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.io.audio_loader.AudioLoader.from_array"><code class="docutils literal notranslate"><span class="pre">AudioLoader.from_array()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.io.audio_loader.AudioLoader.from_list"><code class="docutils literal notranslate"><span class="pre">AudioLoader.from_list()</span></code></a></li>
 </ul>
 </li>
 </ul>

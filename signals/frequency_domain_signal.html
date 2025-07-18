@@ -3,15 +3,15 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Spectrogram" href="spectrogram.html" /><link rel="prev" title="Time Domain Signal" href="time_domain_signal.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Spectrogram" href="spectrogram.html" /><link rel="prev" title="AudioSignal" href="audio_signal.html" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2024.08.06 -->
-        <title>Frequency Domain Signal - modusa 0.1.0 documentation</title>
+        <title>FrequencyDomainSignal - modusa 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=3e3f2cfa" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=3357cc09" />
     
     
 
@@ -207,20 +207,21 @@
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../examples/index.html">Examples</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../examples/ex1.html">Loading Audio Signal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/ex2.html">Performing mathematical operations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/ex3.html">Plotting signals</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/ex4.html">Computing spectrogram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/ex1.html#Generating-Audio-Waveforms">Generating Audio Waveforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/ex2.html">Plotting signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/ex3.html">Computing spectrogram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/ex4.html">Experimenting with waveforms</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Signals</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Signals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="base.html">Base Signal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="audio_signal.html">Audio Signal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="time_domain_signal.html">Time Domain Signal</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Frequency Domain Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base.html">ModusaSignal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_signal.html">AudioSignal</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">FrequencyDomainSignal</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spectrogram.html">Spectrogram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_domain_signal.html">TimeDomainSignal</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../plugins/index.html">Plugins</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Plugins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -229,20 +230,22 @@
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../generators/index.html">Generators</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Generators</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../generators/base.html">ModusaGenerator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../generators/audio_waveforms.html">BasicWaveformGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generators/audio_waveforms.html">AudioWaveformGenerator</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../io/index.html">IO</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of IO</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../io/base.html">ModusaIO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../io/audio_loader.html">AudioLoader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../io/audio_converter.html">AudioConverter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../io/audio_player.html">Audio Player</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../io/plotter.html">Plotter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../io/youtube_downloader.html">YoutubeDownloader</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../engines/index.html">Engines</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Engines</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../engines/base.html">ModusaEngine</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tools/index.html">Tools</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Tools</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tools/base.html">ModusaTool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/audio_converter.html">AudioConverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/audio_player.html">AudioPlayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/fourier_tranform.html">FourierTransform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/math_ops.html">MathOps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/plotter.html">Plotter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/youtube_downloader.html">YoutubeDownloader</a></li>
 </ul>
 </li>
 </ul>
@@ -285,22 +288,18 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="frequency-domain-signal">
-<h1>Frequency Domain Signal<a class="headerlink" href="#frequency-domain-signal" title="Link to this heading">¶</a></h1>
+          <section id="frequencydomainsignal">
+<h1>FrequencyDomainSignal<a class="headerlink" href="#frequencydomainsignal" title="Link to this heading">¶</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="modusa.signals.FrequencyDomainSignal">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modusa.signals.</span></span><span class="sig-name descname"><span class="pre">FrequencyDomainSignal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.FrequencyDomainSignal" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="base.html#modusa.signals.ModusaSignal" title="modusa.signals.base.ModusaSignal"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModusaSignal</span></code></a></p>
+<dt class="sig sig-object py" id="modusa.signals.frequency_domain_signal.FrequencyDomainSignal">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modusa.signals.frequency_domain_signal.</span></span><span class="sig-name descname"><span class="pre">FrequencyDomainSignal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="base.html#modusa.signals.base.ModusaSignal" title="modusa.signals.base.ModusaSignal"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModusaSignal</span></code></a></p>
 <p>Represents a 1D signal in the frequency domain.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul class="simple">
-<li><p>The class is not intended to be instantiated directly</p></li>
+<li><p>The class is not intended to be instantiated directly.</p></li>
 </ul>
-<p>This class stores the Complex spectrum of a signal
-along with its corresponding frequency axis. It optionally tracks the time
-origin (<cite>t0</cite>) of the spectral slice, which is useful when working with
-time-localized spectral data (e.g., from a spectrogram or short-time Fourier transform).</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -313,140 +312,158 @@ time-localized spectral data (e.g., from a spectrogram or short-time Fourier tra
 </dd>
 </dl>
 <dl class="py property">
-<dt class="sig sig-object py" id="modusa.signals.FrequencyDomainSignal.spectrum">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">spectrum</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#modusa.signals.FrequencyDomainSignal.spectrum" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.frequency_domain_signal.FrequencyDomainSignal.spectrum">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">spectrum</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.spectrum" title="Link to this definition">¶</a></dt>
 <dd><p>Complex valued spectrum data.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="modusa.signals.FrequencyDomainSignal.f">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">f</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#modusa.signals.FrequencyDomainSignal.f" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.frequency_domain_signal.FrequencyDomainSignal.f">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">f</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.f" title="Link to this definition">¶</a></dt>
 <dd><p>frequency array of the spectrum.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="modusa.signals.FrequencyDomainSignal.t0">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">t0</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#modusa.signals.FrequencyDomainSignal.t0" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.frequency_domain_signal.FrequencyDomainSignal.t0">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">t0</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.t0" title="Link to this definition">¶</a></dt>
 <dd><p>Time origin (in seconds) of this spectral slice, e.g., from a spectrogram frame.</p>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="modusa.signals.frequency_domain_signal.FrequencyDomainSignal.ndim">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ndim</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.ndim" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="modusa.signals.frequency_domain_signal.FrequencyDomainSignal.shape">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.shape" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.FrequencyDomainSignal.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Axes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'b'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">marker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linestyle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stem</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend_loc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Amplitude'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Freq</span> <span class="pre">(Hz)'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">highlight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Figure</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.FrequencyDomainSignal.plot" title="Link to this definition">¶</a></dt>
-<dd><p>Plot the frequency-domain signal as a line or stem plot.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">spectrum</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">stem</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;FFT Frame&quot;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5000</span><span class="p">))</span>
+<dt class="sig sig-object py" id="modusa.signals.frequency_domain_signal.FrequencyDomainSignal.print_info">
+<span class="sig-name descname"><span class="pre">print_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.print_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.print_info" title="Link to this definition">¶</a></dt>
+<dd><p>Prints info about the audio.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modusa.signals.frequency_domain_signal.FrequencyDomainSignal.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Axes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'k-'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Strength'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Frequency</span> <span class="pre">(Hz)'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">highlight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vlines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hlines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_grid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stem</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend_loc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Figure</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.plot" title="Link to this definition">¶</a></dt>
+<dd><p>Plot the audio waveform using matplotlib.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">modusa.generators</span><span class="w"> </span><span class="kn">import</span> <span class="n">AudioSignalGenerator</span>
+<span class="n">audio_example</span> <span class="o">=</span> <span class="n">AudioSignalGenerator</span><span class="o">.</span><span class="n">generate_example</span><span class="p">()</span>
+<span class="n">audio_example</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Example Audio&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>scale_y</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>, </em><em>optional</em>) – Range to scale the spectrum values before plotting (min, max).</p></li>
-<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em><em>, </em><em>optional</em>) – Axis to plot on. If None, a new figure and axis are created.</p></li>
-<li><p><strong>color</strong> (<em>str</em><em>, </em><em>default=&quot;b&quot;</em>) – Color of the line or stem.</p></li>
-<li><p><strong>marker</strong> (<em>str</em><em>, </em><em>optional</em>) – Marker style for points (ignored if stem=True).</p></li>
-<li><p><strong>linestyle</strong> (<em>str</em><em>, </em><em>optional</em>) – Line style for the plot (ignored if stem=True).</p></li>
-<li><p><strong>stem</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to use a stem plot instead of a line plot.</p></li>
-<li><p><strong>legend_loc</strong> (<em>str</em><em>, </em><em>optional</em>) – Legend location (e.g., ‘upper right’). If None, no legend is shown.</p></li>
-<li><p><strong>title</strong> (<em>str</em><em>, </em><em>optional</em>) – Title of the plot. Defaults to signal title.</p></li>
-<li><p><strong>ylabel</strong> (<em>str</em><em>, </em><em>default=&quot;Amplitude&quot;</em>) – Label for the y-axis.</p></li>
-<li><p><strong>xlabel</strong> (<em>str</em><em>, </em><em>default=&quot;Freq</em><em> (</em><em>Hz</em><em>)</em><em>&quot;</em>) – Label for the x-axis.</p></li>
-<li><p><strong>ylim</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>, </em><em>optional</em>) – Limits for the y-axis.</p></li>
-<li><p><strong>xlim</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>, </em><em>optional</em>) – Limits for the x-axis.</p></li>
-<li><p><strong>highlight</strong> (<em>list</em><em>[</em><em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Regions to highlight on the frequency axis as shaded spans.</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em><em> | </em><em>None</em>) – Pre-existing axes to plot into. If None, a new figure and axes are created.</p></li>
+<li><p><strong>fmt</strong> (<em>str</em><em> | </em><em>None</em>) – Format of the plot as per matplotlib standards (Eg. “k-” or “blue–o)</p></li>
+<li><p><strong>title</strong> (<em>str</em><em> | </em><em>None</em>) – Plot title. Defaults to the signal’s title.</p></li>
+<li><p><strong>label</strong> (<em>str</em><em> | </em><em>None</em>) – Label for the plot, shown as legend.</p></li>
+<li><p><strong>ylabel</strong> (<em>str</em><em> | </em><em>None</em>) – Label for the y-axis. Defaults to <cite>“Strength”</cite>.</p></li>
+<li><p><strong>xlabel</strong> (<em>str</em><em> | </em><em>None</em>) – Label for the x-axis. Defaults to <cite>“Frequency (Hz)”</cite>.</p></li>
+<li><p><strong>ylim</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>] </em><em>| </em><em>None</em>) – Limits for the y-axis.</p></li>
+<li><p><strong>xlim</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>highlight</strong> (<em>list</em><em>[</em><em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>] </em><em>| </em><em>None</em>) – List of frequency intervals to highlight on the plot, each as (start, end).</p></li>
+<li><p><strong>vlines</strong> (<em>list</em><em>[</em><em>float</em><em>]</em>) – List of x values to draw vertical lines. (Eg. [10, 13.5])</p></li>
+<li><p><strong>hlines</strong> (<em>list</em><em>[</em><em>float</em><em>]</em>) – List of y values to draw horizontal lines. (Eg. [10, 13.5])</p></li>
+<li><p><strong>show_grid</strong> (<em>bool</em>) – If true, shows grid.</p></li>
+<li><p><strong>stem</strong> (<em>bool</em>) – If True, use a stem plot instead of a continuous line. Autorejects if signal is too large.</p></li>
+<li><p><strong>legend_loc</strong> (<em>str</em><em> | </em><em>None</em>) – If provided, adds a legend at the specified location (e.g., “upper right” or “best”).
+Limits for the x-axis.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The figure containing the plotted signal.</p>
+<dd class="field-even"><p>The figure object containing the plot or None in case an axis is provided.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>matplotlib.figure.Figure</p>
+<dd class="field-odd"><p>matplotlib.figure.Figure | None</p>
 </dd>
 </dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<ul class="simple">
-<li><p>If <cite>ax</cite> is provided, the plot is drawn on it; otherwise, a new figure is created.</p></li>
-<li><p><cite>highlight</cite> can be used to emphasize frequency bands (e.g., formants, harmonics).</p></li>
-<li><p>Use <cite>scale_y</cite> to clip or normalize extreme values before plotting.</p></li>
-</ul>
-</div>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.FrequencyDomainSignal.sin">
-<span class="sig-name descname"><span class="pre">sin</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.sin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.FrequencyDomainSignal.sin" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.frequency_domain_signal.FrequencyDomainSignal.abs">
+<span class="sig-name descname"><span class="pre">abs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.abs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.abs" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the element-wise abs of the signal data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modusa.signals.frequency_domain_signal.FrequencyDomainSignal.sin">
+<span class="sig-name descname"><span class="pre">sin</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.sin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.sin" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the element-wise sine of the signal data.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.FrequencyDomainSignal.cos">
-<span class="sig-name descname"><span class="pre">cos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.cos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.FrequencyDomainSignal.cos" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.frequency_domain_signal.FrequencyDomainSignal.cos">
+<span class="sig-name descname"><span class="pre">cos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.cos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.cos" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the element-wise cosine of the signal data.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.FrequencyDomainSignal.exp">
-<span class="sig-name descname"><span class="pre">exp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.FrequencyDomainSignal.exp" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.frequency_domain_signal.FrequencyDomainSignal.exp">
+<span class="sig-name descname"><span class="pre">exp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.exp" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the element-wise exponential of the signal data.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.FrequencyDomainSignal.tanh">
-<span class="sig-name descname"><span class="pre">tanh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.tanh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.FrequencyDomainSignal.tanh" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.frequency_domain_signal.FrequencyDomainSignal.tanh">
+<span class="sig-name descname"><span class="pre">tanh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.tanh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.tanh" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the element-wise hyperbolic tangent of the signal data.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.FrequencyDomainSignal.log">
-<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.FrequencyDomainSignal.log" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.frequency_domain_signal.FrequencyDomainSignal.log">
+<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.log" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the element-wise natural logarithm of the signal data.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.FrequencyDomainSignal.log1p">
-<span class="sig-name descname"><span class="pre">log1p</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.log1p"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.FrequencyDomainSignal.log1p" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.frequency_domain_signal.FrequencyDomainSignal.log1p">
+<span class="sig-name descname"><span class="pre">log1p</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.log1p"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.log1p" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the element-wise natural logarithm of (1 + signal data).</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.FrequencyDomainSignal.log10">
-<span class="sig-name descname"><span class="pre">log10</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.log10"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.FrequencyDomainSignal.log10" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.frequency_domain_signal.FrequencyDomainSignal.log10">
+<span class="sig-name descname"><span class="pre">log10</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.log10"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.log10" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the element-wise base-10 logarithm of the signal data.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.FrequencyDomainSignal.log2">
-<span class="sig-name descname"><span class="pre">log2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.log2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.FrequencyDomainSignal.log2" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.frequency_domain_signal.FrequencyDomainSignal.log2">
+<span class="sig-name descname"><span class="pre">log2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.log2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.log2" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the element-wise base-2 logarithm of the signal data.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.FrequencyDomainSignal.mean">
-<span class="sig-name descname"><span class="pre">mean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.mean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.FrequencyDomainSignal.mean" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.frequency_domain_signal.FrequencyDomainSignal.mean">
+<span class="sig-name descname"><span class="pre">mean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">generic</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.mean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.mean" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the mean of the signal data.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.FrequencyDomainSignal.std">
-<span class="sig-name descname"><span class="pre">std</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.std"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.FrequencyDomainSignal.std" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.frequency_domain_signal.FrequencyDomainSignal.std">
+<span class="sig-name descname"><span class="pre">std</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">generic</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.std"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.std" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the standard deviation of the signal data.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.FrequencyDomainSignal.min">
-<span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.min"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.FrequencyDomainSignal.min" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.frequency_domain_signal.FrequencyDomainSignal.min">
+<span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">generic</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.min"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.min" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the minimum value in the signal data.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.FrequencyDomainSignal.max">
-<span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.FrequencyDomainSignal.max" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.frequency_domain_signal.FrequencyDomainSignal.max">
+<span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">generic</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.max" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the maximum value in the signal data.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.FrequencyDomainSignal.sum">
-<span class="sig-name descname"><span class="pre">sum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.sum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.FrequencyDomainSignal.sum" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.frequency_domain_signal.FrequencyDomainSignal.sum">
+<span class="sig-name descname"><span class="pre">sum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">generic</span></span></span><a class="reference internal" href="../_modules/modusa/signals/frequency_domain_signal.html#FrequencyDomainSignal.sum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.sum" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the sum of the signal data.</p>
 </dd></dl>
 
@@ -468,14 +485,14 @@ time-localized spectral data (e.g., from a spectrogram or short-time Fourier tra
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="time_domain_signal.html">
+          <a class="prev-page" href="audio_signal.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Time Domain Signal</div>
+                <div class="title">AudioSignal</div>
                 
               </div>
             </a>
@@ -509,25 +526,29 @@ time-localized spectral data (e.g., from a spectrogram or short-time Fourier tra
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Frequency Domain Signal</a><ul>
-<li><a class="reference internal" href="#modusa.signals.FrequencyDomainSignal"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal</span></code></a><ul>
-<li><a class="reference internal" href="#modusa.signals.FrequencyDomainSignal.spectrum"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.spectrum</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.FrequencyDomainSignal.f"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.f</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.FrequencyDomainSignal.t0"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.t0</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.FrequencyDomainSignal.plot"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.plot()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.FrequencyDomainSignal.sin"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.sin()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.FrequencyDomainSignal.cos"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.cos()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.FrequencyDomainSignal.exp"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.exp()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.FrequencyDomainSignal.tanh"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.tanh()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.FrequencyDomainSignal.log"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.log()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.FrequencyDomainSignal.log1p"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.log1p()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.FrequencyDomainSignal.log10"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.log10()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.FrequencyDomainSignal.log2"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.log2()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.FrequencyDomainSignal.mean"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.mean()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.FrequencyDomainSignal.std"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.std()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.FrequencyDomainSignal.min"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.min()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.FrequencyDomainSignal.max"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.max()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.FrequencyDomainSignal.sum"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.sum()</span></code></a></li>
+<li><a class="reference internal" href="#">FrequencyDomainSignal</a><ul>
+<li><a class="reference internal" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal</span></code></a><ul>
+<li><a class="reference internal" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.spectrum"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.spectrum</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.f"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.f</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.t0"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.t0</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.ndim"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.ndim</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.shape"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.shape</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.print_info"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.print_info()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.plot"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.plot()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.abs"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.abs()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.sin"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.sin()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.cos"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.cos()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.exp"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.exp()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.tanh"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.tanh()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.log"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.log()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.log1p"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.log1p()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.log10"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.log10()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.log2"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.log2()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.mean"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.mean()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.std"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.std()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.min"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.min()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.max"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.max()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.frequency_domain_signal.FrequencyDomainSignal.sum"><code class="docutils literal notranslate"><span class="pre">FrequencyDomainSignal.sum()</span></code></a></li>
 </ul>
 </li>
 </ul>

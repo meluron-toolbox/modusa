@@ -16,7 +16,7 @@ modusa
       - modusa **Plugin**: Connects engines to signals for execution.
       - modusa **Generator**: Creates new signals using rules or patterns.
       - modusa **IO**: Handles input/output, plotting, and playback.
-      - modusa **Engine**: Core logic for processing and transforming signals.
+      - modusa **Tools**: ??
       - modusa **Test**: Contains tests and fixtures.
       
 
@@ -34,7 +34,7 @@ modusa
    plugins/index
    generators/index
    io/index
-   engines/index
+   tools/index
 
 #.. toctree::
 #  :maxdepth: 1

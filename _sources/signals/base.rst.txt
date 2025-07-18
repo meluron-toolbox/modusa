@@ -1,7 +1,8 @@
-Base Signal
-===========
+ModusaSignal
+============
 
-.. autoclass:: modusa.signals.ModusaSignal
+.. autoclass:: modusa.signals.base.ModusaSignal
    :members:
    :undoc-members:
    :show-inheritance:
+

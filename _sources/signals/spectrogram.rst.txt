@@ -1,7 +1,8 @@
 Spectrogram
 ===========
 
-.. autoclass:: modusa.signals.Spectrogram
+.. autoclass:: modusa.signals.spectrogram.Spectrogram
    :members:
    :undoc-members:
    :show-inheritance:
+

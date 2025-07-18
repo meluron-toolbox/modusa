@@ -5,12 +5,12 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2024.08.06 -->
-        <title>modusa.io.youtube_downloader - modusa 0.1.0 documentation</title>
+        <title>modusa.tools.fourier_tranform - modusa 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=302659d7" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=3e3f2cfa" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=3357cc09" />
     
     
 
@@ -206,20 +206,21 @@
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../examples/index.html">Examples</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../examples/ex1.html">Loading Audio Signal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/ex2.html">Performing mathematical operations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/ex3.html">Plotting signals</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/ex4.html">Computing spectrogram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/ex1.html#Generating-Audio-Waveforms">Generating Audio Waveforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/ex2.html">Plotting signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/ex3.html">Computing spectrogram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/ex4.html">Experimenting with waveforms</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../signals/index.html">Signals</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Signals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../signals/base.html">Base Signal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../signals/audio_signal.html">Audio Signal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../signals/time_domain_signal.html">Time Domain Signal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../signals/frequency_domain_signal.html">Frequency Domain Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../signals/base.html">ModusaSignal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../signals/audio_signal.html">AudioSignal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../signals/frequency_domain_signal.html">FrequencyDomainSignal</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../signals/spectrogram.html">Spectrogram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../signals/time_domain_signal.html">TimeDomainSignal</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../plugins/index.html">Plugins</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Plugins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -228,20 +229,22 @@
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../generators/index.html">Generators</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Generators</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../generators/base.html">ModusaGenerator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../generators/audio_waveforms.html">BasicWaveformGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generators/audio_waveforms.html">AudioWaveformGenerator</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../io/index.html">IO</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of IO</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../io/base.html">ModusaIO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../io/audio_loader.html">AudioLoader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../io/audio_converter.html">AudioConverter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../io/audio_player.html">Audio Player</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../io/plotter.html">Plotter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../io/youtube_downloader.html">YoutubeDownloader</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../engines/index.html">Engines</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Engines</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../engines/base.html">ModusaEngine</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../tools/index.html">Tools</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Tools</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../tools/base.html">ModusaTool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tools/audio_converter.html">AudioConverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tools/audio_player.html">AudioPlayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tools/fourier_tranform.html">FourierTransform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tools/math_ops.html">MathOps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tools/plotter.html">Plotter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tools/youtube_downloader.html">YoutubeDownloader</a></li>
 </ul>
 </li>
 </ul>
@@ -278,152 +281,34 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Source code for modusa.io.youtube_downloader</h1><div class="highlight"><pre>
+          <h1>Source code for modusa.tools.fourier_tranform</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">modusa</span><span class="w"> </span><span class="kn">import</span> <span class="n">excp</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">modusa.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">validate_args_type</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">modusa.io.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModusaIO</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">yt_dlp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">modusa.tools.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModusaTool</span>
 
-<div class="viewcode-block" id="YoutubeDownloader">
-<a class="viewcode-back" href="../../../io/youtube_downloader.html#modusa.io.YoutubeDownloader">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">YoutubeDownloader</span><span class="p">(</span><span class="n">ModusaIO</span><span class="p">):</span>
+
+<div class="viewcode-block" id="FourierTransform">
+<a class="viewcode-back" href="../../../tools/fourier_tranform.html#modusa.tools.fourier_tranform.FourierTransform">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FourierTransform</span><span class="p">(</span><span class="n">ModusaTool</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Download highest quality audio/video from YouTube.</span>
-
-<span class="sd">	Note</span>
-<span class="sd">	----</span>
-<span class="sd">	- The engine uses `yt_dlp` python package to download content from YouTube.</span>
-
+<span class="sd">	</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	
 	<span class="c1">#--------Meta Information----------</span>
-	<span class="n">_name</span> <span class="o">=</span> <span class="s2">&quot;Youtube Downloader&quot;</span>
-	<span class="n">_description</span> <span class="o">=</span> <span class="s2">&quot;Download highest quality audio/video from YouTube.&quot;</span>
+	<span class="n">_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+	<span class="n">_description</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 	<span class="n">_author_name</span> <span class="o">=</span> <span class="s2">&quot;Ankit Anand&quot;</span>
 	<span class="n">_author_email</span> <span class="o">=</span> <span class="s2">&quot;ankit0.anand0@gmail.com&quot;</span>
-	<span class="n">_created_at</span> <span class="o">=</span> <span class="s2">&quot;2025-07-05&quot;</span>
+	<span class="n">_created_at</span> <span class="o">=</span> <span class="s2">&quot;2025-07-11&quot;</span>
 	<span class="c1">#----------------------------------</span>
 	
 	<span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+		<span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
+
 	
-	<span class="nd">@staticmethod</span>
-	<span class="nd">@validate_args_type</span><span class="p">()</span>
-	<span class="k">def</span><span class="w"> </span><span class="nf">_download_audio</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Download the highest quality audio from a given YouTube URL.</span>
-
-<span class="sd">		Parameters</span>
-<span class="sd">		----------</span>
-<span class="sd">		url: str</span>
-<span class="sd">			URL for the YouTube video.</span>
-<span class="sd">		output_dir:</span>
-<span class="sd">			Directory where the audio will be saved.</span>
-
-<span class="sd">		Returns</span>
-<span class="sd">		-------</span>
-<span class="sd">		Path</span>
-<span class="sd">			Path to the downloaded audio file.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">output_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
-		<span class="n">output_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-		
-		<span class="n">ydl_opts</span> <span class="o">=</span> <span class="p">{</span>
-				<span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;bestaudio/best&#39;</span><span class="p">,</span>
-				<span class="s1">&#39;outtmpl&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">output_dir</span><span class="si">}</span><span class="s1">/%(title)s.%(ext)s&#39;</span><span class="p">,</span>
-				<span class="s1">&#39;quiet&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-			<span class="p">}</span>
-		
-		<span class="k">with</span> <span class="n">yt_dlp</span><span class="o">.</span><span class="n">YoutubeDL</span><span class="p">(</span><span class="n">ydl_opts</span><span class="p">)</span> <span class="k">as</span> <span class="n">ydl</span><span class="p">:</span>
-			<span class="n">info</span> <span class="o">=</span> <span class="n">ydl</span><span class="o">.</span><span class="n">extract_info</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-			<span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;requested_downloads&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;filepath&#39;</span><span class="p">])</span>
-	
-	<span class="nd">@staticmethod</span>
-	<span class="nd">@validate_args_type</span><span class="p">()</span>
-	<span class="k">def</span><span class="w"> </span><span class="nf">_download_video</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Download the highest quality video from a YouTube URL using yt-dlp.</span>
-<span class="sd">	</span>
-<span class="sd">		Parameters</span>
-<span class="sd">		----------</span>
-<span class="sd">		url: str</span>
-<span class="sd">			URL for the YouTube video.</span>
-<span class="sd">		output_dir:</span>
-<span class="sd">			Directory where the video will be saved.</span>
-
-<span class="sd">		Returns</span>
-<span class="sd">		-------</span>
-<span class="sd">		Path</span>
-<span class="sd">			Path to the downloaded audio file</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">output_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
-		<span class="n">output_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-		
-		<span class="n">ydl_opts</span> <span class="o">=</span> <span class="p">{</span>
-			<span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;bestvideo+bestaudio/best&#39;</span><span class="p">,</span>  <span class="c1"># High quality</span>
-			<span class="s1">&#39;outtmpl&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">output_dir</span> <span class="o">/</span> <span class="s1">&#39;</span><span class="si">%(title)s</span><span class="s1">.</span><span class="si">%(ext)s</span><span class="s1">&#39;</span><span class="p">),</span>
-			<span class="s1">&#39;merge_output_format&#39;</span><span class="p">:</span> <span class="s1">&#39;mp4&#39;</span><span class="p">,</span>
-			<span class="s1">&#39;quiet&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># Hide verbose output</span>
-		<span class="p">}</span>
-		
-		<span class="k">with</span> <span class="n">yt_dlp</span><span class="o">.</span><span class="n">YoutubeDL</span><span class="p">(</span><span class="n">ydl_opts</span><span class="p">)</span> <span class="k">as</span> <span class="n">ydl</span><span class="p">:</span>
-			<span class="n">info</span> <span class="o">=</span> <span class="n">ydl</span><span class="o">.</span><span class="n">extract_info</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-			<span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;requested_downloads&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;filepath&#39;</span><span class="p">])</span>
-	
-<div class="viewcode-block" id="YoutubeDownloader.download">
-<a class="viewcode-back" href="../../../io/youtube_downloader.html#modusa.io.YoutubeDownloader.download">[docs]</a>
-	<span class="nd">@staticmethod</span>
-	<span class="nd">@validate_args_type</span><span class="p">()</span>
-	<span class="k">def</span><span class="w"> </span><span class="nf">download</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">content_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Downloads audio/video from YouTube.</span>
-
-<span class="sd">		.. code-block:: python</span>
-<span class="sd">			</span>
-<span class="sd">			# To download audio</span>
-<span class="sd">			from modusa.io import YoutubeDownloader</span>
-<span class="sd">			audio_fp = YoutubeDownloader.download(</span>
-<span class="sd">				url=&quot;https://www.youtube.com/watch?v=lIpw9-Y_N0g&quot;, </span>
-<span class="sd">				content_type=&quot;audio&quot;, </span>
-<span class="sd">				output_dir=&quot;.&quot;</span>
-<span class="sd">			)</span>
-<span class="sd">		</span>
-<span class="sd">			# To download video</span>
-<span class="sd">			from modusa.engines import YoutubeDownloaderEngine</span>
-<span class="sd">			video_fp = YoutubeDownloader.download(</span>
-<span class="sd">				url=&quot;https://www.youtube.com/watch?v=lIpw9-Y_N0g&quot;, </span>
-<span class="sd">				content_type=&quot;audio&quot;, </span>
-<span class="sd">				output_dir=&quot;.&quot;</span>
-<span class="sd">			)</span>
-
-<span class="sd">		Parameters</span>
-<span class="sd">		----------</span>
-<span class="sd">		url: str</span>
-<span class="sd">			Link to the YouTube video.</span>
-<span class="sd">		content_type: str</span>
-<span class="sd">			&quot;audio&quot; or &quot;video&quot;</span>
-<span class="sd">		output_dir: str | Path</span>
-<span class="sd">			Directory to save the YouTube content.</span>
-<span class="sd">		</span>
-<span class="sd">		Returns</span>
-<span class="sd">		-------</span>
-<span class="sd">		Path</span>
-<span class="sd">			File path of the downloaded content.</span>
-<span class="sd">		</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;audio&quot;</span><span class="p">:</span>
-			<span class="k">return</span> <span class="n">YoutubeDownloader</span><span class="o">.</span><span class="n">_download_audio</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">output_dir</span><span class="p">)</span>
-		<span class="k">elif</span> <span class="n">content_type</span> <span class="o">==</span> <span class="s2">&quot;video&quot;</span><span class="p">:</span>
-			<span class="k">return</span> <span class="n">YoutubeDownloader</span><span class="o">.</span><span class="n">_download_video</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">output_dir</span><span class="p">)</span>
-		<span class="k">else</span><span class="p">:</span>
-			<span class="k">raise</span> <span class="n">excp</span><span class="o">.</span><span class="n">InputValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`content_type` can either take &#39;audio&#39; or &#39;video&#39; not </span><span class="si">{</span><span class="n">content_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
-</div>
-
 </pre></div>
         </article>
       </div>

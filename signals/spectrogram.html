@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Plugins" href="../plugins/index.html" /><link rel="prev" title="Frequency Domain Signal" href="frequency_domain_signal.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="TimeDomainSignal" href="time_domain_signal.html" /><link rel="prev" title="FrequencyDomainSignal" href="frequency_domain_signal.html" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2024.08.06 -->
         <title>Spectrogram - modusa 0.1.0 documentation</title>
@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=3e3f2cfa" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=3357cc09" />
     
     
 
@@ -207,20 +207,21 @@
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../examples/index.html">Examples</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../examples/ex1.html">Loading Audio Signal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/ex2.html">Performing mathematical operations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/ex3.html">Plotting signals</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/ex4.html">Computing spectrogram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/ex1.html#Generating-Audio-Waveforms">Generating Audio Waveforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/ex2.html">Plotting signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/ex3.html">Computing spectrogram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/ex4.html">Experimenting with waveforms</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Signals</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Signals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="base.html">Base Signal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="audio_signal.html">Audio Signal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="time_domain_signal.html">Time Domain Signal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="frequency_domain_signal.html">Frequency Domain Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base.html">ModusaSignal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_signal.html">AudioSignal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="frequency_domain_signal.html">FrequencyDomainSignal</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Spectrogram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_domain_signal.html">TimeDomainSignal</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../plugins/index.html">Plugins</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Plugins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -229,20 +230,22 @@
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../generators/index.html">Generators</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Generators</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../generators/base.html">ModusaGenerator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../generators/audio_waveforms.html">BasicWaveformGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generators/audio_waveforms.html">AudioWaveformGenerator</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../io/index.html">IO</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of IO</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../io/base.html">ModusaIO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../io/audio_loader.html">AudioLoader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../io/audio_converter.html">AudioConverter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../io/audio_player.html">Audio Player</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../io/plotter.html">Plotter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../io/youtube_downloader.html">YoutubeDownloader</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../engines/index.html">Engines</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Engines</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../engines/base.html">ModusaEngine</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tools/index.html">Tools</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Tools</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tools/base.html">ModusaTool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/audio_converter.html">AudioConverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/audio_player.html">AudioPlayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/fourier_tranform.html">FourierTransform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/math_ops.html">MathOps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/plotter.html">Plotter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/youtube_downloader.html">YoutubeDownloader</a></li>
 </ul>
 </li>
 </ul>
@@ -288,9 +291,9 @@
           <section id="spectrogram">
 <h1>Spectrogram<a class="headerlink" href="#spectrogram" title="Link to this heading">¶</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="modusa.signals.Spectrogram">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modusa.signals.</span></span><span class="sig-name descname"><span class="pre">Spectrogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">S</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.Spectrogram" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="base.html#modusa.signals.ModusaSignal" title="modusa.signals.base.ModusaSignal"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModusaSignal</span></code></a></p>
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modusa.signals.spectrogram.</span></span><span class="sig-name descname"><span class="pre">Spectrogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">S</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="base.html#modusa.signals.base.ModusaSignal" title="modusa.signals.base.ModusaSignal"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModusaSignal</span></code></a></p>
 <p>A 2D time–frequency representation of a signal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -303,44 +306,92 @@
 </dd>
 </dl>
 <dl class="py property">
-<dt class="sig sig-object py" id="modusa.signals.Spectrogram.S">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">S</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#modusa.signals.Spectrogram.S" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.S">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">S</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.S" title="Link to this definition">¶</a></dt>
 <dd><p>Spectrogram matrix (freq × time).</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="modusa.signals.Spectrogram.f">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">f</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#modusa.signals.Spectrogram.f" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.f">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">f</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.f" title="Link to this definition">¶</a></dt>
 <dd><p>Frequency axis.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="modusa.signals.Spectrogram.t">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">t</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#modusa.signals.Spectrogram.t" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.frame_rate">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">frame_rate</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.frame_rate" title="Link to this definition">¶</a></dt>
+<dd><p>Frequency axis.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.t0">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">t0</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.t0" title="Link to this definition">¶</a></dt>
+<dd><p>Frequency axis.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.t">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">t</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.t" title="Link to this definition">¶</a></dt>
 <dd><p>Time axis.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="modusa.signals.Spectrogram.shape">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#modusa.signals.Spectrogram.shape" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.shape">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.shape" title="Link to this definition">¶</a></dt>
 <dd><p>Shape of the spectrogram (freqs, frames).</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="modusa.signals.Spectrogram.ndim">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ndim</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#modusa.signals.Spectrogram.ndim" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.ndim">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ndim</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.ndim" title="Link to this definition">¶</a></dt>
 <dd><p>Number of dimensions (always 2).</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="modusa.signals.Spectrogram.info">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#modusa.signals.Spectrogram.info" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.magnitude">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">magnitude</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram" title="modusa.signals.spectrogram.Spectrogram"><span class="pre">Spectrogram</span></a></em><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.magnitude" title="Link to this definition">¶</a></dt>
+<dd><p>Return a new Spectrogram with magnitude values.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.power">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">power</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram" title="modusa.signals.spectrogram.Spectrogram"><span class="pre">Spectrogram</span></a></em><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.power" title="Link to this definition">¶</a></dt>
+<dd><p>Return a new Spectrogram with power (magnitude squared).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.angle">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">angle</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram" title="modusa.signals.spectrogram.Spectrogram"><span class="pre">Spectrogram</span></a></em><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.angle" title="Link to this definition">¶</a></dt>
+<dd><p>Return a new Spectrogram with phase angle (in radians).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.real">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">real</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram" title="modusa.signals.spectrogram.Spectrogram"><span class="pre">Spectrogram</span></a></em><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.real" title="Link to this definition">¶</a></dt>
+<dd><p>Return a new Spectrogram with real part.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.imag">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">imag</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram" title="modusa.signals.spectrogram.Spectrogram"><span class="pre">Spectrogram</span></a></em><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.imag" title="Link to this definition">¶</a></dt>
+<dd><p>Return a new Spectrogram with imaginary part.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.phase">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">phase</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram" title="modusa.signals.spectrogram.Spectrogram"><span class="pre">Spectrogram</span></a></em><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.phase" title="Link to this definition">¶</a></dt>
+<dd><p>Return a new Spectrogram with normalized phase.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.print_info">
+<span class="sig-name descname"><span class="pre">print_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.print_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.print_info" title="Link to this definition">¶</a></dt>
 <dd><p>Print key information about the spectrogram signal.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.Spectrogram.crop">
-<span class="sig-name descname"><span class="pre">crop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#modusa.signals.Spectrogram" title="modusa.signals.spectrogram.Spectrogram"><span class="pre">Spectrogram</span></a></span></span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.crop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.Spectrogram.crop" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.crop">
+<span class="sig-name descname"><span class="pre">crop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram" title="modusa.signals.spectrogram.Spectrogram"><span class="pre">Spectrogram</span></a></span></span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.crop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.crop" title="Link to this definition">¶</a></dt>
 <dd><p>Crop the spectrogram to a rectangular region in frequency-time space.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cropped</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="n">f_min</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">f_max</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">t_min</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">t_max</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
 </pre></div>
@@ -358,14 +409,14 @@
 <dd class="field-even"><p>Cropped spectrogram.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#modusa.signals.Spectrogram" title="modusa.signals.Spectrogram">Spectrogram</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram" title="modusa.signals.spectrogram.Spectrogram">Spectrogram</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.Spectrogram.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_compression_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Axes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'gray_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mlabel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Frequency</span> <span class="pre">(hz)'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Time</span> <span class="pre">(sec)'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">highlight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'lower'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_colorbar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Axes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_grid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'center'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_ticks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Figure</span></span></span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.Spectrogram.plot" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Axes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'gray_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mlabel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Frequency</span> <span class="pre">(hz)'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Time</span> <span class="pre">(sec)'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">highlight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vlines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hlines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'lower'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_colorbar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Axes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_grid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'center'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_ticks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Figure</span></span></span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.plot" title="Link to this definition">¶</a></dt>
 <dd><p>Plot the spectrogram using Matplotlib.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">log_compression_factor</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Log-scaled Spectrogram&quot;</span><span class="p">)</span>
 </pre></div>
@@ -401,80 +452,80 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.Spectrogram.sin">
-<span class="sig-name descname"><span class="pre">sin</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.sin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.Spectrogram.sin" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.sin">
+<span class="sig-name descname"><span class="pre">sin</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.sin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.sin" title="Link to this definition">¶</a></dt>
 <dd><p>Element-wise sine of the spectrogram.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.Spectrogram.cos">
-<span class="sig-name descname"><span class="pre">cos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.cos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.Spectrogram.cos" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.cos">
+<span class="sig-name descname"><span class="pre">cos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.cos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.cos" title="Link to this definition">¶</a></dt>
 <dd><p>Element-wise cosine of the spectrogram.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.Spectrogram.exp">
-<span class="sig-name descname"><span class="pre">exp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.Spectrogram.exp" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.exp">
+<span class="sig-name descname"><span class="pre">exp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.exp" title="Link to this definition">¶</a></dt>
 <dd><p>Element-wise exponential of the spectrogram.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.Spectrogram.tanh">
-<span class="sig-name descname"><span class="pre">tanh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.tanh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.Spectrogram.tanh" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.tanh">
+<span class="sig-name descname"><span class="pre">tanh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.tanh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.tanh" title="Link to this definition">¶</a></dt>
 <dd><p>Element-wise hyperbolic tangent of the spectrogram.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.Spectrogram.log">
-<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.Spectrogram.log" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.log">
+<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.log" title="Link to this definition">¶</a></dt>
 <dd><p>Element-wise natural logarithm of the spectrogram.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.Spectrogram.log1p">
-<span class="sig-name descname"><span class="pre">log1p</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.log1p"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.Spectrogram.log1p" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.log1p">
+<span class="sig-name descname"><span class="pre">log1p</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.log1p"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.log1p" title="Link to this definition">¶</a></dt>
 <dd><p>Element-wise log(1 + M) of the spectrogram.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.Spectrogram.log10">
-<span class="sig-name descname"><span class="pre">log10</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.log10"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.Spectrogram.log10" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.log10">
+<span class="sig-name descname"><span class="pre">log10</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.log10"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.log10" title="Link to this definition">¶</a></dt>
 <dd><p>Element-wise base-10 logarithm of the spectrogram.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.Spectrogram.log2">
-<span class="sig-name descname"><span class="pre">log2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.log2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.Spectrogram.log2" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.log2">
+<span class="sig-name descname"><span class="pre">log2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.log2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.log2" title="Link to this definition">¶</a></dt>
 <dd><p>Element-wise base-2 logarithm of the spectrogram.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.Spectrogram.mean">
-<span class="sig-name descname"><span class="pre">mean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.mean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.Spectrogram.mean" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.mean">
+<span class="sig-name descname"><span class="pre">mean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.mean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.mean" title="Link to this definition">¶</a></dt>
 <dd><p>Return the mean of the spectrogram values.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.Spectrogram.std">
-<span class="sig-name descname"><span class="pre">std</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.std"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.Spectrogram.std" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.std">
+<span class="sig-name descname"><span class="pre">std</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.std"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.std" title="Link to this definition">¶</a></dt>
 <dd><p>Return the standard deviation of the spectrogram values.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.Spectrogram.min">
-<span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.min"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.Spectrogram.min" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.min">
+<span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.min"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.min" title="Link to this definition">¶</a></dt>
 <dd><p>Return the minimum value in the spectrogram.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.Spectrogram.max">
-<span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.Spectrogram.max" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.max">
+<span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.max" title="Link to this definition">¶</a></dt>
 <dd><p>Return the maximum value in the spectrogram.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.signals.Spectrogram.sum">
-<span class="sig-name descname"><span class="pre">sum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.sum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.Spectrogram.sum" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.signals.spectrogram.Spectrogram.sum">
+<span class="sig-name descname"><span class="pre">sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/modusa/signals/spectrogram.html#Spectrogram.sum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.signals.spectrogram.Spectrogram.sum" title="Link to this definition">¶</a></dt>
 <dd><p>Return the sum of the spectrogram values.</p>
 </dd></dl>
 
@@ -487,12 +538,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../plugins/index.html">
+          <a class="next-page" href="time_domain_signal.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Plugins</div>
+                <div class="title">TimeDomainSignal</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -503,7 +554,7 @@
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Frequency Domain Signal</div>
+                <div class="title">FrequencyDomainSignal</div>
                 
               </div>
             </a>
@@ -538,28 +589,36 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Spectrogram</a><ul>
-<li><a class="reference internal" href="#modusa.signals.Spectrogram"><code class="docutils literal notranslate"><span class="pre">Spectrogram</span></code></a><ul>
-<li><a class="reference internal" href="#modusa.signals.Spectrogram.S"><code class="docutils literal notranslate"><span class="pre">Spectrogram.S</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.Spectrogram.f"><code class="docutils literal notranslate"><span class="pre">Spectrogram.f</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.Spectrogram.t"><code class="docutils literal notranslate"><span class="pre">Spectrogram.t</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.Spectrogram.shape"><code class="docutils literal notranslate"><span class="pre">Spectrogram.shape</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.Spectrogram.ndim"><code class="docutils literal notranslate"><span class="pre">Spectrogram.ndim</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.Spectrogram.info"><code class="docutils literal notranslate"><span class="pre">Spectrogram.info</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.Spectrogram.crop"><code class="docutils literal notranslate"><span class="pre">Spectrogram.crop()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.Spectrogram.plot"><code class="docutils literal notranslate"><span class="pre">Spectrogram.plot()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.Spectrogram.sin"><code class="docutils literal notranslate"><span class="pre">Spectrogram.sin()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.Spectrogram.cos"><code class="docutils literal notranslate"><span class="pre">Spectrogram.cos()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.Spectrogram.exp"><code class="docutils literal notranslate"><span class="pre">Spectrogram.exp()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.Spectrogram.tanh"><code class="docutils literal notranslate"><span class="pre">Spectrogram.tanh()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.Spectrogram.log"><code class="docutils literal notranslate"><span class="pre">Spectrogram.log()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.Spectrogram.log1p"><code class="docutils literal notranslate"><span class="pre">Spectrogram.log1p()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.Spectrogram.log10"><code class="docutils literal notranslate"><span class="pre">Spectrogram.log10()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.Spectrogram.log2"><code class="docutils literal notranslate"><span class="pre">Spectrogram.log2()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.Spectrogram.mean"><code class="docutils literal notranslate"><span class="pre">Spectrogram.mean()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.Spectrogram.std"><code class="docutils literal notranslate"><span class="pre">Spectrogram.std()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.Spectrogram.min"><code class="docutils literal notranslate"><span class="pre">Spectrogram.min()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.Spectrogram.max"><code class="docutils literal notranslate"><span class="pre">Spectrogram.max()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.signals.Spectrogram.sum"><code class="docutils literal notranslate"><span class="pre">Spectrogram.sum()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram"><code class="docutils literal notranslate"><span class="pre">Spectrogram</span></code></a><ul>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.S"><code class="docutils literal notranslate"><span class="pre">Spectrogram.S</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.f"><code class="docutils literal notranslate"><span class="pre">Spectrogram.f</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.frame_rate"><code class="docutils literal notranslate"><span class="pre">Spectrogram.frame_rate</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.t0"><code class="docutils literal notranslate"><span class="pre">Spectrogram.t0</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.t"><code class="docutils literal notranslate"><span class="pre">Spectrogram.t</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.shape"><code class="docutils literal notranslate"><span class="pre">Spectrogram.shape</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.ndim"><code class="docutils literal notranslate"><span class="pre">Spectrogram.ndim</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.magnitude"><code class="docutils literal notranslate"><span class="pre">Spectrogram.magnitude</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.power"><code class="docutils literal notranslate"><span class="pre">Spectrogram.power</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.angle"><code class="docutils literal notranslate"><span class="pre">Spectrogram.angle</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.real"><code class="docutils literal notranslate"><span class="pre">Spectrogram.real</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.imag"><code class="docutils literal notranslate"><span class="pre">Spectrogram.imag</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.phase"><code class="docutils literal notranslate"><span class="pre">Spectrogram.phase</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.print_info"><code class="docutils literal notranslate"><span class="pre">Spectrogram.print_info()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.crop"><code class="docutils literal notranslate"><span class="pre">Spectrogram.crop()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.plot"><code class="docutils literal notranslate"><span class="pre">Spectrogram.plot()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.sin"><code class="docutils literal notranslate"><span class="pre">Spectrogram.sin()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.cos"><code class="docutils literal notranslate"><span class="pre">Spectrogram.cos()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.exp"><code class="docutils literal notranslate"><span class="pre">Spectrogram.exp()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.tanh"><code class="docutils literal notranslate"><span class="pre">Spectrogram.tanh()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.log"><code class="docutils literal notranslate"><span class="pre">Spectrogram.log()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.log1p"><code class="docutils literal notranslate"><span class="pre">Spectrogram.log1p()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.log10"><code class="docutils literal notranslate"><span class="pre">Spectrogram.log10()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.log2"><code class="docutils literal notranslate"><span class="pre">Spectrogram.log2()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.mean"><code class="docutils literal notranslate"><span class="pre">Spectrogram.mean()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.std"><code class="docutils literal notranslate"><span class="pre">Spectrogram.std()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.min"><code class="docutils literal notranslate"><span class="pre">Spectrogram.min()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.max"><code class="docutils literal notranslate"><span class="pre">Spectrogram.max()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.signals.spectrogram.Spectrogram.sum"><code class="docutils literal notranslate"><span class="pre">Spectrogram.sum()</span></code></a></li>
 </ul>
 </li>
 </ul>

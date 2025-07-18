@@ -3,7 +3,7 @@ Examples
 
 .. toctree::
    :maxdepth: 1
-   :caption: Engine Classes
+   :caption: Examples
    
    ex1
    ex2

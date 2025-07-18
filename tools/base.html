@@ -3,15 +3,15 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="prev" title="Engines" href="index.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="AudioConverter" href="audio_converter.html" /><link rel="prev" title="Tools" href="index.html" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2024.08.06 -->
-        <title>ModusaEngine - modusa 0.1.0 documentation</title>
+        <title>ModusaTool - modusa 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=3e3f2cfa" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=3357cc09" />
     
     
 
@@ -207,20 +207,21 @@
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../examples/index.html">Examples</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../examples/ex1.html">Loading Audio Signal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/ex2.html">Performing mathematical operations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/ex3.html">Plotting signals</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/ex4.html">Computing spectrogram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/ex1.html#Generating-Audio-Waveforms">Generating Audio Waveforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/ex2.html">Plotting signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/ex3.html">Computing spectrogram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/ex4.html">Experimenting with waveforms</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../signals/index.html">Signals</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Signals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../signals/base.html">Base Signal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../signals/audio_signal.html">Audio Signal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../signals/time_domain_signal.html">Time Domain Signal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../signals/frequency_domain_signal.html">Frequency Domain Signal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../signals/base.html">ModusaSignal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../signals/audio_signal.html">AudioSignal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../signals/frequency_domain_signal.html">FrequencyDomainSignal</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../signals/spectrogram.html">Spectrogram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../signals/time_domain_signal.html">TimeDomainSignal</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../plugins/index.html">Plugins</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Plugins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -229,20 +230,22 @@
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../generators/index.html">Generators</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Generators</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../generators/base.html">ModusaGenerator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../generators/audio_waveforms.html">BasicWaveformGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generators/audio_waveforms.html">AudioWaveformGenerator</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../io/index.html">IO</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of IO</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../io/base.html">ModusaIO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../io/audio_loader.html">AudioLoader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../io/audio_converter.html">AudioConverter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../io/audio_player.html">Audio Player</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../io/plotter.html">Plotter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../io/youtube_downloader.html">YoutubeDownloader</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Engines</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Engines</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">ModusaEngine</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Tools</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Tools</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">ModusaTool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_converter.html">AudioConverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_player.html">AudioPlayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fourier_tranform.html">FourierTransform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math_ops.html">MathOps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotter.html">Plotter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="youtube_downloader.html">YoutubeDownloader</a></li>
 </ul>
 </li>
 </ul>
@@ -265,7 +268,7 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="../_sources/engines/base.rst.txt" title="View this page">
+  <a class="muted-link" href="../_sources/tools/base.rst.txt" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
@@ -285,19 +288,41 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="modusaengine">
-<h1>ModusaEngine<a class="headerlink" href="#modusaengine" title="Link to this heading">¶</a></h1>
+          <section id="modusatool">
+<h1>ModusaTool<a class="headerlink" href="#modusatool" title="Link to this heading">¶</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="modusa.engines.base.ModusaEngine">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modusa.engines.base.</span></span><span class="sig-name descname"><span class="pre">ModusaEngine</span></span><a class="reference internal" href="../_modules/modusa/engines/base.html#ModusaEngine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.engines.base.ModusaEngine" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="modusa.tools.base.ModusaTool">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modusa.tools.base.</span></span><span class="sig-name descname"><span class="pre">ModusaTool</span></span><a class="reference internal" href="../_modules/modusa/tools/base.html#ModusaTool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.base.ModusaTool" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
-<p>Base class for all core logic components in the Modusa system.
-Every subclass must implement the <cite>run</cite> method.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="modusa.engines.base.ModusaEngine.run">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../_modules/modusa/engines/base.html#ModusaEngine.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.engines.base.ModusaEngine.run" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<p>Base class for all tool: youtube downloader, audio converter, filter.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">modusa</span><span class="o">-</span><span class="n">dev</span> <span class="n">create</span> <span class="n">io</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># General template of a subclass of ModusaTool</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">modusa.tools.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModusaTool</span>
 
+<span class="k">class</span><span class="w"> </span><span class="nc">MyCustomIOClass</span><span class="p">(</span><span class="n">ModusaIO</span><span class="p">):</span>
+        <span class="c1">#--------Meta Information----------</span>
+        <span class="n">_name</span> <span class="o">=</span> <span class="s2">&quot;My Custom Tool&quot;</span>
+        <span class="n">_description</span> <span class="o">=</span> <span class="s2">&quot;My custom class for Tool.&quot;</span>
+        <span class="n">_author_name</span> <span class="o">=</span> <span class="s2">&quot;Ankit Anand&quot;</span>
+        <span class="n">_author_email</span> <span class="o">=</span> <span class="s2">&quot;ankit0.anand0@gmail.com&quot;</span>
+        <span class="n">_created_at</span> <span class="o">=</span> <span class="s2">&quot;2025-07-06&quot;</span>
+        <span class="c1">#----------------------------------</span>
+
+        <span class="nd">@staticmethod</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">do_something</span><span class="p">():</span>
+                <span class="k">pass</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>This class is intended to be subclassed by any tool built for the modusa framework.</p></li>
+<li><p>In order to create a tool, you can use modusa-dev CLI to generate a template.</p></li>
+<li><p>It is recommended to treat subclasses of ModusaTool as namespaces and define &#64;staticmethods with control parameters, rather than using instance-level __init__ methods.</p></li>
+</ul>
+</div>
 </dd></dl>
 
 </section>
@@ -307,7 +332,15 @@ Every subclass must implement the <cite>run</cite> method.</p>
       <footer>
         
         <div class="related-pages">
-          
+          <a class="next-page" href="audio_converter.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">AudioConverter</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
           <a class="prev-page" href="index.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
@@ -315,7 +348,7 @@ Every subclass must implement the <cite>run</cite> method.</p>
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Engines</div>
+                <div class="title">Tools</div>
                 
               </div>
             </a>
@@ -349,11 +382,8 @@ Every subclass must implement the <cite>run</cite> method.</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">ModusaEngine</a><ul>
-<li><a class="reference internal" href="#modusa.engines.base.ModusaEngine"><code class="docutils literal notranslate"><span class="pre">ModusaEngine</span></code></a><ul>
-<li><a class="reference internal" href="#modusa.engines.base.ModusaEngine.run"><code class="docutils literal notranslate"><span class="pre">ModusaEngine.run()</span></code></a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#">ModusaTool</a><ul>
+<li><a class="reference internal" href="#modusa.tools.base.ModusaTool"><code class="docutils literal notranslate"><span class="pre">ModusaTool</span></code></a></li>
 </ul>
 </li>
 </ul>
