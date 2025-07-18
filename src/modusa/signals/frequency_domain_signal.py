@@ -14,11 +14,7 @@ class FrequencyDomainSignal(ModusaSignal):
 	
 	Note
 	----
-	- The class is not intended to be instantiated directly 
-	This class stores the Complex spectrum of a signal
-	along with its corresponding frequency axis. It optionally tracks the time
-	origin (`t0`) of the spectral slice, which is useful when working with
-	time-localized spectral data (e.g., from a spectrogram or short-time Fourier transform).
+	- The class is not intended to be instantiated directly.
 
 	Parameters
 	----------
@@ -32,8 +28,8 @@ class FrequencyDomainSignal(ModusaSignal):
 		An optional title for display or plotting purposes.
 	"""
 	#--------Meta Information----------
-	_name = ""
-	_description = ""
+	_name = "Frequency Domain Signal"
+	_description = "Represents Frequency Domain Signal"
 	_author_name = "Ankit Anand"
 	_author_email = "ankit0.anand0@gmail.com"
 	_created_at = "2025-07-09"
@@ -45,7 +41,6 @@ class FrequencyDomainSignal(ModusaSignal):
 		
 		if spectrum.shape != f.shape:
 			raise excp.InputValueError(f"`spectrum` and `f` shape must match, got {spectrum.shape} and {f.shape}")
-		
 		
 		self._spectrum = spectrum
 		self._f = f
@@ -73,13 +68,32 @@ class FrequencyDomainSignal(ModusaSignal):
 		"""Time origin (in seconds) of this spectral slice, e.g., from a spectrogram frame."""
 		return self._t0
 	
-	def __len__(self):
-		return len(self._y)
+	#----------------------
+	# Derived Properties
+	#----------------------
+	@immutable_property("Create a new object instead.")
+	def __len__(self) -> int:
+		return len(self.spectrum)
 	
+	@immutable_property("Create a new object instead.")
+	def ndim(self) -> int:
+		return self.spectrum.ndim
+	
+	@immutable_property("Create a new object instead.")
+	def shape(self) -> tuple:
+		return self.spectrum.shape
 	
 	#----------------------
-	# Tools
+	# Methods
 	#----------------------
+	
+	def print_info(self) -> None:
+		"""Prints info about the audio."""
+		print("-" * 50)
+		print(f"{'Title':<20}: {self.title}")
+		print(f"{'Type':<20}: {self._name}")
+		print(f"{'Frequency Range':<20}: ({self.f[0]:.2f}, {self.f[-1]:.2f}) Hz")
+		print("-" * 50)
 	
 	def __getitem__(self, key: slice) -> Self:
 		sliced_spectrum = self._spectrum[key]
@@ -89,74 +103,89 @@ class FrequencyDomainSignal(ModusaSignal):
 	@validate_args_type()
 	def plot(
 		self,
-		scale_y: tuple[float, float] | None = None,
 		ax: plt.Axes | None = None,
-		color: str = "b",
-		marker: str | None = None,
-		linestyle: str | None = None,
-		stem: bool | None = False,
-		legend_loc: str | None = None,
+		fmt: str = "k-",
 		title: str | None = None,
-		ylabel: str | None = "Amplitude",
-		xlabel: str | None = "Freq (Hz)",
+		label: str | None = None,
+		ylabel: str | None = "Strength",
+		xlabel: str | None = "Frequency (Hz)",
 		ylim: tuple[float, float] | None = None,
 		xlim: tuple[float, float] | None = None,
 		highlight: list[tuple[float, float]] | None = None,
-	) -> plt.Figure:
+		vlines: list[float] | None = None,
+		hlines: list[float] | None = None,
+		show_grid: bool = False,
+		stem: bool | None = False,
+		legend_loc: str | None = None,
+	) -> plt.Figure | None:
 		"""
-		Plot the frequency-domain signal as a line or stem plot.
+		Plot the audio waveform using matplotlib.
 		
 		.. code-block:: python
-
-			spectrum.plot(stem=True, color="r", title="FFT Frame", xlim=(0, 5000))
+		
+			from modusa.generators import AudioSignalGenerator
+			audio_example = AudioSignalGenerator.generate_example()
+			audio_example.plot(color="orange", title="Example Audio")
 		
 		Parameters
 		----------
-		scale_y : tuple[float, float], optional
-			Range to scale the spectrum values before plotting (min, max).
-		ax : matplotlib.axes.Axes, optional
-			Axis to plot on. If None, a new figure and axis are created.
-		color : str, default="b"
-			Color of the line or stem.
-		marker : str, optional
-			Marker style for points (ignored if stem=True).
-		linestyle : str, optional
-			Line style for the plot (ignored if stem=True).
-		stem : bool, default=False
-			Whether to use a stem plot instead of a line plot.
-		legend_loc : str, optional
-			Legend location (e.g., 'upper right'). If None, no legend is shown.
-		title : str, optional
-			Title of the plot. Defaults to signal title.
-		ylabel : str, default="Amplitude"
-			Label for the y-axis.
-		xlabel : str, default="Freq (Hz)"
-			Label for the x-axis.
-		ylim : tuple[float, float], optional
+		ax : matplotlib.axes.Axes | None
+			Pre-existing axes to plot into. If None, a new figure and axes are created.
+		fmt : str | None
+			Format of the plot as per matplotlib standards (Eg. "k-" or "blue--o)
+		title : str | None
+			Plot title. Defaults to the signal’s title.
+		label: str | None
+			Label for the plot, shown as legend.
+		ylabel : str | None
+			Label for the y-axis. Defaults to `"Strength"`.
+		xlabel : str | None
+			Label for the x-axis. Defaults to `"Frequency (Hz)"`.
+		ylim : tuple[float, float] | None
 			Limits for the y-axis.
-		xlim : tuple[float, float], optional
+		xlim : tuple[float, float] | None
+		highlight : list[tuple[float, float]] | None
+			List of frequency intervals to highlight on the plot, each as (start, end).
+		vlines: list[float]
+			List of x values to draw vertical lines. (Eg. [10, 13.5])
+		hlines: list[float]
+			List of y values to draw horizontal lines. (Eg. [10, 13.5])
+		show_grid: bool
+			If true, shows grid.
+		stem : bool
+			If True, use a stem plot instead of a continuous line. Autorejects if signal is too large.
+		legend_loc : str | None
+			If provided, adds a legend at the specified location (e.g., "upper right" or "best").
 			Limits for the x-axis.
-		highlight : list[tuple[float, float]], optional
-			Regions to highlight on the frequency axis as shaded spans.
 		
 		Returns
 		-------
-		matplotlib.figure.Figure
-			The figure containing the plotted signal.
-		
-		Note
-		----
-		- If `ax` is provided, the plot is drawn on it; otherwise, a new figure is created.
-		- `highlight` can be used to emphasize frequency bands (e.g., formants, harmonics).
-		- Use `scale_y` to clip or normalize extreme values before plotting.
+		matplotlib.figure.Figure | None
+			The figure object containing the plot or None in case an axis is provided.
 		"""
 		
-		
-		from modusa.io import Plotter
+		from modusa.tools.plotter import Plotter
 		
 		title = title or self.title
 		
-		fig: plt.Figure | None = Plotter.plot_signal(y=self.spectrum, x=self.f, scale_y=scale_y, ax=ax, color=color, marker=marker, linestyle=linestyle, stem=stem, legend_loc=legend_loc, title=title, ylabel=ylabel, xlabel=xlabel, ylim=ylim, xlim=xlim, highlight=highlight)
+		fig: plt.Figure | None = Plotter.plot_signal(
+			y=self.spectrum,
+			x=self.f,
+			ax=ax,
+			fmt=fmt,
+			title=title,
+			label=label,
+			ylabel=ylabel,
+			xlabel=xlabel,
+			ylim=ylim,
+			xlim=xlim,
+			highlight=highlight,
+			vlines=vlines,
+			hlines=hlines,
+			show_grid=show_grid,
+			stem=stem,
+			legend_loc=legend_loc,
+		)
 		
 		return fig
 	
@@ -167,131 +196,149 @@ class FrequencyDomainSignal(ModusaSignal):
 	def __array__(self, dtype=None):
 		return np.asarray(self.spectrum, dtype=dtype)
 	
+	def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+		if method == "__call__":
+			input_arrays = [x.spectrum if isinstance(x, self.__class__) else x for x in inputs]
+			result = ufunc(*input_arrays, **kwargs)
+			return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
+		return NotImplemented
+	
 	def __add__(self, other):
 		other_data = other.spectrum if isinstance(other, self.__class__) else other
-		result = np.add(self.spectrum, other_data)
+		result = MathOps.add(self.spectrum, other_data)
 		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
 	
 	def __radd__(self, other):
-		result = np.add(other, self.spectrum)
+		other_data = other.spectrum if isinstance(other, self.__class__) else other
+		result = MathOps.add(other_data, self.spectrum)
 		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
 	
 	def __sub__(self, other):
 		other_data = other.spectrum if isinstance(other, self.__class__) else other
-		result = np.subtract(self.spectrum, other_data)
+		result = MathOps.subtract(self.spectrum, other_data)
 		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
 	
 	def __rsub__(self, other):
-		result = np.subtract(other, self.spectrum)
+		other_data = other.spectrum if isinstance(other, self.__class__) else other
+		result = MathOps.subtract(other_data, self.spectrum)
 		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
 	
 	def __mul__(self, other):
 		other_data = other.spectrum if isinstance(other, self.__class__) else other
-		result = np.multiply(self.spectrum, other_data)
+		result = MathOps.multiply(self.spectrum, other_data)
 		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
 	
 	def __rmul__(self, other):
-		result = np.multiply(other, self.spectrum)
+		other_data = other.spectrum if isinstance(other, self.__class__) else other
+		result = MathOps.multiply(other_data, self.spectrum)
 		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
 	
 	def __truediv__(self, other):
 		other_data = other.spectrum if isinstance(other, self.__class__) else other
-		result = np.true_divide(self.spectrum, other_data)
+		result = MathOps.divide(self.spectrum, other_data)
 		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
 	
 	def __rtruediv__(self, other):
-		result = np.true_divide(other, self.spectrum)
+		other_data = other.spectrum if isinstance(other, self.__class__) else other
+		result = MathOps.divide(other_data, self.spectrum)
 		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
 	
 	def __floordiv__(self, other):
 		other_data = other.spectrum if isinstance(other, self.__class__) else other
-		result = np.floor_divide(self.spectrum, other_data)
+		result = MathOps.floor_divide(self.spectrum, other_data)
 		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
 	
 	def __rfloordiv__(self, other):
-		result = np.floor_divide(other, self.spectrum)
+		other_data = other.spectrum if isinstance(other, self.__class__) else other
+		result = MathOps.floor_divide(other_data, self.spectrum)
 		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
 	
 	def __pow__(self, other):
 		other_data = other.spectrum if isinstance(other, self.__class__) else other
-		result = np.power(self.spectrum, other_data)
+		result = MathOps.power(self.spectrum, other_data)
 		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
 	
 	def __rpow__(self, other):
-		result = np.power(other, self.spectrum)
+		other_data = other.spectrum if isinstance(other, self.__class__) else other
+		result = MathOps.power(other_data, self.spectrum)
 		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
 	
 	def __abs__(self):
-		result = np.abs(self.spectrum)
-		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
-	
+		other_data = other.spectrum if isinstance(other, self.__class__) else other
+		result = MathOps.abs(self.spectrum)
+		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)	
 	
 	#--------------------------
 	# Other signal ops
 	#--------------------------
+	def abs(self) -> Self:
+		"""Compute the element-wise abs of the signal data."""
+		result = MathOps.abs(self.y)
+		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
+	
 	def sin(self) -> Self:
 		"""Compute the element-wise sine of the signal data."""
-		result = np.sin(self.spectrum)
+		result = MathOps.sin(self.y)
 		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
 	
 	def cos(self) -> Self:
 		"""Compute the element-wise cosine of the signal data."""
-		result = np.cos(self.spectrum)
+		result = MathOps.cos(self.y)
 		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
 	
 	def exp(self) -> Self:
 		"""Compute the element-wise exponential of the signal data."""
-		result = np.exp(self.spectrum)
+		result = MathOps.exp(self.y)
 		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
 	
 	def tanh(self) -> Self:
 		"""Compute the element-wise hyperbolic tangent of the signal data."""
-		result = np.tanh(self.spectrum)
+		result = MathOps.tanh(self.y)
 		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
 	
 	def log(self) -> Self:
 		"""Compute the element-wise natural logarithm of the signal data."""
-		result = np.log(self.spectrum)
+		result = MathOps.log(self.y)
 		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
 	
 	def log1p(self) -> Self:
 		"""Compute the element-wise natural logarithm of (1 + signal data)."""
-		result = np.log1p(self.spectrum)
+		result = MathOps.log1p(self.y)
 		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
 	
 	def log10(self) -> Self:
 		"""Compute the element-wise base-10 logarithm of the signal data."""
-		result = np.log10(self.spectrum)
+		result = MathOps.log10(self.y)
 		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
 	
 	def log2(self) -> Self:
 		"""Compute the element-wise base-2 logarithm of the signal data."""
-		result = np.log2(self.spectrum)
+		result = MathOps.log2(self.y)
 		return self.__class__(spectrum=result, f=self.f, t0=self.t0, title=self.title)
 	
 	
 	#--------------------------
 	# Aggregation signal ops
 	#--------------------------
-	def mean(self) -> float:
+	def mean(self) -> "np.generic":
 		"""Compute the mean of the signal data."""
-		return float(np.mean(self.spectrum))
+		return MathOps.mean(self.spectrum)
 	
-	def std(self) -> float:
+	def std(self) -> "np.generic":
 		"""Compute the standard deviation of the signal data."""
-		return float(np.std(self.spectrum))
+		return MathOps.std(self.spectrum)
 	
-	def min(self) -> float:
+	def min(self) -> "np.generic":
 		"""Compute the minimum value in the signal data."""
-		return float(np.min(self.spectrum))
+		return MathOps.min(self.spectrum)
 	
-	def max(self) -> float:
+	def max(self) -> "np.generic":
 		"""Compute the maximum value in the signal data."""
-		return float(np.max(self.spectrum))
+		return MathOps.max(self.spectrum)
 	
-	def sum(self) -> float:
+	def sum(self) -> "np.generic":
 		"""Compute the sum of the signal data."""
-		return float(np.sum(self.spectrum))
+		return MathOps.sum(self.spectrum)
 	
 	#-----------------------------------
 	# Repr
@@ -310,7 +357,7 @@ class FrequencyDomainSignal(ModusaSignal):
 			formatter={'float_kind': lambda x: f"{x:.4g}"}
 		)
 		
-		return f"Signal({arr_str}, shape={data.shape}, kind={cls})"
+		return f"Signal({arr_str}, shape={data.shape}, type={cls})"
 	
 	def __repr__(self):
 		cls = self.__class__.__name__
@@ -325,5 +372,5 @@ class FrequencyDomainSignal(ModusaSignal):
 			formatter={'float_kind': lambda x: f"{x:.4g}"}
 		)
 		
-		return f"Signal({arr_str}, shape={data.shape}, kind={cls})"
+		return f"Signal({arr_str}, shape={data.shape}, type={cls})"
 	

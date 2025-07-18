@@ -59,7 +59,8 @@ class AudioLoader(ModusaIO):
 			`Audio signal` instance with loaded audio content from YouTube.
 		"""
 
-		from modusa.io import YoutubeDownloader, AudioConverter
+		from modusa.tools.youtube_downloader import YoutubeDownloader
+		from modusa.tools.audio_converter import AudioConverter
 		import librosa
 		
 		# Download the audio in temp directory using tempfile module
@@ -115,41 +116,10 @@ class AudioLoader(ModusaIO):
 		audio_signal = AudioSignal(y=y, sr=sr, title=fp.name)
 		
 		return audio_signal
-	
+
 	
 	@staticmethod
-	def from_array(y: np.ndarray, t: np.ndarray | None = None) -> AudioSignal:
-		"""
-		Loads audio from numpy arrays.
-
-		.. code-block:: python
-			
-			from modusa.io import AudioSignalLoader
-			import numpy as np
-			
-			# From numpy array
-			audio_signal = AudioSignalLoader.from_array(
-				x=np.random.random((100, )),
-				t = None # Automatically creates time index (integer)
-			)
-
-		Parameters
-		----------
-		y: np.ndarray
-			Data of the audio signal.
-		t: np.ndarray | None
-			Corresponding time stamps of the audio signal.
-		
-		Returns
-		-------
-		AudioSignal
-			`Audio signal` instance with loaded audio content from arrays.
-		"""
-		
-		return  AudioSignal(y=y, t=t)
-	
-	@staticmethod
-	def from_array_with_sr(y: np.ndarray, sr: int) -> AudioSignal:
+	def from_array(y: np.ndarray, sr: int) -> AudioSignal:
 		"""
 		Loads audio with a given sampling rate.
 	

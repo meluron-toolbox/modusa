@@ -3,18 +3,20 @@
 
 from modusa import excp
 from modusa.decorators import validate_args_type
-from modusa.generators import ModusaGenerator
-from modusa.signals import AudioSignal
+from modusa.generators.base import ModusaGenerator
+from modusa.signals.audio_signal import AudioSignal
 import numpy as np
 
 class AudioWaveformGenerator(ModusaGenerator):
 	"""
-
+	Generates different kinds of audio waveforms particulary helpful
+	in teaching signal processing concepts and testing out newly
+	created tools.
 	"""
 	
 	#--------Meta Information----------
 	_name = "Audio Waveform Generator"
-	_description = ""
+	_description = "Generates different kind of audio waveforms."
 	_author_name = "Ankit Anand"
 	_author_email = "ankit0.anand0@gmail.com"
 	_created_at = "2025-07-07"
@@ -23,7 +25,7 @@ class AudioWaveformGenerator(ModusaGenerator):
 	@staticmethod
 	def generate_example() -> "AudioSignal":
 		"""
-		Generates a simple sine wave audio signal for demonstration purposes.
+		Generates a simple sine wave audio signal as an example.
 	
 		Returns
 		-------
@@ -65,6 +67,7 @@ class AudioWaveformGenerator(ModusaGenerator):
 		y = np.random.uniform(low=-1.0, high=1.0, size=num_samples)  # use uniform [-1, 1] for audio-like signal
 		
 		signal = AudioSignal(y=y, t=t, title="Random")
+		
 		return signal
 	
 	@staticmethod
@@ -77,7 +80,8 @@ class AudioWaveformGenerator(ModusaGenerator):
 		sr: int = 1000,
 	) -> "AudioSignal":
 		"""
-		Generates a sinusoidal AudioSignal with specified amplitude, frequency, phase, duration, and sample rate.
+		Generates a sinusoid audio signal with specified
+		amplitude, frequency, phase, duration, and sample rate.
 	
 		Parameters
 		----------
@@ -95,14 +99,15 @@ class AudioWaveformGenerator(ModusaGenerator):
 		Returns
 		-------
 		AudioSignal
-			A time-domain sinusoidal signal with the given parameters.
+			A sinusoidal signal with the given parameters.
 		"""
 		A, f, phi, duration, sr = float(A), float(f), float(phi), float(duration), int(sr)
 		
 		t = np.arange(0, duration, 1 / sr)
 		y = A * np.sin(2 * np.pi * f * t + phi)
 		
-		signal = AudioSignal(y=y, sr=sr, title="Sinusoid")
+		signal = AudioSignal(y=y, sr=sr, title=f"Sinusoid ({f} Hz)")
+		
 		return signal
 	
 	@staticmethod
@@ -115,7 +120,8 @@ class AudioWaveformGenerator(ModusaGenerator):
 		sr: int = 1000,
 	) -> "AudioSignal":
 		"""
-		Generates a square wave AudioSignal with specified amplitude, frequency, phase, duration, and sample rate.
+		Generates a square wave audio signal with specified
+		amplitude, frequency, phase, duration, and sample rate.
 	
 		Parameters
 		----------
@@ -140,7 +146,8 @@ class AudioWaveformGenerator(ModusaGenerator):
 		
 		y = A * np.sign(np.sin(2 * np.pi * f * t + phi))
 		
-		signal = AudioSignal(y=y, sr=sr, title="Square")
+		signal = AudioSignal(y=y, sr=sr, title=f"Square ({f} Hz)")
+		
 		return signal
 	
 	
@@ -181,7 +188,7 @@ class AudioWaveformGenerator(ModusaGenerator):
 		phase_offset = phi / (2 * np.pi)
 		y = A * (2 * ((f * t + phase_offset) % 1) - 1)
 		
-		signal = AudioSignal(y=y, sr=sr, title="Sawtooth")
+		signal = AudioSignal(y=y, sr=sr, title=f"Sawtooth ({f} Hz)")
 		return signal
 	
 	
@@ -195,7 +202,8 @@ class AudioWaveformGenerator(ModusaGenerator):
 		sr: int = 1000,
 	) -> "AudioSignal":
 		"""
-		Generates a triangle wave AudioSignal with specified amplitude, frequency, phase, duration, and sample rate.
+		Generates a triangle wave AudioSignal with specified
+		amplitude, frequency, phase, duration, and sample rate.
 	
 		Parameters
 		----------
@@ -222,6 +230,7 @@ class AudioWaveformGenerator(ModusaGenerator):
 		# Triangle wave formula: 2 * abs(2 * frac(x) - 1) - 1 scaled to amplitude
 		y = A * (2 * np.abs(2 * ((f * t + phase_offset) % 1) - 1) - 1)
 		
-		signal = AudioSignal(y=y, sr=sr, title="Triangle")
+		signal = AudioSignal(y=y, sr=sr, title=f"Triangle ({f} Hz)")
+		
 		return signal
 	

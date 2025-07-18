@@ -4,7 +4,7 @@
 from modusa import excp
 from modusa.decorators import immutable_property, validate_args_type
 from modusa.signals.base import ModusaSignal
-from modusa.signals.signal_ops import SignalOps
+from modusa.tools.math_ops import MathOps
 from typing import Self, Any
 import numpy as np
 import matplotlib.pyplot as plt
@@ -18,10 +18,6 @@ class AudioSignal(ModusaSignal):
 	----
 	- It is highly recommended to use  :class:`~modusa.io.AudioLoader` to instantiate an object of this class.
 	- This class assumes audio is mono (1D numpy array).
-	- Either `sr` (sampling rate) or `t` (time axis) must be provided.
-	- If both `t` and `sr` are given, `t` takes precedence for timing and `sr` is computed from that.
-	- If `t` is provided but `sr` is missing, `sr` is estimated from the `t`.
-	- If `t` is provided, the starting time `t0` will be overridden by `t[0]`.
 
 	Parameters
 	----------
@@ -29,10 +25,8 @@ class AudioSignal(ModusaSignal):
 		1D numpy array representing the audio signal.
 	sr : int | None
 		Sampling rate in Hz. Required if `t` is not provided.
-	t : np.ndarray | None
-		Optional time axis corresponding to `y`. Must be the same length as `y`.
 	t0 : float, optional
-		Starting time in seconds. Defaults to 0.0. Set to `t[0]` if `t` is provided.
+		Starting time in seconds. Defaults to 0.0.
 	title : str | None, optional
 		Optional title for the signal. Defaults to `"Audio Signal"`.
 	"""
@@ -46,22 +40,12 @@ class AudioSignal(ModusaSignal):
 	#----------------------------------
 	
 	@validate_args_type()
-	def __init__(self, y: np.ndarray, sr: int | None = None, t: np.ndarray | None = None, t0: float = 0.0, title: str | None = None):
-		
-		if y.ndim != 1:
+	def __init__(self, y: np.ndarray, sr: int, t0: float = 0.0, title: str | None = None):
+		"""
+		Loads the audio signal.
+		"""
+		if y.ndim != 1: # Mono signal only
 			raise excp.InputValueError(f"`y` must have 1 dimension, not {y.ndim}.")
-			
-		if t is not None:
-			if len(t) != len(y):
-				raise excp.InputValueError("Length of `t` must match `y`.")
-			if sr is None:
-				# Estimate sr from t if not provided
-				dt = t[1] - t[0]
-				sr = round(1.0 / dt)  # Round to avoid floating-point drift
-			t0 = float(t[0])  # Override t0 from first timestamp
-			
-		elif sr is None:
-			raise excp.InputValueError("Either `sr` or `t` must be provided.")
 			
 		self._y = y
 		self._sr = sr
@@ -73,59 +57,82 @@ class AudioSignal(ModusaSignal):
 	#----------------------
 	@immutable_property("Create a new object instead.")
 	def y(self) -> np.ndarray:
-		"""Audio data."""
+		"""Returns audio data."""
 		return self._y
 	
 	@immutable_property("Create a new object instead.")
 	def sr(self) -> np.ndarray:
-		"""Sampling rate of the audio."""
+		"""Returns sampling rate of the audio."""
 		return self._sr
 	
 	@immutable_property("Create a new object instead.")
 	def t0(self) -> np.ndarray:
-		"""Start timestamp of the audio."""
+		"""Returns start timestamp of the audio."""
 		return self._t0
 	
+	#----------------------
+	# Derived Properties
+	#----------------------
 	@immutable_property("Create a new object instead.")
 	def t(self) -> np.ndarray:
 		"""Timestamp array of the audio."""
 		return self.t0 + np.arange(len(self.y)) / self.sr 
 	
 	@immutable_property("Mutation not allowed.")
-	def Ts(self) -> int:
+	def Ts(self) -> float:
 		"""Sampling Period of the audio."""
-		return 1.0 / self.sr
+		return 1. / self.sr
 
 	@immutable_property("Mutation not allowed.")
-	def duration(self) -> int:
+	def duration(self) -> float:
 		"""Duration of the audio."""
 		return len(self.y) / self.sr
 	
 	@immutable_property("Mutation not allowed.")
-	def info(self) -> None:
+	def shape(self) -> tuple:
+		"""Shape of the audio signal."""
+		return self.y.shape
+	
+	@immutable_property("Mutation not allowed.")
+	def ndim(self) -> int:
+		"""Dimension of the audio."""
+		return self.y.ndim
+	
+	@immutable_property("Mutation not allowed.")
+	def __len__(self) -> int:
+		"""Dimension of the audio."""
+		return len(self.y)
+	
+	#----------------------
+	# Methods
+	#----------------------
+	
+	def print_info(self) -> None:
 		"""Prints info about the audio."""
 		print("-" * 50)
 		print(f"{'Title':<20}: {self.title}")
-		print(f"{'Kind':<20}: {self._name}")
+		print(f"{'Type':<20}: {self._name}")
 		print(f"{'Duration':<20}: {self.duration:.2f} sec")
 		print(f"{'Sampling Rate':<20}: {self.sr} Hz")
 		print(f"{'Sampling Period':<20}: {(self.Ts*1000) :.4f} ms")
 		print("-" * 50)
 	
-	#----------------------
-	# Methods
-	#----------------------
 	def __getitem__(self, key):
-		if isinstance(key, (int, slice)):
-			# Basic slicing of 1D signals
-			sliced_data = self._data[key]
-			sliced_axis = self._axes[0][key]  # assumes only 1 axis
-			
-			return self.replace(data=sliced_data, axes=(sliced_axis, ))
-		else:
-			raise TypeError(
-				f"Indexing with type {type(key)} is not supported. Use int or slice."
-			)
+		sliced_y = self.y[key]
+		
+		# If key is a single integer, return just the sample value
+		if isinstance(key, int):
+			return sliced_y
+	
+		# Otherwise, slicing: use self.t[key][0] as new t0
+		new_t0 = self.t[key][0]
+	
+		return self.__class__(
+			y=sliced_y,
+			sr=self.sr,
+			t0=new_t0,
+			title=f"{self.title}[{key}]"
+		)
 			
 	@validate_args_type()
 	def crop(self, t_min: int | float | None = None, t_max: int | float | None = None) -> "AudioSignal":
@@ -152,7 +159,7 @@ class AudioSignal(ModusaSignal):
 		"""
 		y = self.y
 		t = self.t
-		
+
 		mask = np.ones_like(t, dtype=bool)
 		if t_min is not None:
 			mask &= (t >= t_min)
@@ -161,27 +168,28 @@ class AudioSignal(ModusaSignal):
 			
 		cropped_y = y[mask]
 		new_t0 = t[mask][0] if np.any(mask) else self.t0  # fallback to original t0 if mask is empty
-		
+
 		return self.__class__(y=cropped_y, sr=self.sr, t0=new_t0, title=self.title)
 	
 	
 	@validate_args_type()
 	def plot(
 		self,
-		scale_y: tuple[float, float] | None = None,
 		ax: plt.Axes | None = None,
-		color: str = "b",
-		marker: str | None = None,
-		linestyle: str | None = None,
-		stem: bool | None = False,
-		legend_loc: str | None = None,
+		fmt: str = "k-",
 		title: str | None = None,
+		label: str | None = None,
 		ylabel: str | None = "Amplitude",
 		xlabel: str | None = "Time (sec)",
 		ylim: tuple[float, float] | None = None,
 		xlim: tuple[float, float] | None = None,
 		highlight: list[tuple[float, float]] | None = None,
-	) -> plt.Figure:
+		vlines: list[float] | None = None,
+		hlines: list[float] | None = None,
+		show_grid: bool = False,
+		stem: bool = False,
+		legend_loc: str | None = None,
+	) -> plt.Figure | None:
 		"""
 		Plot the audio waveform using matplotlib.
 		
@@ -193,44 +201,64 @@ class AudioSignal(ModusaSignal):
 		
 		Parameters
 		----------
-		scale_y : tuple of float, optional
-			Range to scale the y-axis data before plotting. Useful for normalization.
-		ax : matplotlib.axes.Axes, optional
+		ax : matplotlib.axes.Axes | None
 			Pre-existing axes to plot into. If None, a new figure and axes are created.
-		color : str, optional
-			Color of the waveform line. Default is `"b"` (blue).
-		marker : str or None, optional
-			Marker style for each point. Follows matplotlib marker syntax.
-		linestyle : str or None, optional
-			Line style for the waveform. Follows matplotlib linestyle syntax.
-		stem : bool, optional
-			If True, use a stem plot instead of a continuous line.
-		legend_loc : str or None, optional
-			If provided, adds a legend at the specified location (e.g., "upper right").
-		title : str or None, optional
+		fmt : str | None
+			Format of the plot as per matplotlib standards (Eg. "k-" or "blue--o)
+		title : str | None
 			Plot title. Defaults to the signal’s title.
-		ylabel : str or None, optional
+		label: str | None
+			Label for the plot, shown as legend.
+		ylabel : str | None
 			Label for the y-axis. Defaults to `"Amplitude"`.
-		xlabel : str or None, optional
+		xlabel : str | None
 			Label for the x-axis. Defaults to `"Time (sec)"`.
-		ylim : tuple of float or None, optional
+		ylim : tuple[float, float] | None
 			Limits for the y-axis.
-		xlim : tuple of float or None, optional
-			Limits for the x-axis.
-		highlight : list of tuple of float or None, optional
+		xlim : tuple[float, float] | None
+		highlight : list[tuple[float, float]] | None
 			List of time intervals to highlight on the plot, each as (start, end).
+		vlines: list[float]
+			List of x values to draw vertical lines. (Eg. [10, 13.5])
+		hlines: list[float]
+			List of y values to draw horizontal lines. (Eg. [10, 13.5])
+		show_grid: bool
+			If true, shows grid.
+		stem : bool
+			If True, use a stem plot instead of a continuous line. Autorejects if signal is too large.
+		legend_loc : str | None
+			If provided, adds a legend at the specified location (e.g., "upper right" or "best").
+			Limits for the x-axis.
 		
 		Returns
 		-------
-		matplotlib.figure.Figure
-			The figure object containing the plot.
+		matplotlib.figure.Figure | None
+			The figure object containing the plot or None in case an axis is provided.
 		"""
 		
-		from modusa.io import Plotter
+		from modusa.tools.plotter import Plotter
 		
-		title = title or self.title
+		if title is None:
+			title = self.title
 		
-		fig: plt.Figure | None = Plotter.plot_signal(y=self.y, x=self.t, scale_y=scale_y, ax=ax, color=color, marker=marker, linestyle=linestyle, stem=stem, legend_loc=legend_loc, title=title, ylabel=ylabel, xlabel=xlabel, ylim=ylim, xlim=xlim, highlight=highlight)
+		fig: plt.Figure | None = Plotter.plot_signal(
+			y=self.y,
+			x=self.t,
+			ax=ax,
+			fmt=fmt,
+			title=title,
+			label=label,
+			ylabel=ylabel,
+			xlabel=xlabel,
+			ylim=ylim,
+			xlim=xlim,
+			highlight=highlight,
+			vlines=vlines,
+			hlines=hlines,
+			show_grid=show_grid,
+			stem=stem,
+			legend_loc=legend_loc,
+		)
 		
 		return fig
 	
@@ -257,14 +285,14 @@ class AudioSignal(ModusaSignal):
 		IPython.display.Audio
 			An interactive audio player widget for Jupyter environments.
 
-		Note
-		----
-		- This method uses :class:`~modusa.io.AudioPlayer` to render an interactive audio player.
-		- Optionally, specific regions of the signal can be played back, each defined by a (start, end) time pair.
+		See Also
+		--------
+		:class:`~modusa.tools.audio_player.AudioPlayer`
 		"""
 		
-		from modusa.io import AudioPlayer
-		audio_player = AudioPlayer.play(y=self.y, sr=self.sr, regions=regions, title=self.title)
+		from modusa.tools.audio_player import AudioPlayer
+		title = title or self.title
+		audio_player = AudioPlayer.play(y=self.y, sr=self.sr, regions=regions, title=title)
 		
 		return audio_player
 	
@@ -294,14 +322,17 @@ class AudioSignal(ModusaSignal):
 		Spectrogram
 			Spectrogram object containing S (complex STFT), t (time bins), and f (frequency bins).
 		"""
+		import warnings
+		warnings.filterwarnings("ignore", category=UserWarning, module="librosa.core.intervals")
+		
 		from modusa.signals.spectrogram import Spectrogram
 		import librosa
 		
 		S = librosa.stft(self.y, n_fft=n_fft, win_length=win_length, hop_length=hop_length, window=window)
 		f = librosa.fft_frequencies(sr=self.sr, n_fft=n_fft)
 		t = librosa.frames_to_time(np.arange(S.shape[1]), sr=self.sr, hop_length=hop_length)
-		t += self.t0
-		spec = Spectrogram(S=S, f=f, t=t)
+		frame_rate = self.sr / hop_length
+		spec = Spectrogram(S=S, f=f, frame_rate=frame_rate, t0=self.t0)
 		if self.title != self._name: # Means title of the audio was reset so we pass that info to spec
 			spec.title = self.title
 			
@@ -316,137 +347,163 @@ class AudioSignal(ModusaSignal):
 		return np.asarray(self.y, dtype=dtype)
 	
 	def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
-		if ufunc == np.abs and method == "__call__":
-			# Extract the actual array from self or others
-			result = ufunc(self.y, **kwargs)
-			return self.__class__(y=result, sr=self.sr, title=f"{self.title} (abs)")
+		if method == "__call__":
+			input_arrays = [x.y if isinstance(x, self.__class__) else x for x in inputs]
+			result = ufunc(*input_arrays, **kwargs)
+			return self.__class__(y=result, sr=self.sr, title=f"{self.title}")
 		return NotImplemented
 	
 	def __add__(self, other):
 		other_data = other.y if isinstance(other, self.__class__) else other
-		result = np.add(self.y, other_data)
+		result = MathOps.add(self.y, other_data)
 		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
 
 	def __radd__(self, other):
-		result = np.add(other, self.y)
+		other_data = other.y if isinstance(other, self.__class__) else other
+		result = MathOps.add(other_data, self.y)
 		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
 
 	def __sub__(self, other):
 		other_data = other.y if isinstance(other, self.__class__) else other
-		result = np.subtract(self.y, other_data)
+		result = MathOps.subtract(self.y, other_data)
 		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
 
 	def __rsub__(self, other):
-		result = np.subtract(other, self.y)
+		other_data = other.y if isinstance(other, self.__class__) else other
+		result = MathOps.subtract(other_data, self.y)
 		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
 
 	def __mul__(self, other):
 		other_data = other.y if isinstance(other, self.__class__) else other
-		result = np.multiply(self.y, other_data)
+		result = MathOps.multiply(self.y, other_data)
 		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
 
 	def __rmul__(self, other):
-		result = np.multiply(other, self.y)
+		other_data = other.y if isinstance(other, self.__class__) else other
+		result = MathOps.multiply(other_data, self.y)
 		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
 
 	def __truediv__(self, other):
 		other_data = other.y if isinstance(other, self.__class__) else other
-		result = np.true_divide(self.y, other_data)
+		result = MathOps.divide(self.y, other_data)
 		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
 
 	def __rtruediv__(self, other):
-		result = np.true_divide(other, self.y)
+		other_data = other.y if isinstance(other, self.__class__) else other
+		result = MathOps.divide(other_data, self.y)
 		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
 
 	def __floordiv__(self, other):
-		other_data = other._y if isinstance(other, self.__class__) else other
-		result = np.floor_divide(self.y, other_data)
+		other_data = other.y if isinstance(other, self.__class__) else other
+		result = MathOps.floor_divide(self.y, other_data)
 		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
 
 	def __rfloordiv__(self, other):
-		result = np.floor_divide(other, self.y)
+		other_data = other.y if isinstance(other, self.__class__) else other
+		result = MathOps.floor_divide(other_data, self.y)
 		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
 
 	def __pow__(self, other):
 		other_data = other.y if isinstance(other, self.__class__) else other
-		result = np.power(self.y, other_data)
+		result = MathOps.power(self.y, other_data)
 		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
 
 	def __rpow__(self, other):
-		result = np.power(other, self.y)
+		other_data = other.y if isinstance(other, self.__class__) else other
+		result = MathOps.power(other_data, self.y)
 		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
 
 	def __abs__(self):
-		result = np.abs(self.y)
+		other_data = other.y if isinstance(other, self.__class__) else other
+		result = MathOps.abs(self.y)
 		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+
+	def __or__(self, other):
+		if not isinstance(other, self.__class__):
+			raise excp.InputTypeError(f"Can only concatenate with another {self.__class__.__name__}")
+			
+		if self.sr != other.sr:
+			raise excp.InputValueError(f"Cannot concatenate: Sampling rates differ ({self.sr} vs {other.sr})")
+			
+		# Concatenate raw audio data
+		y_cat = np.concatenate([self.y, other.y])
+	
+		# Preserve t0 of the first signal
+		new_title = f"{self.title} | {other.title}"
+		return self.__class__(y=y_cat, sr=self.sr, t0=self.t0, title=new_title)
 	
 	
 	#--------------------------
 	# Other signal ops
 	#--------------------------
+	def abs(self) -> Self:
+		"""Compute the element-wise abs of the signal data."""
+		result = MathOps.abs(self.y)
+		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
+	
 	def sin(self) -> Self:
 		"""Compute the element-wise sine of the signal data."""
-		result = np.sin(self.y)
+		result = MathOps.sin(self.y)
 		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
 
 	def cos(self) -> Self:
 		"""Compute the element-wise cosine of the signal data."""
-		result = np.cos(self.y)
+		result = MathOps.cos(self.y)
 		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
 
 	def exp(self) -> Self:
 		"""Compute the element-wise exponential of the signal data."""
-		result = np.exp(self.y)
+		result = MathOps.exp(self.y)
 		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
 
 	def tanh(self) -> Self:
 		"""Compute the element-wise hyperbolic tangent of the signal data."""
-		result = np.tanh(self.y)
+		result = MathOps.tanh(self.y)
 		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
 
 	def log(self) -> Self:
 		"""Compute the element-wise natural logarithm of the signal data."""
-		result = np.log(self.y)
+		result = MathOps.log(self.y)
 		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
 
 	def log1p(self) -> Self:
 		"""Compute the element-wise natural logarithm of (1 + signal data)."""
-		result = np.log1p(self.y)
+		result = MathOps.log1p(self.y)
 		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
 
 	def log10(self) -> Self:
 		"""Compute the element-wise base-10 logarithm of the signal data."""
-		result = np.log10(self.y)
+		result = MathOps.log10(self.y)
 		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
 
 	def log2(self) -> Self:
 		"""Compute the element-wise base-2 logarithm of the signal data."""
-		result = np.log2(self.y)
+		result = MathOps.log2(self.y)
 		return self.__class__(y=result, sr=self.sr, t0=self.t0, title=self.title)
 	
 
 	#--------------------------
 	# Aggregation signal ops
 	#--------------------------
-	def mean(self) -> float:
+	def mean(self) -> "np.generic":
 		"""Compute the mean of the signal data."""
-		return float(np.mean(self.y))
+		return MathOps.mean(self.y)
 	
-	def std(self) -> float:
+	def std(self) -> "np.generic":
 		"""Compute the standard deviation of the signal data."""
-		return float(np.std(self.y))
+		return MathOps.std(self.y)
 	
-	def min(self) -> float:
+	def min(self) -> "np.generic":
 		"""Compute the minimum value in the signal data."""
-		return float(np.min(self.y))
+		return MathOps.min(self.y)
 	
-	def max(self) -> float:
+	def max(self) -> "np.generic":
 		"""Compute the maximum value in the signal data."""
-		return float(np.max(self.y))
+		return MathOps.max(self.y)
 	
-	def sum(self) -> float:
+	def sum(self) -> "np.generic":
 		"""Compute the sum of the signal data."""
-		return float(np.sum(self.y))
+		return MathOps.sum(self.y)
 	
 	#-----------------------------------
 	# Repr
@@ -465,7 +522,7 @@ class AudioSignal(ModusaSignal):
 			formatter={'float_kind': lambda x: f"{x:.4g}"}
 		)
 		
-		return f"Signal({arr_str}, shape={data.shape}, kind={cls})"
+		return f"Signal({arr_str}, shape={data.shape}, type={cls})"
 	
 	def __repr__(self):
 		cls = self.__class__.__name__
@@ -480,4 +537,4 @@ class AudioSignal(ModusaSignal):
 			formatter={'float_kind': lambda x: f"{x:.4g}"}
 		)
 		
-		return f"Signal({arr_str}, shape={data.shape}, kind={cls})"
+		return f"Signal({arr_str}, shape={data.shape}, type={cls})"

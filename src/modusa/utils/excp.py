@@ -4,73 +4,40 @@
 #----------------------------------------
 # Base class errors
 #----------------------------------------
-class MusaBaseError(Exception):
+class ModusaBaseError(Exception):
 	"""
 	Ultimate base class for any kind of custom errors.
 	"""
 	pass
 
-class TypeError(MusaBaseError):
+class TypeError(ModusaBaseError):
 	pass
 	
-class InputError(MusaBaseError):
+class InputError(ModusaBaseError):
 	"""
 	Any Input type error.
 	"""
 
-class InputTypeError(MusaBaseError):
+class InputTypeError(ModusaBaseError):
 	"""
 	Any Input type error.
 	"""
 
-class InputValueError(MusaBaseError):
+class InputValueError(ModusaBaseError):
 	"""
 	Any Input type error.
 	"""
 	
-class ImmutableAttributeError(MusaBaseError):
+class ImmutableAttributeError(ModusaBaseError):
 	"""Raised when attempting to modify an immutable attribute."""
 	pass
 	
-class FileNotFoundError(MusaBaseError):
+class FileNotFoundError(ModusaBaseError):
 	"""Raised when file does not exist."""
 	pass
 	
-	
-class PluginInputError(MusaBaseError):
+class PluginInputError(ModusaBaseError):
 	pass
 
-class PluginOutputError(MusaBaseError):
-	pass
-	
-
-
-class SignalOpError(MusaBaseError):
-	pass
-	
-class AttributeNotFoundError(MusaBaseError):
-	pass
-	
-class ParsingError(MusaBaseError):
-	"""
-	Base class for any parsing related issues
-	"""
-	pass
-
-class ValidationError(MusaBaseError):
-	"""
-	Base class for all input validation error
-	"""
-	pass
-
-class GenerationError(MusaBaseError):
-	"""
-	Error when generation fails
-	"""
-	pass
-
-class FileLoadingError(MusaBaseError):
-	"""
-	Error loading a file
-	"""
+class PluginOutputError(ModusaBaseError):
 	pass

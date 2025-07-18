@@ -4,6 +4,7 @@
 from modusa import excp
 from modusa.decorators import immutable_property, validate_args_type
 from modusa.signals.base import ModusaSignal
+from modusa.tools.math_ops import MathOps
 from typing import Self, Any
 import numpy as np
 import matplotlib.pyplot as plt
@@ -33,35 +34,30 @@ class Spectrogram(ModusaSignal):
 	#----------------------------------
 	
 	@validate_args_type()
-	def __init__(self, S: np.ndarray, f: np.ndarray, t: np.ndarray, title: str | None = None):
-		super().__init__() # Instantiating `ModusaSignal` class
+	def __init__(self, S: np.ndarray, f: np.ndarray, frame_rate: float, t0: float = 0.0, title: str | None = None):
+		super().__init__()
 		
 		if S.ndim != 2:
-			raise excp.InputValueError(f"`S` must have 2 dimension, got {S.ndim}.")
+			raise excp.InputValueError(f"`S` must have 2 dimensions, got {S.ndim}.")
 		if f.ndim != 1:
 			raise excp.InputValueError(f"`f` must have 1 dimension, got {f.ndim}.")
-		if t.ndim != 1:
-			raise excp.InputValueError(f"`t` must have 1 dimension, got {t.ndim}.")
-			
-		if t.shape[0] != S.shape[1] or f.shape[0] != S.shape[0]:
-			raise excp.InputValueError(f"`f` and `t` shape do not match with `S` {S.shape}, got {(f.shape[0], t.shape[0])}")
-			
+		if f.shape[0] != S.shape[0]:
+			raise excp.InputValueError(
+				f"Shape mismatch between `S` and `f`: expected {S.shape[0]}, got {f.shape[0]}"
+			)
 		if S.shape[1] == 0:
-			raise excp.InputValueError("`S` must have at least one time frame")
+			raise excp.InputValueError("`S` must have at least one time frame.")
 			
-		if t.shape[0] >= 2:
-			dts = np.diff(t)
-			if not np.allclose(dts, dts[0]):
-				raise excp.InputValueError("`t` must be equally spaced")
-		
 		self._S = S
 		self._f = f
-		self._t = t
+		self._frame_rate = float(frame_rate)
+		self._t0 = float(t0)
 		self.title = title or self._name
-		
+
 	#----------------------
 	# Properties
 	#----------------------
+	
 	@immutable_property("Create a new object instead.")
 	def S(self) -> np.ndarray:
 		"""Spectrogram matrix (freq × time)."""
@@ -73,9 +69,24 @@ class Spectrogram(ModusaSignal):
 		return self._f
 	
 	@immutable_property("Create a new object instead.")
+	def frame_rate(self) -> np.ndarray:
+		"""Frequency axis."""
+		return self._frame_rate
+	
+	@immutable_property("Create a new object instead.")
+	def t0(self) -> np.ndarray:
+		"""Frequency axis."""
+		return self._t0
+	
+	#----------------------
+	# Derived Properties
+	#----------------------
+	
+	@immutable_property("Create a new object instead.")
 	def t(self) -> np.ndarray:
 		"""Time axis."""
-		return self._t
+		n_frames = self._S.shape[1]
+		return np.arange(n_frames) / self.frame_rate + self.t0
 	
 	@immutable_property("Read only property.")
 	def shape(self) -> np.ndarray:
@@ -87,12 +98,51 @@ class Spectrogram(ModusaSignal):
 		"""Number of dimensions (always 2)."""
 		return self.S.ndim
 	
-	@immutable_property("Mutation not allowed.")
-	def info(self) -> None:
-		"""Print key information about the spectrogram signal."""
-		time_resolution = self.t[1] - self.t[0]
-		n_freq_bins = self.S.shape[0]
+	@property
+	def magnitude(self) -> "Spectrogram":
+		"""Return a new Spectrogram with magnitude values."""
+		mag = np.abs(self.S)
+		return self.__class__(S=mag, f=self.f, frame_rate=self.frame_rate, title=self.title)
+
+	@property
+	def power(self) -> "Spectrogram":
+		"""Return a new Spectrogram with power (magnitude squared)."""
+		power = np.abs(self.S) ** 2
+		return self.__class__(S=power, f=self.f, frame_rate=self.frame_rate, title=self.title)
+
+	@property
+	def angle(self) -> "Spectrogram":
+		"""Return a new Spectrogram with phase angle (in radians)."""
+		angle = np.angle(self.S)
+		return self.__class__(S=angle, f=self.f, frame_rate=self.frame_rate, title=self.title)
+
+	@property
+	def real(self) -> "Spectrogram":
+		"""Return a new Spectrogram with real part."""
+		return self.__class__(S=self.S.real, f=self.f, frame_rate=self.frame_rate, title=self.title)
+
+	@property
+	def imag(self) -> "Spectrogram":
+		"""Return a new Spectrogram with imaginary part."""
+		return self.__class__(S=self.S.imag, f=self.f, frame_rate=self.frame_rate, title=self.title)
+
+	@property
+	def phase(self) -> "Spectrogram":
+		"""Return a new Spectrogram with normalized phase."""
+		phase = self.S / (np.abs(self.S) + 1e-10)  # Avoid division by zero
+		return self.__class__(S=phase, f=self.f, frame_rate=self.frame_rate, title=self.title)
 	
+	
+		
+	#------------------------
+	# Useful tools
+	#------------------------
+	
+	def print_info(self) -> None:
+		"""Print key information about the spectrogram signal."""
+		time_resolution = 1.0 / self.frame_rate
+		n_freq_bins = self.S.shape[0]
+		
 		# Estimate NFFT size
 		nfft = (n_freq_bins - 1) * 2
 		
@@ -100,15 +150,10 @@ class Spectrogram(ModusaSignal):
 		print(f"{'Title':<20}: {self.title}")
 		print(f"{'Kind':<20}: {self._name}")
 		print(f"{'Shape':<20}: {self.S.shape} (freq bins × time frames)")
+		print(f"{'Frame Rate':<20}: {self.frame_rate} (frames / sec)")
 		print(f"{'Time resolution':<20}: {time_resolution:.4f} sec ({time_resolution * 1000:.2f} ms)")
 		print(f"{'Freq resolution':<20}: {(self.f[1] - self.f[0]):.2f} Hz")
 		print("-"*50)
-	#------------------------
-	
-		
-	#------------------------
-	# Useful tools
-	#------------------------
 
 	def __getitem__(self, key: tuple[int | slice, int | slice]) -> "Spectrogram | FrequencyDomainSignal | TimeDomainSignal":
 		"""
@@ -139,12 +184,7 @@ class Spectrogram(ModusaSignal):
 					sliced_data = np.asarray(sliced_data).flatten()
 					sliced_f = np.asarray(sliced_f)
 					t0 = float(self.t[t_key])
-					return FrequencyDomainSignal(
-						spectrum=sliced_data,
-						f=sliced_f,
-						t0=t0,
-						title=self.title + f" [t = {t0:.2f} sec]"
-					)
+					return FrequencyDomainSignal(spectrum=sliced_data, f=sliced_f, t0=t0, title=self.title + f" [t = {t0:.2f} sec]")
 		
 			# Case 3: time slice at a single frequency (→ TimeDomainSignal)
 			elif isinstance(f_key, int):
@@ -153,21 +193,11 @@ class Spectrogram(ModusaSignal):
 				sr = 1.0 / np.mean(np.diff(self.t))  # assume uniform time axis
 				t0 = float(self.t[0])
 				f_val = float(self.f[f_key])
-				return TimeDomainSignal(
-					y=sliced_data,
-					sr=sr,
-					t0=t0,
-					title=self.title + f" [f = {f_val:.2f} Hz]"
-				)
+				return TimeDomainSignal(y=sliced_data, sr=sr, t0=t0, title=self.title + f" [f = {f_val:.2f} Hz]")
 		
 			# Case 4: 2D slice → Spectrogram
 			else:
-				return self.__class__(
-					S=sliced_data,
-					f=sliced_f,
-					t=sliced_t,
-					title=self.title
-				)
+				return self.__class__(S=sliced_data, f=sliced_f, frame_rate=self.frame_rate, t0=sliced_t[0], title=self.title)
 		
 		raise TypeError("Expected 2D indexing: signal[f_idx, t_idx]")
 	
@@ -215,12 +245,11 @@ class Spectrogram(ModusaSignal):
 		cropped_f = f[f_mask]
 		cropped_t = t[t_mask]
 		
-		return self.__class__(S=cropped_S, f=cropped_f, t=cropped_t, title=self.title)
+		return self.__class__(S=cropped_S, f=cropped_f, frame_rate=self.frame_rate, t0=cropped_t[0], title=self.title)
 	
 	
 	def plot(
 		self,
-		log_compression_factor: int | float | None = None,
 		ax: plt.Axes | None = None,
 		cmap: str = "gray_r",
 		title: str | None = None,
@@ -230,7 +259,10 @@ class Spectrogram(ModusaSignal):
 		ylim: tuple[float, float] | None = None,
 		xlim: tuple[float, float] | None = None,
 		highlight: list[tuple[float, float, float, float]] | None = None,
+		vlines: list | None = None,
+		hlines: list | None = None,
 		origin: str = "lower",  # or "lower"
+		gamma: int | float | None = None,
 		show_colorbar: bool = True,
 		cax: plt.Axes | None = None,
 		show_grid: bool = True,
@@ -284,7 +316,7 @@ class Spectrogram(ModusaSignal):
 		matplotlib.figure.Figure
 			The figure object containing the plot.
 		"""
-		from modusa.io import Plotter
+		from modusa.tools.plotter import Plotter
 		
 		title = title or self.title
 	
@@ -292,7 +324,6 @@ class Spectrogram(ModusaSignal):
 			M=self.S,
 			r=self.f,
 			c=self.t,
-			log_compression_factor=log_compression_factor,
 			ax=ax,
 			cmap=cmap,
 			title=title,
@@ -302,7 +333,10 @@ class Spectrogram(ModusaSignal):
 			rlim=ylim,
 			clim=xlim,
 			highlight=highlight,
+			vlines=vlines,
+			hlines=hlines,
 			origin=origin,
+			gamma=gamma,
 			show_colorbar=show_colorbar,
 			cax=cax,
 			show_grid=show_grid,
@@ -321,114 +355,179 @@ class Spectrogram(ModusaSignal):
 	
 	def __add__(self, other):
 		other_data = other.S if isinstance(other, self.__class__) else other
-		result = np.add(self.S, other_data)
-		return self.__class__(S=result, f=self.f, t=self.t, title=self.title)
+		result = MathOps.add(self.S, other_data)
+		return self.__class__(S=result, f=self.f, frame_rate=self.frame_rate, t0=self.t0, title=self.title)
 	
 	def __radd__(self, other):
-		result = np.add(other, self.S)
-		return self.__class__(S=result, f=self.f, t=self.t, title=self.title)
+		result = MathOps.add(other, self.S)
+		return self.__class__(S=result, f=self.f, frame_rate=self.frame_rate, t0=self.t0, title=self.title)
 	
 	def __sub__(self, other):
 		other_data = other.S if isinstance(other, self.__class__) else other
-		result = np.subtract(self.S, other_data)
-		return self.__class__(S=result, f=self.f, t=self.t, title=self.title)
+		result = MathOps.subtract(self.S, other_data)
+		return self.__class__(S=result, f=self.f, frame_rate=self.frame_rate, t0=self.t0, title=self.title)
 	
 	def __rsub__(self, other):
-		result = np.subtract(other, self.S)
-		return self.__class__(S=result, f=self.f, t=self.t, title=self.title)
+		result = MathOps.subtract(other, self.S)
+		return self.__class__(S=result, f=self.f, frame_rate=self.frame_rate, t0=self.t0, title=self.title)
 	
 	def __mul__(self, other):
 		other_data = other.S if isinstance(other, self.__class__) else other
-		result = np.multiply(self.S, other_data)
-		return self.__class__(S=result, f=self.f, t=self.t, title=self.title)
+		result = MathOps.multiply(self.S, other_data)
+		return self.__class__(S=result, f=self.f, frame_rate=self.frame_rate, t0=self.t0, title=self.title)
 	
 	def __rmul__(self, other):
-		result = np.multiply(other, self.S)
-		return self.__class__(S=result, f=self.f, t=self.t, title=self.title)
+		result = MathOps.multiply(other, self.S)
+		return self.__class__(S=result, f=self.f, frame_rate=self.frame_rate, t0=self.t0, title=self.title)
 	
 	def __truediv__(self, other):
 		other_data = other.S if isinstance(other, self.__class__) else other
-		result = np.true_divide(self.S, other_data)
-		return self.__class__(S=result, f=self.f, t=self.t, title=self.title)
+		result = MathOps.true_divide(self.S, other_data)
+		return self.__class__(S=result, f=self.f, frame_rate=self.frame_rate, t0=self.t0, title=self.title)
 	
 	def __rtruediv__(self, other):
-		result = np.true_divide(other, self.S)
-		return self.__class__(S=result, f=self.f, t=self.t, title=self.title)
+		result = MathOps.true_divide(other, self.S)
+		return self.__class__(S=result, f=self.f, frame_rate=self.frame_rate, t0=self.t0, title=self.title)
 	
 	def __floordiv__(self, other):
 		other_data = other.S if isinstance(other, self.__class__) else other
-		result = np.floor_divide(self.S, other_data)
-		return self.__class__(S=result, f=self.f, t=self.t, title=self.title)
+		result = MathOps.floor_divide(self.S, other_data)
+		return self.__class__(S=result, f=self.f, frame_rate=self.frame_rate, t0=self.t0, title=self.title)
 	
 	def __rfloordiv__(self, other):
-		result = np.floor_divide(other, self.S)
-		return self.__class__(S=result, f=self.f, t=self.t, title=self.title)
+		result = MathOps.floor_divide(other, self.S)
+		return self.__class__(S=result, f=self.f, frame_rate=self.frame_rate, t0=self.t0, title=self.title)
 	
 	def __pow__(self, other):
 		other_data = other.S if isinstance(other, self.__class__) else other
-		result = np.power(self.S, other_data)
-		return self.__class__(S=result, f=self.f, t=self.t, title=self.title)
+		result = MathOps.power(self.S, other_data)
+		return self.__class__(S=result, f=self.f, frame_rate=self.frame_rate, t0=self.t0, title=self.title)
 	
 	def __rpow__(self, other):
-		result = np.power(other, self.S)
-		return self.__class__(S=result, f=self.f, t=self.t, title=self.title)
+		result = MathOps.power(other, self.S)
+		return self.__class__(S=result, f=self.f, frame_rate=self.frame_rate, t0=self.t0, title=self.title)
 	
 	def __abs__(self):
-		result = np.abs(self.S)
-		return self.__class__(S=result, f=self.f, t=self.t, title=self.title)
+		result = MathOps.abs(self.S)
+		return self.__class__(S=result, f=self.f, frame_rate=self.frame_rate, t0=self.t0, title=self.title)
+	
+	#--------------------------
+	# Other signal ops
+	#--------------------------
 	
 	def sin(self):
 		"""Element-wise sine of the spectrogram."""
-		return self.__class__(S=np.sin(self.S), f=self.f, t=self.t, title=self.title)
+		result = MathOps.sin(self.S)
+		return self.__class__(S=result, f=self.f, frame_rate=self.frame_rate, t0=self.t0, title=self.title)
 	
 	def cos(self):
 		"""Element-wise cosine of the spectrogram."""
-		return self.__class__(S=np.cos(self.S), f=self.f, t=self.t, title=self.title)
+		result = MathOps.cos(self.S)
+		return self.__class__(S=result, f=self.f, frame_rate=self.frame_rate, t0=self.t0, title=self.title)
 	
 	def exp(self):
 		"""Element-wise exponential of the spectrogram."""
-		return self.__class__(S=np.exp(self.S), f=self.f, t=self.t, title=self.title)
+		result = MathOps.exp(self.S)
+		return self.__class__(S=result, f=self.f, frame_rate=self.frame_rate, t0=self.t0, title=self.title)
 	
 	def tanh(self):
 		"""Element-wise hyperbolic tangent of the spectrogram."""
-		return self.__class__(S=np.tanh(self.S), f=self.f, t=self.t, title=self.title)
+		result = MathOps.tanh(self.S)
+		return self.__class__(S=result, f=self.f, frame_rate=self.frame_rate, t0=self.t0, title=self.title)
 	
 	def log(self):
 		"""Element-wise natural logarithm of the spectrogram."""
-		return self.__class__(S=np.log(self.S), f=self.f, t=self.t, title=self.title)
+		result = MathOps.log(self.S)
+		return self.__class__(S=result, f=self.f, frame_rate=self.frame_rate, t0=self.t0, title=self.title)
 	
 	def log1p(self):
 		"""Element-wise log(1 + M) of the spectrogram."""
-		return self.__class__(S=np.log1p(self.S), f=self.f, t=self.t, title=self.title)
+		result = MathOps.log1p(self.S)
+		return self.__class__(S=result, f=self.f, frame_rate=self.frame_rate, t0=self.t0, title=self.title)
 	
 	def log10(self):
 		"""Element-wise base-10 logarithm of the spectrogram."""
-		return self.__class__(S=np.log10(self.S), f=self.f, t=self.t, title=self.title)
+		result = MathOps.log10(self.S)
+		return self.__class__(S=result, f=self.f, frame_rate=self.frame_rate, t0=self.t0, title=self.title)
 	
 	def log2(self):
 		"""Element-wise base-2 logarithm of the spectrogram."""
-		return self.__class__(S=np.log2(self.S), f=self.f, t=self.t, title=self.title)
+		result = MathOps.log2(self.S)
+		return self.__class__(S=result, f=self.f, frame_rate=self.frame_rate, t0=self.t0, title=self.title)
 	
+	#--------------------------
+	# Aggregation signal ops
+	#--------------------------
 	
-	def mean(self) -> float:
+	def mean(self, axis: int | None = None) -> float:
 		"""Return the mean of the spectrogram values."""
-		return float(np.mean(self.S))
+		from modusa.signals.time_domain_signal import TimeDomainSignal
+		from modusa.signals.frequency_domain_signal import FrequencyDomainSignal
+		result = MathOps.mean(self.S, axis=axis)
+		if axis == 0: # Aggregating across rows
+			return TimeDomainSignal(y=result, sr=self.frame_rate, t0=self.t0, title=self.title)
+		elif axis in [1, -1]:
+			return FrequencyDomainSignal(spectrum=result, f=self.f, t0=self.t0, title=self.title)
+		elif axis is None:
+			return result
+		else:
+			raise excp.InputValueError("Can't perform mean operation")
 	
-	def std(self) -> float:
+	def std(self, axis: int | None = None) -> float:
 		"""Return the standard deviation of the spectrogram values."""
-		return float(np.std(self.S))
+		from modusa.signals.time_domain_signal import TimeDomainSignal
+		from modusa.signals.frequency_domain_signal import FrequencyDomainSignal
+		result = MathOps.std(self.S, axis=axis)
+		if axis == 0: # Aggregating across rows
+			return TimeDomainSignal(y=result, sr=self.frame_rate, t0=self.t0, title=self.title)
+		elif axis in [1, -1]:
+			return FrequencyDomainSignal(spectrum=result, f=self.f, t0=self.t0, title=self.title)
+		elif axis is None:
+			return result
+		else:
+			raise excp.InputValueError("Can't perform std operation")
 	
-	def min(self) -> float:
+	def min(self, axis: int | None = None) -> float:
 		"""Return the minimum value in the spectrogram."""
-		return float(np.min(self.S))
+		from modusa.signals.time_domain_signal import TimeDomainSignal
+		from modusa.signals.frequency_domain_signal import FrequencyDomainSignal
+		result = MathOps.min(self.S, axis=axis)
+		if axis == 0: # Aggregating across rows
+			return TimeDomainSignal(y=result, sr=self.frame_rate, t0=self.t0, title=self.title)
+		elif axis in [1, -1]:
+			return FrequencyDomainSignal(spectrum=result, f=self.f, t0=self.t0, title=self.title)
+		elif axis is None:
+			return result
+		else:
+			raise excp.InputValueError("Can't perform min operation")
 	
-	def max(self) -> float:
+	def max(self, axis: int | None = None) -> float:
 		"""Return the maximum value in the spectrogram."""
-		return float(np.max(self.S))
+		from modusa.signals.time_domain_signal import TimeDomainSignal
+		from modusa.signals.frequency_domain_signal import FrequencyDomainSignal
+		result = MathOps.max(self.S, axis=axis)
+		if axis == 0: # Aggregating across rows
+			return TimeDomainSignal(y=result, sr=self.frame_rate, t0=self.t0, title=self.title)
+		elif axis in [1, -1]:
+			return FrequencyDomainSignal(spectrum=result, f=self.f, t0=self.t0, title=self.title)
+		elif axis is None:
+			return result
+		else:
+			raise excp.InputValueError("Can't perform max operation")
 	
-	def sum(self) -> float:
+	def sum(self, axis: int | None = None) -> float:
 		"""Return the sum of the spectrogram values."""
-		return float(np.sum(self.S))
+		from modusa.signals.time_domain_signal import TimeDomainSignal
+		from modusa.signals.frequency_domain_signal import FrequencyDomainSignal
+		result = MathOps.sum(self.S, axis=axis)
+		if axis == 0: # Aggregating across rows
+			return TimeDomainSignal(y=result, sr=self.frame_rate, t0=self.t0, title=self.title)
+		elif axis in [1, -1]:
+			return FrequencyDomainSignal(spectrum=result, f=self.f, t0=self.t0, title=self.title)
+		elif axis is None:
+			return result
+		else:
+			raise excp.InputValueError("Can't perform sum operation")
 	
 	#-----------------------------------
 	# Repr

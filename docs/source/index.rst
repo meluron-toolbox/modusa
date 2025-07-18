@@ -12,13 +12,12 @@ modusa
    
 .. admonition:: **These are the 6 core components of modusa architecture**
       
-      - modusa **Signal**: Represents data with domain-specific tools (e.g., audio, music).
-      - modusa **Plugin**: Connects engines to signals for execution.
-      - modusa **Generator**: Creates new signals using rules or patterns.
-      - modusa **IO**: Handles input/output, plotting, and playback.
-      - modusa **Engine**: Core logic for processing and transforming signals.
-      - modusa **Test**: Contains tests and fixtures.
-      
+      - **modusa Signal**: Core data representation with domain-specific utilities (e.g., audio/music signals).
+      - **modusa Plugin**: Interfaces tools with signals, enabling chaining and execution.
+      - **modusa Generator**: Synthesizes new signals using rules, templates, or patterns.
+      - **modusa IO**: Manages input/output operations via loaders and savers.
+      - **modusa Tools**: Utility classes and reusable components for signal processing workflows.
+      - **modusa Test**: Contains tests and fixtures to ensure correctness and reliability.
 
 .. toctree::
    :maxdepth: 1
@@ -34,7 +33,7 @@ modusa
    plugins/index
    generators/index
    io/index
-   engines/index
+   tools/index
 
 #.. toctree::
 #  :maxdepth: 1

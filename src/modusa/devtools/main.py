@@ -2,6 +2,7 @@
 
 
 from .generate_template import TemplateGenerator
+from .generate_doc_source import generate_doc_source
 from .list_plugins import list_plugins
 from . import list_authors
 
@@ -20,12 +21,12 @@ def main():
 		create_parser = subparsers.add_parser("create", help="Create new Modusa components")
 		create_subparsers = create_parser.add_subparsers(dest="what", required=True)
 		
-		create_subparsers.add_parser("engine", help="Create a new engine class").set_defaults(func=lambda:TemplateGenerator.create_template("engine"))
+		create_subparsers.add_parser("tool", help="Create a new tool class").set_defaults(func=lambda:TemplateGenerator.create_template("tool"))
 		create_subparsers.add_parser("plugin", help="Create a new plugin class").set_defaults(func=lambda:TemplateGenerator.create_template("plugin"))
 		create_subparsers.add_parser("signal", help="Create a new signal class").set_defaults(func=lambda:TemplateGenerator.create_template("signal"))
 		create_subparsers.add_parser("generator", help="Create a new signal generator class").set_defaults(func=lambda:TemplateGenerator.create_template("generator"))
 		create_subparsers.add_parser("io", help="Create a new IO class").set_defaults(func=lambda:TemplateGenerator.create_template("io"))
-		
+		create_subparsers.add_parser("doc", help="Create a new IO class").set_defaults(func=lambda:generate_doc_source())
 		
 		# --- LIST group ---
 		list_parser = subparsers.add_parser("list", help="List information about Modusa components")

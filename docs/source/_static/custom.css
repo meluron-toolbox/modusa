@@ -188,3 +188,17 @@ dl.field-list a:hover {
     z-index: 10 !important;
     top: 0.35rem !important;
 }
+
+/* Stretch notebook input/output to full width */
+/* If the page has a link to the .ipynb.txt source, assume it's a notebook page */
+body:has(a[href$=".ipynb.txt"]) div.content {
+    width: 100% !important;
+    max-width: none !important;
+    padding: 0 2em;
+    box-sizing: border-box;
+}
+
+
+
+
+

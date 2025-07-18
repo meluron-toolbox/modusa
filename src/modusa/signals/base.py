@@ -1,13 +1,7 @@
 #!/usr/bin/env python3
 
-from modusa import excp
-from modusa.decorators import immutable_property, validate_args_type
-from modusa.signals.signal_ops import SignalOps
+
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
-from typing import Self
-import numpy as np
-import matplotlib.pyplot as plt
 
 class ModusaSignal(ABC):
 	"""
@@ -26,7 +20,6 @@ class ModusaSignal(ABC):
 	_created_at = "2025-06-23"
 	#----------------------------------
 	
-	@validate_args_type()
 	def __init__(self):
 		self._plugin_chain = []
 	

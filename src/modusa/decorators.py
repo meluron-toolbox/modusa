@@ -110,14 +110,14 @@ def validate_arg(arg_name: str, value: Any, expected_type: Any) -> None:
 		expected_names = ", ".join(
 			get_origin(t).__name__ if get_origin(t) else t.__name__ for t in union_args
 		)
-		raise excp.ValidationError(
+		raise excp.InputTypeError(
 			f"Argument '{arg_name}' must be one of ({expected_names}), got {type(value).__name__}"
 		)
 	
 	# Handle generic types like list[float], tuple[int, str]
 	elif origin is not None:
 		if not isinstance(value, origin):
-			raise excp.ValidationError(
+			raise excp.InputTypeError(
 				f"Argument '{arg_name}' must be of type {origin.__name__}, got {type(value).__name__}"
 			)
 		return
@@ -125,13 +125,13 @@ def validate_arg(arg_name: str, value: Any, expected_type: Any) -> None:
 	# ✅ Handle plain types
 	elif isinstance(expected_type, type):
 		if not isinstance(value, expected_type):
-			raise excp.ValidationError(
+			raise excp.InputTypeError(
 				f"Argument '{arg_name}' must be of type {expected_type.__name__}, got {type(value).__name__}"
 			)
 		return
 	# ❌ Unsupported type structure
 	else:
-		raise excp.ValidationError(f"Unsupported annotation for '{arg_name}': {expected_type}")
+		raise excp.InputTypeError(f"Unsupported annotation for '{arg_name}': {expected_type}")
 
 def validate_args_type() -> Callable:
 	def decorator(func: Callable) -> Callable:

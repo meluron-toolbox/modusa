@@ -34,11 +34,11 @@ SIGNAL_INFO = {
 	"template_dump_dp": SRC_CODE_DIR / "signals",
 	"test_template_dump_dp": TESTS_DIR / "test_signals"
 }
-ENGINE_INFO = {
-	"template_fp": TEMPLATES_DIR / "engine.py",
+TOOL_INFO = {
+	"template_fp": TEMPLATES_DIR / "tool.py",
 	"test_template_fp": TEMPLATES_DIR / "test.py",
-	"template_dump_dp": SRC_CODE_DIR / "engines",
-	"test_template_dump_dp": TESTS_DIR / "test_engines"
+	"template_dump_dp": SRC_CODE_DIR / "tools",
+	"test_template_dump_dp": TESTS_DIR / "test_tools"
 }
 
 
@@ -54,7 +54,7 @@ class TemplateGenerator():
 		if for_what == "plugin": return PLUGIN_INFO
 		if for_what == "io": return IO_INFO
 		if for_what == "signal": return SIGNAL_INFO
-		if for_what == "engine": return ENGINE_INFO
+		if for_what == "tool": return TOOL_INFO
 		if for_what == "generator": return GENERATOR_INFO
 	
 	@staticmethod
@@ -75,7 +75,7 @@ class TemplateGenerator():
 			print(f"⚠️ File already exists, choose another name.")
 			sys.exit(1)
 		
-		class_name = questionary.text(f"Class name (CamelCase{for_what.capitalize()}): ").ask()
+		class_name = questionary.text(f"Class name (CamelCase): ").ask()
 		if class_name is None:
 			sys.exit(1)
 			
@@ -138,7 +138,7 @@ class TemplateGenerator():
 		
 		# Save it to a file and put it in the correct folder
 		TemplateGenerator.save_file(content=template_code, output_path=path_info['template_dump_dp'] / answers['module_name'])
-		TemplateGenerator.save_file(content=test_code, output_path=path_info['test_template_dump_dp'] / answers['module_name'])
+		TemplateGenerator.save_file(content=test_code, output_path=path_info['test_template_dump_dp'] / f"test_{answers['module_name']}")
 		
 		print(f"✅ {for_what}:", "open " + str(path_info['template_dump_dp'] / answers['module_name']))
-		print(f"✅ test:", "open " + str(path_info['test_template_dump_dp'] / answers['module_name']))
+		print(f"✅ test:", "open " + str(path_info['test_template_dump_dp'] / f"test_{answers['module_name']}"))
