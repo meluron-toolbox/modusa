@@ -106,17 +106,16 @@ class FrequencyDomainSignal(ModusaSignal):
 		ax: plt.Axes | None = None,
 		fmt: str = "k-",
 		title: str | None = None,
-		label: str | None = None,
 		ylabel: str | None = "Strength",
 		xlabel: str | None = "Frequency (Hz)",
 		ylim: tuple[float, float] | None = None,
 		xlim: tuple[float, float] | None = None,
-		highlight: list[tuple[float, float]] | None = None,
+		highlight_regions: list[tuple[float, float, str]] | None = None,
 		vlines: list[float] | None = None,
 		hlines: list[float] | None = None,
+		legend: str | tuple[str, str] | None = None,
 		show_grid: bool = False,
-		stem: bool | None = False,
-		legend_loc: str | None = None,
+		show_stem: bool = False,
 	) -> plt.Figure | None:
 		"""
 		Plot the audio waveform using matplotlib.
@@ -135,27 +134,25 @@ class FrequencyDomainSignal(ModusaSignal):
 			Format of the plot as per matplotlib standards (Eg. "k-" or "blue--o)
 		title : str | None
 			Plot title. Defaults to the signal’s title.
-		label: str | None
-			Label for the plot, shown as legend.
 		ylabel : str | None
-			Label for the y-axis. Defaults to `"Strength"`.
+			Label for the y-axis. Defaults to `"Amplitude"`.
 		xlabel : str | None
-			Label for the x-axis. Defaults to `"Frequency (Hz)"`.
+			Label for the x-axis. Defaults to `"Time (sec)"`.
 		ylim : tuple[float, float] | None
 			Limits for the y-axis.
 		xlim : tuple[float, float] | None
-		highlight : list[tuple[float, float]] | None
-			List of frequency intervals to highlight on the plot, each as (start, end).
+		highlight_regions : list[tuple[float, float, str]] | None
+			List of time intervals to highlight on the plot, each as (start, end, 'tag').
 		vlines: list[float]
 			List of x values to draw vertical lines. (Eg. [10, 13.5])
 		hlines: list[float]
 			List of y values to draw horizontal lines. (Eg. [10, 13.5])
 		show_grid: bool
 			If true, shows grid.
-		stem : bool
+		show_stem : bool
 			If True, use a stem plot instead of a continuous line. Autorejects if signal is too large.
-		legend_loc : str | None
-			If provided, adds a legend at the specified location (e.g., "upper right" or "best").
+		legend : str | tuple[str, str] | None
+			If provided, adds a legend at the specified location (e.g., "signal", ["signal", "upper right"]).
 			Limits for the x-axis.
 		
 		Returns
@@ -166,26 +163,10 @@ class FrequencyDomainSignal(ModusaSignal):
 		
 		from modusa.tools.plotter import Plotter
 		
-		title = title or self.title
-		
-		fig: plt.Figure | None = Plotter.plot_signal(
-			y=self.spectrum,
-			x=self.f,
-			ax=ax,
-			fmt=fmt,
-			title=title,
-			label=label,
-			ylabel=ylabel,
-			xlabel=xlabel,
-			ylim=ylim,
-			xlim=xlim,
-			highlight=highlight,
-			vlines=vlines,
-			hlines=hlines,
-			show_grid=show_grid,
-			stem=stem,
-			legend_loc=legend_loc,
-		)
+		if title is None:
+			title = self.title
+			
+		fig: plt.Figure | None = Plotter.plot_signal(y=self.spectrum, x=self.f, ax=ax, fmt=fmt, title=title, ylabel=ylabel, xlabel=xlabel, ylim=ylim, xlim=xlim, highlight_regions=highlight_regions, vlines=vlines, hlines=hlines, show_grid=show_grid, show_stem=show_stem, legend=legend)
 		
 		return fig
 	

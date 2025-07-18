@@ -258,7 +258,7 @@ class Spectrogram(ModusaSignal):
 		xlabel: str | None = "Time (sec)",
 		ylim: tuple[float, float] | None = None,
 		xlim: tuple[float, float] | None = None,
-		highlight: list[tuple[float, float, float, float]] | None = None,
+		highlight_regions: list[tuple[float, float, str], ...] | None = None,
 		vlines: list | None = None,
 		hlines: list | None = None,
 		origin: str = "lower",  # or "lower"
@@ -296,8 +296,8 @@ class Spectrogram(ModusaSignal):
 			Limits for the y-axis (frequency).
 		xlim : tuple of float, optional
 			Limits for the x-axis (time).
-		highlight : list of (x, y, w, h), optional
-			Rectangular regions to highlight, specified in data coordinates.
+		highlight_regions : list[tuple[float, float, str]...] | None
+			Regions to higlight (e.g. [(0, 10, 'tag')]
 		origin : {"lower", "upper"}, default "lower"
 			Origin position for the image (for flipping vertical axis).
 		show_colorbar : bool, default True
@@ -320,28 +320,9 @@ class Spectrogram(ModusaSignal):
 		
 		title = title or self.title
 	
-		fig = Plotter.plot_matrix(
-			M=self.S,
-			r=self.f,
-			c=self.t,
-			ax=ax,
-			cmap=cmap,
-			title=title,
-			Mlabel=Mlabel,
-			rlabel=ylabel,
-			clabel=xlabel,
-			rlim=ylim,
-			clim=xlim,
-			highlight=highlight,
-			vlines=vlines,
-			hlines=hlines,
-			origin=origin,
-			gamma=gamma,
-			show_colorbar=show_colorbar,
-			cax=cax,
-			show_grid=show_grid,
-			tick_mode=tick_mode,
-			n_ticks=n_ticks	
+		fig = Plotter.plot_matrix(M=self.S, r=self.f, c=self.t, ax=ax, cmap=cmap, title=title, Mlabel=Mlabel, rlabel=ylabel, clabel=xlabel, rlim=ylim, clim=xlim,
+		highlight_regions=highlight_regions, vlines=vlines, hlines=hlines, origin=origin, gamma=gamma, show_colorbar=show_colorbar, cax=cax, show_grid=show_grid,
+		tick_mode=tick_mode, n_ticks=n_ticks
 		)
 		
 		return fig

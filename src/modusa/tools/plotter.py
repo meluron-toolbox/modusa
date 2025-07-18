@@ -30,25 +30,25 @@ class Plotter(ModusaTool):
 	_author_email = "ankit0.anand0@gmail.com"
 	_created_at = "2025-07-06"
 	#----------------------------------
-
+	
 	@staticmethod
+	@validate_args_type()
 	def plot_signal(
 		y: np.ndarray,
 		x: np.ndarray | None,
 		ax: plt.Axes | None = None,
 		fmt: str = "k",
 		title: str | None = None,
-		label: str | None = None,
 		ylabel: str | None = None,
 		xlabel: str | None = None,
 		ylim: tuple[float, float] | None = None,
 		xlim: tuple[float, float] | None = None,
-		highlight: list[tuple[float, float], ...] | None = None,
+		highlight_regions: list[tuple[float, float, str | None], ...] | None = None,
 		vlines: list[float] | None = None,
 		hlines: list[float] | None = None,
 		show_grid: bool = False,
-		stem: bool = False,
-		legend_loc: str = None,
+		show_stem: bool = False,
+		legend: tuple[str, str] | str | None = None,
 	) -> plt.Figure | None:
 		"""
 		Plots 1D signal using `matplotlib` with various settings passed through the
@@ -97,11 +97,11 @@ class Plotter(ModusaTool):
 			If True, plots a stem plot.
 		labels: tuple[str, str, str] | None
 			Tuple containing (title, xlabel, ylabel). If None, no labels are set.
-		legend_loc: str | None
-			Location string for legend placement (e.g., 'upper right'). If None, no legend is shown.
+		legend: tuple[str, str | None] | None
+			Legend for the plot (e.g., ('label', 'upper right'). If None, no legend is shown.
 		zoom: tuple | None
 			Tuple specifying x-axis limits for zoom as (start, end). If None, full x-range is shown.
-		highlight: list[tuple[float, float], ...] | None
+		highlight: list[tuple[float, float, str | None], ...] | None
 			List of (start, end) tuples to highlight regions on the plot. e.g. [(1, 2.5), (6, 10)]
 		
 		Returns
@@ -112,124 +112,69 @@ class Plotter(ModusaTool):
 		
 		"""
 		
-		# Validate the important args and get the signal that needs to be plotted
-		if y.ndim != 1:
-			raise excp.InputValueError(f"`y` must be of dimension 1 not {y.ndim}.")
-		if y.shape[0] < 1:
-			raise excp.InputValueError(f"`y` must not be empty.")
-			
+		assert y.ndim == 1 and y.shape[0] > 0 # 1D, Non-empty
 		if x is None:
 			x = np.arange(y.shape[0])
-		elif x.ndim != 1:
-			raise excp.InputValueError(f"`x` must be of dimension 1 not {x.ndim}.")
-		elif x.shape[0] < 1:
-			raise excp.InputValueError(f"`x` must not be empty.")
+		else:
+			assert x.ndim == 1 and x.shape[0] > 0 and x.shape[0] == y.shape[0] # 1D, Non-empty, Compatible
 			
-		if x.shape[0] != y.shape[0]:
-			raise excp.InputValueError(f"`y` and `x` must be of same shape")
-			
-		# Create a figure
-		if ax is None:
+		# Load figure to plot the signal
+		if ax is None: # Creating a new figure
 			fig, ax = plt.subplots(figsize=(15, 2))
 			created_fig = True
-		else:
+		else: # Using the figure passed by the user as `ax`
 			fig = ax.get_figure()
 			created_fig = False
 		
 		# Add legend
-		if label is not None:
-			legend_loc = legend_loc or "best"
-			# Plot the signal and attach the label
-			if stem:
-				ax.stem(x, y, linefmt="k", markerfmt='o', label=label)
-			else:
-				ax.plot(x, y, fmt, lw=1.5, ms=3, label=label)
-			ax.legend(loc=legend_loc)
-		else:
-			# Plot the signal without label
-			if stem:
-				ax.stem(x, y, linefmt="k", markerfmt='o')
-			else:
-				ax.plot(x, y, fmt, lw=1.5, ms=3)
-		
-		
+		if legend is not None:
+			if isinstance(legend, str):
+				legend = (legend, "best")
+			if isinstance(legend, tuple):
+				assert len(legend) == 2
 			
-		# Set the labels
-		if title is not None:
-			ax.set_title(title)
-		if ylabel is not None:
-			ax.set_ylabel(ylabel)
-		if xlabel is not None:
-			ax.set_xlabel(xlabel)
-				
-		# Applying axes limits into a region
-		if ylim is not None:
-			ax.set_ylim(ylim)
-		if xlim is not None:
-			ax.set_xlim(xlim)
-			
-		if highlight is not None:
-			y_min = np.min(y)
-			y_max = np.max(y)
+		if show_stem: ax.stem(x, y, linefmt="k", markerfmt='o')
+		else: ax.plot(x, y, fmt, lw=1.5, ms=3)
+		
+		# Set meta info
+		if legend is not None: ax.legend([legend[0]], loc=legend[1]) # The first arg needs to be wrapped in list
+		if title is not None: ax.set_title(title)
+		if ylabel is not None: ax.set_ylabel(ylabel)
+		if xlabel is not None: ax.set_xlabel(xlabel)
+		
+		# Set limits
+		if ylim is not None: ax.set_ylim(ylim)
+		if xlim is not None: ax.set_xlim(xlim)
+		
+		# ====== Adding higlight regions ======
+		if highlight_regions is not None:
+			# Get the y limit for the box (height of the box)
+			y_min = np.min(y) if ylim is None else ylim[0]
+			y_max = np.max(y) if ylim is None else ylim[-1]
 			y_range = y_max - y_min
-			label_box_height = 0.20 * y_range
+			label_box_height = 0.20 * y_range # This is another box on top of the region (to put tag)
 			
-			for i, highlight_region in enumerate(highlight):
-				if len(highlight_region) != 2:
-					raise excp.InputValueError("`highlight` should be a list of tuple of 2 values (left, right) => [(1, 10.5)]")
-					
-				l, r = highlight_region
-				l = x[0] if l is None else l
-				r = x[-1] if r is None else r
-				
-				# Highlight rectangle (main background)
-				ax.add_patch(Rectangle(
-					(l, y_min),
-					r - l,
-					y_range,
-					color='red',
-					alpha=0.2,
-					zorder=10
-				))
-				
-				# Label box inside the top of the highlight
-				ax.add_patch(Rectangle(
-					(l, y_max - label_box_height),
-					r - l,
-					label_box_height,
-					color='red',
-					alpha=0.4,
-					zorder=11
-				))
-				
-				# Centered label inside that box
-				ax.text(
-					(l + r) / 2,
-					y_max - label_box_height / 2,
-					str(i + 1),
-					ha='center',
-					va='center',
-					fontsize=10,
-					color='white',
-					fontweight='bold',
-					zorder=12
-				)
+			for highlight_region in highlight_regions:
+				assert isinstance(highlight_region, tuple) and len(highlight_region) == 3 # (start, end, 'tag')
+				start, end, tag = highlight_region
+				# Main box
+				ax.add_patch(Rectangle((start, y_min), end - start, y_range, color='red', alpha=0.2, zorder=10))
+				# Tag box
+				ax.add_patch(Rectangle((start, y_max - label_box_height), end - start, label_box_height, color='red', alpha=0.7, zorder=11))
+				# Putting tag in the tag box
+				ax.text((start + end) / 2, y_max - label_box_height / 2, str(tag), ha='center', va='center', fontsize=10, color='white', fontweight='bold', zorder=12)
+		# ======================================
 		
-		# Vertical lines
-		if vlines:
-			for xpos in vlines:
-				ax.axvline(x=xpos, color='blue', linestyle='--', linewidth=2, zorder=5)
-				
-		# Horizontal lines
-		if hlines:
-			for ypos in hlines:
-				ax.axhline(y=ypos, color='blue', linestyle='--', linewidth=2, zorder=5)
+		# Plot vertical lines
+		if vlines: [ax.axvline(x=xpos, color='blue', linestyle='--', linewidth=1.5, zorder=5) for xpos in vlines]
+		
+		# Plot horizontal lines
+		if hlines: [ax.axhline(y=ypos, color='blue', linestyle='--', linewidth=1.5, zorder=5) for ypos in hlines]
 				
 		# Show grid
-		if show_grid:
-			ax.grid(True, color="gray", linestyle="--", linewidth=0.5)
+		if show_grid: ax.grid(True, color="gray", linestyle="--", linewidth=0.5)
 				
-		# Show/Return the figure as per needed
+		# Show/return the figure as per needed
 		if created_fig:
 			fig.tight_layout()
 			if Plotter._in_notebook():
@@ -255,7 +200,7 @@ class Plotter(ModusaTool):
 		clabel: str | None = None,
 		rlim: tuple[float, float] | None = None,
 		clim: tuple[float, float] | None = None,
-		highlight: list[tuple[float, float, float, float]] | None = None,
+		highlight_regions: list[tuple[float, float, str | None]] | None = None,
 		vlines: list[float] | None = None,
 		hlines: list[float] | None = None,
 		origin: str = "lower",  # or "lower"
@@ -318,8 +263,8 @@ class Plotter(ModusaTool):
 			Labels for the plot (title, Mlabel, xlabel, ylabel).
 		zoom: tuple[float, float, float, float] | None
 			Zoom to (r1, r2, c1, c2) in matrix coordinates.
-		highlight: list[tuple[float, float, float, float]] | None
-			List of rectangles (r1, r2, c1, c2) to highlight.
+		highlight: list[tuple[float, float]] | None
+			List of rectangles (c1, c2) to highlight.
 		cmap: str
 			Colormap to use.
 		origin: str
@@ -343,49 +288,37 @@ class Plotter(ModusaTool):
 		"""
 		
 		# Validate the important args and get the signal that needs to be plotted
-		if M.ndim != 2:
-			raise excp.InputValueError(f"`M` must have 2 dimension not {M.ndim}")
-		if r is None:
-			r = M.shape[0]
-		if c is None:
-			c = M.shape[1]
+		
+		assert M.ndim == 2
+
+		if r is None: r = M.shape[0]
+		else: assert r.ndim == 1 and r.shape[0] == M.shape[0]
 			
-		if r.ndim != 1 and c.ndim != 1:
-			raise excp.InputValueError(f"`r` and `c` must have 2 dimension not r:{r.ndim}, c:{c.ndim}")
-			
-		if r.shape[0] != M.shape[0]:
-			raise excp.InputValueError(f"`r` must have shape as `M row` not {r.shape}")
-		if c.shape[0] != M.shape[1]:
-			raise excp.InputValueError(f"`c` must have shape as `M column` not {c.shape}")
+		if c is None: c = M.shape[1]
+		else: assert c.ndim == 1 and c.shape[0] == M.shape[1]
 			
 		# Scale the signal if needed
-		if gamma is not None:
-			M = np.log1p(float(gamma) * M)
+		if gamma is not None: M = np.log1p(float(gamma) * M)
 			
-		# Create a figure
-		if ax is None:
+		# Load figure to plot the signal
+		if ax is None: # Creating a new figure
 			fig, ax = plt.subplots(figsize=(15, 4))
 			created_fig = True
-		else:
+		else: # Using the figure passed by the user as `ax`
 			fig = ax.get_figure()
 			created_fig = False
-			
-		# Plot the signal with right configurations
-		# Compute extent
-		extent = Plotter._compute_centered_extent(r, c, origin)
 		
 		# Plot image
-		im = ax.imshow(
-			M,
-			aspect="auto",
-			cmap=cmap,
-			origin=origin,
-			extent=extent
-		)
+		extent = Plotter._compute_centered_extent(r, c, origin) # TODO: What does it do?
+		im = ax.imshow(M, aspect="auto", cmap=cmap, origin=origin, extent=extent)
 		
-		# Set the ticks and labels
-		if n_ticks is None:
-			n_ticks = (10, 10)
+		# Set meta info
+		if title is not None: ax.set_title(title)
+		if rlabel is not None: ax.set_ylabel(rlabel)
+		if clabel is not None: ax.set_xlabel(clabel)
+		
+		# ===== Set the ticks =====
+		if n_ticks is None: n_ticks = (10, 10)
 		
 		if tick_mode == "center":
 			ax.yaxis.set_major_locator(MaxNLocator(nbins=n_ticks[0]))
@@ -408,106 +341,50 @@ class Plotter(ModusaTool):
 		
 			ax.set_xticks(xticks_all[xtick_idx])
 			ax.set_yticks(yticks_all[ytick_idx])
+		# ==========================
 		
-		# Set the labels
-		if title is not None:
-			ax.set_title(title)
-		if rlabel is not None:
-			ax.set_ylabel(rlabel)
-		if clabel is not None:
-			ax.set_xlabel(clabel)
-			
-		# Applying axes limits into a region
-		if rlim is not None:
-			ax.set_ylim(rlim)
-		if clim is not None:
-			ax.set_xlim(clim)
-				
-		# Applying axes limits into a region
-		if rlim is not None:
-			ax.set_ylim(rlim)
-		if clim is not None:
-			ax.set_xlim(clim)
-			
-		if highlight is not None:
-			row_range = r.max() - r.min()
+		# Setting limits
+		if rlim is not None: ax.set_ylim(rlim)
+		if clim is not None: ax.set_xlim(clim)
+		
+		# ===== Set Higlight regions =====
+		if highlight_regions is not None:
+			r_min = r.min() if rlim is None else rlim[0]
+			r_max = r.max() if rlim is None else rlim[-1]
+			row_range = r_max - r_min
 			label_box_height = 0.08 * row_range
 			
-			for i, highlight_region in enumerate(highlight):
-				if len(highlight_region) != 4 and len(highlight_region) != 2:
-					raise excp.InputValueError(
-						"`highlight` should be a list of tuple of 4 or 2 values (row_min, row_max, col_min, col_max) or (col_min, col_max) => [(1, 10.5, 2, 40)] or [(2, 40)] "
-					)
+			for highlight_region in highlight_regions:
+				assert len(highlight_region) == 3 # (start, end, 'tag')
+
+				c1, c2, tag = highlight_region # start, end, 'tag'
 				
-				if len(highlight_region) == 2:
-					r1, r2 = None, None
-					c1, c2 = highlight_region
-				elif len(highlight_region) == 4:
-					r1, r2, c1, c2 = highlight_region
+				# Find the width and height if the box
+				width = np.abs(c1 - c2)
+				height = r_max - r_min
 				
-				r1 = r[0] if r1 is None else r1
-				r2 = r[-1] if r2 is None else r2
-				c1 = c[0] if c1 is None else c1
-				c2 = c[-1] if c2 is None else c2
+				# Main box
+				ax.add_patch(Rectangle((c1, r_min), width, height, color='red', alpha=0.2, zorder=10))
 				
-				row_min, row_max = min(r1, r2), max(r1, r2)
-				col_min, col_max = min(c1, c2), max(c1, c2)
+				# Tag box
+				ax.add_patch(Rectangle((c1, r_max - label_box_height), width, label_box_height, color='red', alpha=0.4, zorder=11))
 				
-				width = col_max - col_min
-				height = row_max - row_min
-				
-				# Main red highlight box
-				ax.add_patch(Rectangle(
-					(col_min, row_min),
-					width,
-					height,
-					color='red',
-					alpha=0.2,
-					zorder=10
-				))
-				
-				# Label box inside top of highlight (just below row_max)
-				ax.add_patch(Rectangle(
-					(col_min, row_max - label_box_height),
-					width,
-					label_box_height,
-					color='red',
-					alpha=0.4,
-					zorder=11
-				))
-				
-				# Centered label in that box
-				ax.text(
-					(col_min + col_max) / 2,
-					row_max - (label_box_height / 2),
-					str(i + 1),
-					ha='center',
-					va='center',
-					fontsize=10,
-					color='white',
-					fontweight='bold',
-					zorder=12
-				)
+				# Putting tag in the tag box
+				ax.text((c1 + c2) / 2, r_max - (label_box_height / 2), str(tag), ha='center', va='center', fontsize=10, color='white', fontweight='bold', zorder=12)
 				
 		# Show colorbar
 		if show_colorbar is not None:
 			cbar = fig.colorbar(im, ax=ax, cax=cax)
-			if Mlabel is not None:
-				cbar.set_label(Mlabel)
+			if Mlabel is not None: cbar.set_label(Mlabel)
 				
-		# Vertical lines
-		if vlines:
-			for xpos in vlines:
-				ax.axvline(x=xpos, color='blue', linestyle='--', linewidth=2, zorder=5)
+		# Plot vertical lines
+		if vlines: [ax.axvline(x=xpos, color='blue', linestyle='--', linewidth=2, zorder=5) for xpos in vlines]
 				
-		# Horizontal lines
-		if hlines:
-			for ypos in hlines:
-				ax.axhline(y=ypos, color='blue', linestyle='--', linewidth=2, zorder=5)
+		# Plot horizontal lines
+		if hlines: [ax.axhline(y=ypos, color='blue', linestyle='--', linewidth=2, zorder=5) for ypos in hlines]
 				
 		# Show grid
-		if show_grid:
-			ax.grid(True, color="gray", linestyle="--", linewidth=0.5)
+		if show_grid: ax.grid(True, color="gray", linestyle="--", linewidth=0.5)
 			
 		# Show/Return the figure as per needed
 		if created_fig:
