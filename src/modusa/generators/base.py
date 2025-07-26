@@ -2,7 +2,7 @@
 
 from modusa import excp
 from modusa.decorators import validate_args_type, immutable_property
-from modusa.signals.base import ModusaSignal
+from modusa.models.base import ModusaSignal
 from abc import ABC, abstractmethod
 from typing import Any
 

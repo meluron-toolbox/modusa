@@ -3,7 +3,7 @@
 
 from modusa import excp
 from modusa.decorators import validate_args_type
-from modusa.generators import ModusaGenerator
+from modusa.generators.base import ModusaGenerator
 
 
 class {class_name}(ModusaGenerator):

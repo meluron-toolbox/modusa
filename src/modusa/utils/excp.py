@@ -28,6 +28,12 @@ class InputValueError(ModusaBaseError):
 	Any Input type error.
 	"""
 	
+class OperationNotPossibleError(ModusaBaseError):
+	"""
+	Any errors if there is an operations
+	failure.
+	"""
+	
 class ImmutableAttributeError(ModusaBaseError):
 	"""Raised when attempting to modify an immutable attribute."""
 	pass

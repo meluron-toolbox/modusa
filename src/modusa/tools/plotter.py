@@ -39,10 +39,10 @@ class Plotter(ModusaTool):
 		ax: plt.Axes | None = None,
 		fmt: str = "k",
 		title: str | None = None,
-		ylabel: str | None = None,
-		xlabel: str | None = None,
-		ylim: tuple[float, float] | None = None,
-		xlim: tuple[float, float] | None = None,
+		y_label: str | None = None,
+		x_label: str | None = None,
+		y_lim: tuple[float, float] | None = None,
+		x_lim: tuple[float, float] | None = None,
 		highlight_regions: list[tuple[float, float, str | None], ...] | None = None,
 		vlines: list[float] | None = None,
 		hlines: list[float] | None = None,
@@ -132,37 +132,55 @@ class Plotter(ModusaTool):
 				legend = (legend, "best")
 			if isinstance(legend, tuple):
 				assert len(legend) == 2
-			
-		if show_stem: ax.stem(x, y, linefmt="k", markerfmt='o')
-		else: ax.plot(x, y, fmt, lw=1.5, ms=3)
+		
+		if legend is not None: # This was needed as without adding labels and directly putting in the legend gives wrong symbol in the legend
+			if show_stem: ax.stem(x, y, linefmt="k", markerfmt='o', label=legend[0])
+			else: ax.plot(x, y, fmt, lw=1.5, ms=3, label=legend[0])
+		else:
+			if show_stem: ax.stem(x, y, linefmt="k", markerfmt='o')
+			else: ax.plot(x, y, fmt, lw=1.5, ms=3)
 		
 		# Set meta info
-		if legend is not None: ax.legend([legend[0]], loc=legend[1]) # The first arg needs to be wrapped in list
+		if legend is not None: ax.legend(loc=legend[1]) # The first arg needs to be wrapped in list
 		if title is not None: ax.set_title(title)
-		if ylabel is not None: ax.set_ylabel(ylabel)
-		if xlabel is not None: ax.set_xlabel(xlabel)
+		if y_label is not None: ax.set_ylabel(y_label)
+		if x_label is not None: ax.set_xlabel(x_label)
 		
 		# Set limits
-		if ylim is not None: ax.set_ylim(ylim)
-		if xlim is not None: ax.set_xlim(xlim)
+		if y_lim is not None: ax.set_ylim(y_lim)
+		if x_lim is not None: ax.set_xlim(x_lim)
 		
 		# ====== Adding higlight regions ======
+		colors = ['red', 'blue', 'green', 'orange', 'purple', 'cyan', 'magenta', 'yellow']
 		if highlight_regions is not None:
 			# Get the y limit for the box (height of the box)
-			y_min = np.min(y) if ylim is None else ylim[0]
-			y_max = np.max(y) if ylim is None else ylim[-1]
+			y_min = np.min(y) if y_lim is None else y_lim[0]
+			y_max = np.max(y) if y_lim is None else y_lim[-1]
 			y_range = y_max - y_min
-			label_box_height = 0.20 * y_range # This is another box on top of the region (to put tag)
+			label_box_height = 0.15 * y_range # This is another box on top of the region (to put tag)
 			
-			for highlight_region in highlight_regions:
+			for i, highlight_region in enumerate(highlight_regions):
 				assert isinstance(highlight_region, tuple) and len(highlight_region) == 3 # (start, end, 'tag')
 				start, end, tag = highlight_region
+				color = colors[i % len(colors)]  # Cycle through colors if more regions than colors
+				
+				# Skip if box is entirely outside xlim
+				x0, x1 = ax.get_xlim()
+				if end < x0 or start > x1:
+					continue
+				
 				# Main box
-				ax.add_patch(Rectangle((start, y_min), end - start, y_range, color='red', alpha=0.2, zorder=10))
+				main_box = Rectangle((start, y_min), end - start, y_range, color=color, alpha=0.2, zorder=10, clip_on=True)
 				# Tag box
-				ax.add_patch(Rectangle((start, y_max - label_box_height), end - start, label_box_height, color='red', alpha=0.7, zorder=11))
+				tag_box = Rectangle((start, y_max - label_box_height), end - start, label_box_height, color=color, alpha=0.7, zorder=11, clip_on=True)
+				
+				ax.add_patch(main_box)
+				ax.add_patch(tag_box)
+				
 				# Putting tag in the tag box
-				ax.text((start + end) / 2, y_max - label_box_height / 2, str(tag), ha='center', va='center', fontsize=10, color='white', fontweight='bold', zorder=12)
+				text = 	ax.text((start + end) / 2, y_max - label_box_height / 2, str(tag), ha='center', va='center', fontsize=10, color='white', fontweight='bold', zorder=12, clip_on=True)
+				# Clip the text using the tag_box
+				text.set_clip_path(ax.patch)
 		# ======================================
 		
 		# Plot vertical lines
@@ -195,17 +213,17 @@ class Plotter(ModusaTool):
 		ax: plt.Axes | None = None,
 		cmap: str = "gray_r",
 		title: str | None = None,
-		Mlabel: str | None = None,
-		rlabel: str | None = None,
-		clabel: str | None = None,
-		rlim: tuple[float, float] | None = None,
-		clim: tuple[float, float] | None = None,
+		M_label: str | None = None,
+		r_label: str | None = None,
+		c_label: str | None = None,
+		r_lim: tuple[float, float] | None = None,
+		c_lim: tuple[float, float] | None = None,
 		highlight_regions: list[tuple[float, float, str | None]] | None = None,
 		vlines: list[float] | None = None,
 		hlines: list[float] | None = None,
 		origin: str = "lower",  # or "lower"
 		gamma: int | float | None = None,
-		show_colorbar: bool = True,
+		show_colorbar: bool = False,
 		cax: plt.Axes | None = None,
 		show_grid: bool = True,
 		tick_mode: str = "center",  # "center" or "edge"
@@ -298,7 +316,7 @@ class Plotter(ModusaTool):
 		else: assert c.ndim == 1 and c.shape[0] == M.shape[1]
 			
 		# Scale the signal if needed
-		if gamma is not None: M = np.log1p(float(gamma) * M)
+		if gamma is not None: M = np.log1p(float(gamma) * np.abs(M))
 			
 		# Load figure to plot the signal
 		if ax is None: # Creating a new figure
@@ -314,8 +332,8 @@ class Plotter(ModusaTool):
 		
 		# Set meta info
 		if title is not None: ax.set_title(title)
-		if rlabel is not None: ax.set_ylabel(rlabel)
-		if clabel is not None: ax.set_xlabel(clabel)
+		if r_label is not None: ax.set_ylabel(r_label)
+		if c_label is not None: ax.set_xlabel(c_label)
 		
 		# ===== Set the ticks =====
 		if n_ticks is None: n_ticks = (10, 10)
@@ -344,38 +362,49 @@ class Plotter(ModusaTool):
 		# ==========================
 		
 		# Setting limits
-		if rlim is not None: ax.set_ylim(rlim)
-		if clim is not None: ax.set_xlim(clim)
+		if r_lim is not None: ax.set_ylim(r_lim)
+		if c_lim is not None: ax.set_xlim(c_lim)
 		
 		# ===== Set Higlight regions =====
+		colors = ['red', 'blue', 'green', 'orange', 'purple', 'cyan', 'magenta', 'yellow']
 		if highlight_regions is not None:
-			r_min = r.min() if rlim is None else rlim[0]
-			r_max = r.max() if rlim is None else rlim[-1]
-			row_range = r_max - r_min
-			label_box_height = 0.08 * row_range
+			r_min = r.min() - 0.5 if r_lim is None else r_lim[0] # Replace the low and high position of the box if rlim is given (extra 0.5 is for centered ticks)
+			r_max = r.max() + 0.5 if r_lim is None else r_lim[-1] # Replace the low and high position of the box if rlim is given (extra 0.5 is for centered ticks)
+			tag_box_height = 0.08 * (r_max - r_min)
 			
-			for highlight_region in highlight_regions:
+			for i, highlight_region in enumerate(highlight_regions):
 				assert len(highlight_region) == 3 # (start, end, 'tag')
 
-				c1, c2, tag = highlight_region # start, end, 'tag'
+				start, end, tag = highlight_region # start, end, 'tag'
+				color = colors[i % len(colors)]  # Cycle through colors if more regions than colors
 				
 				# Find the width and height if the box
-				width = np.abs(c1 - c2)
+				width = np.abs(end - start)
 				height = r_max - r_min
 				
+				# Skip if box is entirely outside xlim
+				x0, x1 = ax.get_xlim()
+				if end < x0 or start > x1:
+					continue
+
 				# Main box
-				ax.add_patch(Rectangle((c1, r_min), width, height, color='red', alpha=0.2, zorder=10))
-				
+				main_box = Rectangle((start, r_min), width, height, color=color, alpha=0.2, zorder=10, clip_on=True)
 				# Tag box
-				ax.add_patch(Rectangle((c1, r_max - label_box_height), width, label_box_height, color='red', alpha=0.4, zorder=11))
+				tag_box = Rectangle((start, r_max - tag_box_height), width, tag_box_height, color=color, alpha=0.4, zorder=11, clip_on=True)
+				
+				ax.add_patch(main_box)
+				ax.add_patch(tag_box)
 				
 				# Putting tag in the tag box
-				ax.text((c1 + c2) / 2, r_max - (label_box_height / 2), str(tag), ha='center', va='center', fontsize=10, color='white', fontweight='bold', zorder=12)
+				text = ax.text((start + end) / 2, r_max - (tag_box_height / 2), str(tag), ha='center', va='center', fontsize=10, color='white', fontweight='bold', zorder=12, clip_on=True)
+				
+				# Clip the text using the tag_box
+				text.set_clip_path(ax.patch)
 				
 		# Show colorbar
-		if show_colorbar is not None:
+		if show_colorbar is True:
 			cbar = fig.colorbar(im, ax=ax, cax=cax)
-			if Mlabel is not None: cbar.set_label(Mlabel)
+			if M_label is not None: cbar.set_label(M_label)
 				
 		# Plot vertical lines
 		if vlines: [ax.axvline(x=xpos, color='blue', linestyle='--', linewidth=2, zorder=5) for xpos in vlines]
@@ -388,11 +417,12 @@ class Plotter(ModusaTool):
 			
 		# Show/Return the figure as per needed
 		if created_fig:
-			fig.tight_layout()
 			if Plotter._in_notebook():
+				plt.tight_layout()
 				plt.close(fig)
 				return fig
 			else:
+				plt.tight_layout()
 				plt.show()
 				return fig
 	
@@ -417,4 +447,37 @@ class Plotter(ModusaTool):
 			return shell and shell.__class__.__name__ == "ZMQInteractiveShell"
 		except ImportError:
 			return False
+		
 	
+	@staticmethod
+	@validate_args_type()
+	def plot_event(event: np.ndarray, ax: plt.Axes | None = None, title: str | None = None, y_label: str | None = None, x_label: str | None = None, color: str = "b") -> plt.Figure | None:
+		
+		assert event.ndim == 1
+			
+		# Load figure to plot the signal
+		if ax is None: # Creating a new figure
+			fig, ax = plt.subplots(figsize=(15, 2))
+			created_fig = True
+		else: # Using the figure passed by the user as `ax`
+			fig = ax.get_figure()
+			created_fig = False
+		
+		# Plot vertical lines
+		[ax.axvline(x=xpos, color=color, linestyle="--", linewidth=1.5, zorder=5) for xpos in event]
+		
+		# Set meta info
+		if title is not None: ax.set_title(title)
+		if y_label is not None: ax.set_ylabel(y_label)
+		if x_label is not None: ax.set_xlabel(x_label)
+		
+		# Show/return the figure as per needed
+		if created_fig:
+			if Plotter._in_notebook():
+				plt.tight_layout()
+				plt.close(fig)
+				return fig
+			else:
+				plt.tight_layout()
+				plt.show()
+				return fig	

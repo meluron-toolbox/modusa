@@ -6,3 +6,5 @@ Generators
 
    base
    audio_waveforms
+   s_ax
+   signal

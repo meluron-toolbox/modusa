@@ -4,7 +4,7 @@
 from modusa import excp
 from modusa.decorators import validate_args_type
 from modusa.generators.base import ModusaGenerator
-from modusa.signals.audio_signal import AudioSignal
+from modusa.models.audio_signal import AudioSignal
 import numpy as np
 
 class AudioWaveformGenerator(ModusaGenerator):

@@ -1,5 +1,5 @@
-Examples
-========
+How to use
+==========
 
 .. toctree::
    :maxdepth: 1

@@ -28,7 +28,7 @@ class AudioConverter(ModusaTool):
 	
 	@staticmethod
 	@validate_args_type()
-	def convert(inp_audio_fp: str | Path, output_audio_fp: str | Path) -> Path:
+	def convert(inp_audio_fp: str | Path, output_audio_fp: str | Path, sr: int | None = None, mono: bool = False) -> Path:
 		"""
 		Converts an audio file from one format to another using FFmpeg.
 
@@ -66,15 +66,23 @@ class AudioConverter(ModusaTool):
 			raise excp.InputValueError(f"`inp_fp` and `output_fp` must be different")
 			
 		output_audio_fp.parent.mkdir(parents=True, exist_ok=True)
-		
 
 		cmd = [
 			"ffmpeg",
-			"-y",  # Overwrite output
+			"-y",
 			"-i", str(inp_audio_fp),
 			"-vn",  # No video
-			str(output_audio_fp)
 		]
+		
+		# Optional sample rate
+		if sr is not None:
+			cmd += ["-ar", str(sr)]
+			
+		# Optional mono
+		if mono is True:
+			cmd += ["-ac", "1"]
+			
+		cmd.append(str(output_audio_fp))
 
 		try:
 			subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)

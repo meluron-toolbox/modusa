@@ -3,7 +3,7 @@
 
 from modusa import excp
 from modusa.decorators import validate_args_type
-from modusa.io import ModusaIO
+from modusa.io.base import ModusaIO
 
 
 class {class_name}(ModusaIO):

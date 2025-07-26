@@ -28,11 +28,11 @@ GENERATOR_INFO = {
 	"template_dump_dp": SRC_CODE_DIR / "generators",
 	"test_template_dump_dp": TESTS_DIR / "test_generators"
 }
-SIGNAL_INFO = {
-	"template_fp": TEMPLATES_DIR / "signal.py",
+MODEL_INFO = {
+	"template_fp": TEMPLATES_DIR / "model.py",
 	"test_template_fp": TEMPLATES_DIR / "test.py",
-	"template_dump_dp": SRC_CODE_DIR / "signals",
-	"test_template_dump_dp": TESTS_DIR / "test_signals"
+	"template_dump_dp": SRC_CODE_DIR / "models",
+	"test_template_dump_dp": TESTS_DIR / "test_models"
 }
 TOOL_INFO = {
 	"template_fp": TEMPLATES_DIR / "tool.py",
@@ -53,7 +53,7 @@ class TemplateGenerator():
 	def get_path_info(for_what: str):
 		if for_what == "plugin": return PLUGIN_INFO
 		if for_what == "io": return IO_INFO
-		if for_what == "signal": return SIGNAL_INFO
+		if for_what == "model": return MODEL_INFO
 		if for_what == "tool": return TOOL_INFO
 		if for_what == "generator": return GENERATOR_INFO
 	

@@ -6,6 +6,8 @@ Signals
 
    base
    audio_signal
-   frequency_domain_signal
-   spectrogram
+   feature_time_domain_signal
+   s_ax
+   signal1D
+   signal2D
    time_domain_signal

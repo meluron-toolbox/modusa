@@ -21,6 +21,7 @@ extensions = [
 	'sphinx.ext.napoleon',
 	'sphinx.ext.viewcode',
 	'sphinx_copybutton',
+	'sphinx.ext.inheritance_diagram'
 ]
 
 nbsphinx_execute = 'never' # Do not execute the notebooks

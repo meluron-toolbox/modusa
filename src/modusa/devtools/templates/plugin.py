@@ -3,7 +3,7 @@
 
 from modusa import excp
 from modusa.decorators import immutable_property, validate_args_type, plugin_safety_check
-from modusa.plugins import ModusaPlugin
+from modusa.plugins.base import ModusaPlugin
 
 
 class {class_name}(ModusaPlugin):

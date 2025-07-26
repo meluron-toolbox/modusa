@@ -23,8 +23,9 @@ class AudioPlayer(ModusaTool):
 	@staticmethod
 	def play(
 		y: np.ndarray,
-		sr: int,
-		regions: list[tuple[float, float]] | None = None,
+		sr: np.ndarray,
+		t0: float = 0.0,
+		regions: list[tuple[float, float, str]] | None = None,
 		title: str | None = None
 	) -> None:
 		"""
@@ -33,12 +34,12 @@ class AudioPlayer(ModusaTool):
 		Parameters
 		----------
 		y : np.ndarray
-			Audio time series.
-		sr : int
-			Sampling rate.
-		regions : list of (float, float), optional
-			Regions to extract and play (in seconds).
-		title : str, optional
+			Audio data.
+		t : np.ndarray
+			Timestamp.
+		regions : list[tuple[float, float, str] | None
+			Regions to extract and play (in sec), e.g. [(0, 10.2, "tag"]
+		title : str | None
 			Title to display above audio players.
 
 		Returns
@@ -51,33 +52,28 @@ class AudioPlayer(ModusaTool):
 		if title:
 			display(HTML(f"<h4>{title}</h4>"))
 		
-		clip_numbers = []
+		clip_tags = []
 		timings = []
 		players = []
+		t = t0 + np.arange(len(y)) / sr
 		
-		if regions:
-			for i, (start_sec, end_sec) in enumerate(regions):
+		if regions is not None:
+			for region in regions:
+				assert len(region) == 3
 				
-				if start_sec is None:
-					start_sec = 0.0
-				if end_sec is None:
-					end_sec = y.shape[0] / sr
+				start_sec, end_sec, tag = region
+				clip = y[(t >= start_sec) & (t <= end_sec)]
+				audio_player = Audio(data=clip, rate=sr)._repr_html_()
 				
-				start_sample = int(start_sec * sr)
-				end_sample = int(end_sec * sr)
-				clip = y[start_sample:end_sample]
-				audio_tag = Audio(data=clip, rate=sr)._repr_html_()
-				
-				clip_numbers.append(f"<td style='text-align:center; border-right:1px solid #ccc; padding:6px;'>{i+1}</td>")
+				clip_tags.append(f"<td style='text-align:center; border-right:1px solid #ccc; padding:6px;'>{tag}</td>")
 				timings.append(f"<td style='text-align:center; border-right:1px solid #ccc; padding:6px;'>{start_sec:.2f}s → {end_sec:.2f}s</td>")
-				players.append(f"<td style='padding:6px;'>{audio_tag}</td>")
+				players.append(f"<td style='padding:6px;'>{audio_player}</td>")
 		else:
-			total_duration = len(y) / sr
-			audio_tag = Audio(data=y, rate=sr)._repr_html_()
+			audio_player = Audio(data=y, rate=sr)._repr_html_()
 			
-			clip_numbers.append(f"<td style='text-align:center; border-right:1px solid #ccc; padding:6px;'>1</td>")
-			timings.append(f"<td style='text-align:center; border-right:1px solid #ccc; padding:6px;'>0.00s → {total_duration:.2f}s</td>")
-			players.append(f"<td style='padding:6px;'>{audio_tag}</td>")
+			clip_tags.append(f"<td style='text-align:center; border-right:1px solid #ccc; padding:6px;'>1</td>")
+			timings.append(f"<td style='text-align:center; border-right:1px solid #ccc; padding:6px;'>{t[0]:.2f}s → {t[-1]:.2f}s</td>")
+			players.append(f"<td style='padding:6px;'>{audio_player}</td>")
 			
 		# Wrap rows in a table with border
 		table_html = f"""
@@ -85,7 +81,7 @@ class AudioPlayer(ModusaTool):
 			<table style="border-collapse:collapse;">
 				<tr style="background-color:#f2f2f2;">
 					<th style="text-align:left; padding:6px 12px;">Clip</th>
-					{''.join(clip_numbers)}
+					{''.join(clip_tags)}
 				</tr>
 				<tr style="background-color:#fcfcfc;">
 					<th style="text-align:left; padding:6px 12px;">Timing</th>
@@ -110,5 +106,6 @@ class AudioPlayer(ModusaTool):
 			return shell and shell.__class__.__name__ == "ZMQInteractiveShell"
 		except ImportError:
 			return False
+		
 		
 		
