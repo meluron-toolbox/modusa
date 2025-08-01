@@ -3,6 +3,7 @@
 from modusa.models.s1d import S1D
 from modusa.models.s2d import S2D
 import matplotlib.pyplot as plt
+import numpy as np
 from collections import defaultdict
 import itertools
 
@@ -38,13 +39,17 @@ def plot_multiple_signals(
 		-
 	
 	"""
-	assert len(args) >= 1, "No signal provided to plot"
-	for signal in args: 
-		assert isinstance(signal, (S1D, S2D))
 	
-	if loc is None:
+	assert len(args) >= 1, "No signal provided to plot"
+	signals = args
+	
+	for signal in signals: 
+		if not isinstance(signal, (S1D, S2D)):
+			raise TypeError(f"Invalid signal type {type(signal)}")
+	
+	if loc is None: # => We will plot all the signals on different subplots
 		loc = tuple([i for i in range(len(args))]) # Create (0, 1, 2, ...) that serves as ax number for plots
-	else:
+	else: # Incase loc is provided, we make sure that we do it for each of the signals
 		assert len(args) == len(loc)
 	
 	# Make sure that all the elements in loc do not miss any number in between (0, 1, 1, 2, 4) -> Not allowed
@@ -52,7 +57,7 @@ def plot_multiple_signals(
 	max_loc = max(loc)
 	for i in range(max_loc):
 		if i not in loc:
-			raise ValueError()
+			raise ValueError(f"Invalid `loc` values, it should not have any missing integer in between.")
 	
 	# Create a dict that maps subplot to signals that need to be plotted on that subplot e.g. {0: [signal1, signal3], ...}
 	subplot_signal_map = defaultdict(list)
@@ -85,6 +90,12 @@ def plot_multiple_signals(
 	
 	if n_subplots == 1:
 		axs = [axs]  # axs becomes list of one pair [ (ax, cbar_ax) ]
+	
+	# We find the x axis limits as per the max limit for all the signals combined, so that all the signals can be seen.
+	if x_lim is None:
+		x_min = min(np.min(signal.x.values) for signal in args)
+		x_max = max(np.max(signal.x.values) for signal in args)
+		x_lim = (x_min, x_max)
 		
 	for l, signals in subplot_signal_map.items():
 		# Incase we have plot multiple signals in the same subplot, we change the color
@@ -116,8 +127,10 @@ def plot_multiple_signals(
 						signal.plot(axs[l][0], x_lim=x_lim, show_grid=True, vlines=vlines, fmt=fmt, legend=signal.title, y_label=signal.y.label, x_label=signal.x.label, title="")
 					elif isinstance(signal, S2D):
 						signal.plot(axs[l][0], x_lim=x_lim, show_colorbar=True, cax=axs[l][1], vlines=vlines, x_label=signal.x.label, y_label=signal.y.label, title="")
-				
-		axs[l][0].sharex(axs[0][0])
+		
+		# We set the xlim, this will align all the signals automatically as they are on the same row
+		for l in range(n_subplots):
+			axs[l][0].set_xlim(x_lim)
 		
 	if _in_notebook():
 		plt.tight_layout()
