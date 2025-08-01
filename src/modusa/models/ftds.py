@@ -441,6 +441,37 @@ class FTDS(S2D):
 		
 		return self.__class__(M=new_M, f=new_f, t=new_t, title=title)
 	
+	def translate_t(self, n_samples):
+		"""
+		Translate the FTDS signal along time axis
+		by `n_samples`.
+
+		Note
+		----
+		- `n_samples` can be both positive and negative.
+		- You might end up getting -ve time values as we are not checking for the values rn.
+
+		Parameters
+		----------
+		n_samples: int
+			- Number of samples to move the signal.
+			- +ve => moving signal forward.
+			- -ve => moving signal backward.
+		
+		Returns
+		-------
+		FTDS
+			Translated signal.
+		"""
+		
+		# We just need to create a new time axis with shifted t0
+		translated_t = self.t.translate(n_samples=n_samples)
+		
+		translated_signal = self.__class__(M=self.M.copy(), f=self.f.copy(), t=translated_t, title=self.title)
+		
+		return translated_signal
+		
+	
 	#====================================
 	
 	

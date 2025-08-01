@@ -178,6 +178,33 @@ class TAx(SAx):
 			return self
 		else:
 			return self.__class__(n_points=self.shape[0], sr=self.sr, t0=self.t0, label=label)
+		
+		
+	def translate(self, n_samples):
+		"""
+		Translate the time axis by `n_samples`.
+
+		Note
+		----
+		- `n_samples` can be both positive and negative.
+		- You might end up getting -ve time values as we are not checking for the values rn.
+
+		Parameters
+		----------
+		n_samples: int
+			- Number of samples to move the signal.
+			- +ve => moving signal forward.
+			- -ve => moving signal backward.
+		
+		Returns
+		-------
+		TAx
+			Translated axis.
+		"""
+		
+		new_t0 = self.t0 + (n_samples / self.sr)
+		
+		return self.__class__(n_points=self.shape[0], sr=self.sr, t0=new_t0, label=self.label)
 	
 	#===================================
 	
