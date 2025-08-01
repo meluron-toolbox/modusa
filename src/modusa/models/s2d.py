@@ -349,7 +349,7 @@ class S2D(ModusaSignal):
 		y = self.y.values
 		x = self.x.values
 		
-		return (y, x)
+		return (M, y, x)
 	
 	def copy(self) -> Self:
 		"""
@@ -400,9 +400,9 @@ class S2D(ModusaSignal):
 		title = str(title) if title is not None else self.title
 		
 		# We create a new copy of the data and axis
-		new_M = Data(values=M._values.copy(), label=M_label)
-		new_y = y.__class__(values=y._values.copy(), label=y_label)
-		new_x = x.__class__(values=x._values.copy(), label=x_label)
+		new_M = M.set_meta_info(label=M_label)
+		new_y = y.set_meta_info(label=y_label)
+		new_x = x.set_meta_info(label=x_label)
 		
 		return self.__class__(M=new_M, y=new_y, x=new_x, title=title)
 	

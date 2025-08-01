@@ -77,7 +77,7 @@ class AudioGen(ModusaGenerator):
 		t = TAx(n_points=y.shape[0], sr=sr, t0=t0, label=t_label) # Creating a signal axis instance
 		y = Data(values=y, label=y_label)
 		
-		return Audio(data=y, tax=(t, ), title=title)
+		return Audio(y=y, t=t, title=title)
 	
 	@classmethod
 	def from_youtube(cls, url: str, sr: int | float = None):

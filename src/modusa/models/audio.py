@@ -83,11 +83,8 @@ class Audio(TDS):
 		
 		from modusa.tools.audio_player import AudioPlayer
 
-		y, t = self._y, self._t
-		y_val, t_val = y._values, t._values
-		title = title if title is not None else self._title
-		sr, t0 = t._sr, t._t0
+		title = title if title is not None else self.title
 
-		audio_player = AudioPlayer.play(y=y_val, sr=sr, t0=t0, regions=regions, title=title)
+		audio_player = AudioPlayer.play(y=self.y.values, sr=self.t.sr, t0=self.t.t0, regions=regions, title=title)
 		
 		return audio_player

@@ -360,28 +360,106 @@ class FTDS(S2D):
 	def __ge__(self, other):
 		return np.greater_equal(self, other)
 	
-	#===============================
+	#====================================
+	
+	
+	#-----------------------------------
+	# Utility Methods
+	#-----------------------------------
+	
+	def unpack(self):
+		"""
+		Unpacks the object into easy to work
+		with data structures.
+
+		Returns
+		-------
+		(np.ndarray, np.ndarray, np.ndarray)
+			- M: Signal data array.
+			- f: Signal feature-axis array.
+			- t: Signal time-axis array.
+		"""
+		
+		M = self.M.values
+		f = self.f.values
+		t = self.t.values
+		
+		return (M, f, t)
+	
+	def copy(self) -> Self:
+		"""
+		Returns a new copy of the signal.
+
+		Returns
+		-------
+		Self
+			A new copy of the object.
+		"""
+		
+		copied_M = self.M.copy()
+		copied_f = self.f.copy()
+		copied_t = self.t.copy()
+		title = self.title # Immutable, hence no need to copy
+		
+		return self.__class__(M=copied_M, f=copied_f, t=copied_t, title=title)
+	
+	def set_meta_info(self, title = None, M_label = None, f_label = None, t_label = None) -> None:
+		"""
+		Set meta info about the signals.
+
+		Parameters
+		----------
+		title: str
+			- Title for the signal
+			- e.g. "MyTitle"
+		M_label: str
+			- Label for the data that matrix is holding.
+			- e.g. "Intensity (dB)"
+		f_label: str
+			- Label for the feature-axis.
+			- e.g. "Frequency (Hz)"
+		t_label: str
+			- Label for the time-axis.
+			- e.g. "Time (sec)"
+		Returns
+		-------
+		FTDS
+			A new instance with updated meta info.
+		"""
+		
+		M, f, t = self.M, self.f, self.t
+		
+		M_label = str(M_label) if M_label is not None else M.label
+		f_label = str(f_label) if f_label is not None else f.label
+		t_label = str(t_label) if t_label is not None else t.label
+		title = str(title) if title is not None else self.title
+		
+		# We create a new copy of the data and axis
+		new_M = M.set_meta_info(label=M_label)
+		new_f = f.set_meta_info(label=f_label)
+		new_t = t.set_meta_info(label=t_label)
+		
+		return self.__class__(M=new_M, f=new_f, t=new_t, title=title)
+	
+	#====================================
+	
+	
+	
 	
 	#-----------------------------------
 	# Info
 	#-----------------------------------
 	
 	def print_info(self) -> None:
-		"""Print key information about the spectrogram signal."""
-		t = self._t
-		sr = t._sr
-		duration = t._values[-1]
-		shape = self.shape
-		title = self._title
-		
+		"""Print key information about the FTDS signal."""
 		print("-"*50)
-		print(f"{'Title':<20}: {title}")
+		print(f"{'Title':<20}: {self.title}")
 		print("-"*50)
 		print(f"{'Type':<20}: {self.__class__.__name__}")
-		print(f"{'Shape':<20}: {shape} (freq bins × time frames)")
-		print(f"{'Duration':<20}: {duration}")
-		print(f"{'Frame Rate':<20}: {sr} (frames / sec)")
-		print(f"{'Frame Duration':<20}: {1 / sr:.4f} sec ({(1 / sr) * 1000:.2f} ms)")
+		print(f"{'Shape':<20}: {self.shape} (freq bins × time frames)")
+		print(f"{'Duration':<20}: {self.t.duration}")
+		print(f"{'Frame Rate':<20}: {self.t.sr} (frames / sec)")
+		print(f"{'Frame Duration':<20}: {1 / self.t.sr:.4f} sec ({(1 / self.t.sr) * 1000:.2f} ms)")
 		
 		# Inheritance chain
 		cls_chain = " → ".join(cls.__name__ for cls in reversed(self.__class__.__mro__[:-1]))

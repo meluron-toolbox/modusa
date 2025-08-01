@@ -61,7 +61,6 @@ class AudioPlayer(ModusaTool):
 		clip_tags = []
 		timings = []
 		players = []
-		t = t0 + np.arange(len(y)) / sr
 		
 		if isinstance(regions, tuple): regions = [regions] # (10, 20, "Region 1") -> [(10, 20, "Region 1")]
 		
@@ -69,8 +68,12 @@ class AudioPlayer(ModusaTool):
 			for region in regions:
 				assert len(region) == 3
 				
-				start_sec, end_sec, tag = region
-				clip = y[(t >= start_sec) & (t <= end_sec)]
+				start_sec = region[0] - t0
+				end_sec = region[1] - t0
+				tag = region[2]
+				
+				start_sample, end_sample = int(start_sec * sr), int(end_sec * sr)
+				clip = y[start_sample: end_sample]
 				audio_player = Audio(data=clip, rate=sr)._repr_html_()
 				
 				clip_tags.append(f"<td style='text-align:center; border-right:1px solid #ccc; padding:6px;'>{tag}</td>")

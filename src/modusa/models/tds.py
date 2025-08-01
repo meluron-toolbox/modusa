@@ -243,16 +243,14 @@ class TDS(S1D):
 			- Label for the time-axis.
 			- e.g. "Distance (m)"
 		"""
-
-		y, t = self.y, self.t
 		
 		new_title = str(title) if title is not None else self.title
-		new_y_label = str(y_label) if y_label is not None else y.label
-		new_t_label = str(t_label) if t_label is not None else t.label
+		new_y_label = str(y_label) if y_label is not None else self.y.label
+		new_t_label = str(t_label) if t_label is not None else self.t.label
 		
 		# We create a new copy of the data and axis
-		new_y = y.copy().set_meta_info(y_label)
-		new_t = t.copy().set_meta_info(t_label)
+		new_y = self.y.copy().set_meta_info(y_label)
+		new_t = self.t.copy().set_meta_info(t_label)
 		
 		return self.__class__(y=new_y, t=new_t, title=title)
 	
@@ -410,65 +408,7 @@ class TDS(S1D):
 			Cropped signal.
 		"""
 		
-		y, t = self._y, self._t
-		y_val, t_val = y._values, t._values
-		y_label, t_label = y._label, t._label
-		sr = t._sr
-		title = self._title
-		
-		if like is not None:
-			like_sr = like._t._sr
-			assert sr == like_sr, "Sample rates must match."
-			
-			# Get number of points in the like signal
-			expected_len = like.shape[0]
-			
-			# Step 1: Snap t_min to the closest point in self
-			t_min_like = like._t._values[0]
-			idx_min = np.argmin(np.abs(t_val - t_min_like))
-			t_min_snap = t_val[idx_min]
-			
-			# Step 2: Check if snapping offset is acceptable
-			tolerance = 1e-8  # Adjustable; typically smaller than 1e-6 for 32-bit floats
-			if abs(t_min_snap - t_min_like) > tolerance:
-				raise ValueError(f"t_min ({t_min_like}) does not align closely enough with signal time axis.")
-				
-			# Step 3: Check if we have enough samples from idx_min onward
-			idx_max = idx_min + expected_len
-			if idx_max > len(t_val):
-				raise ValueError(f"Cannot crop {expected_len} samples starting from t={t_min_snap}; exceeds signal bounds.")
-				
-			# Step 4: Perform cropping using slicing
-			cropped_y_val = y_val[idx_min:idx_max]
-			cropped_t_val = t_val[idx_min:idx_max]
-			
-			# Compute other parameters that need to be updated
-			new_n_points = len(cropped_t_val)
-			new_sr = sr
-			new_t0 = cropped_t_val[0] if len(cropped_t_val) > 0 else 0.0
-			
-			new_y = y.__class__(values=cropped_y_val, label=y_label)
-			new_t = t.__class__(n_points=new_n_points, sr=new_sr, t0=new_t0, label=t_label)
-			
-			return self.__class__(data=new_y, tax=(new_t, ), title=title)
-		
-		# Create a mask based on the t_min and t_max
-		mask = (t_val >= t_min) & (t_val <= t_max)
-		
-		# Apply mask on the signal
-		cropped_y_val = y_val[mask]
-		cropped_t_val = t_val[mask]
-
-		
-		# Compute other parameters that need to be updated
-		new_n_points = len(cropped_t_val)
-		new_sr = sr
-		new_t0 = cropped_t_val[0] if len(cropped_t_val) > 0 else 0.0
-		
-		new_y = y.__class__(values=cropped_y_val, label=y_label)
-		new_t = t.__class__(n_points=new_n_points, sr=new_sr, t0=new_t0, label=t_label)
-		
-		return self.__class__(data=new_y, tax=(new_t, ), title=title)
+		raise NotImplementedError
 	
 	#===================================
 	
@@ -478,20 +418,14 @@ class TDS(S1D):
 	
 	def print_info(self) -> None:
 		"""Prints info about the audio."""
-		t = self._t
-		sr = t._sr
-		duration = t._values[-1]
-		shape = self.shape
-		title = self._title
-		
 		print("-" * 50)
-		print(f"{'Title'}: {title}")
+		print(f"{'Title'}: {self.title}")
 		print("-" * 50)
 		print(f"{'Type':<20}: {self.__class__.__name__}")
-		print(f"{'Shape':<20}: {shape}")
-		print(f"{'Duration':<20}: {duration:.2f} sec")
-		print(f"{'Sampling Rate':<20}: {sr} Hz")
-		print(f"{'Sampling Period':<20}: {(1 / sr * 1000):.2f} ms")
+		print(f"{'Shape':<20}: {self.shape}")
+		print(f"{'Duration':<20}: {self.t.duration:.2f} sec")
+		print(f"{'Sampling Rate':<20}: {self.t.sr} Hz")
+		print(f"{'Sampling Period':<20}: {(1 / self.t.sr * 1000):.2f} ms")
 		
 		# Inheritance chain
 		cls_chain = " → ".join(cls.__name__ for cls in reversed(self.__class__.__mro__[:-1]))
