@@ -1,5 +1,5 @@
-ModusaTool
-==========
+Base
+====
 
 .. autoclass:: modusa.tools.base.ModusaTool
    :members:

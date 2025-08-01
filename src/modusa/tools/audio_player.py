@@ -23,10 +23,10 @@ class AudioPlayer(ModusaTool):
 	@staticmethod
 	def play(
 		y: np.ndarray,
-		sr: np.ndarray,
+		sr: float,
 		t0: float = 0.0,
-		regions: list[tuple[float, float, str]] | None = None,
-		title: str | None = None
+		regions = None,
+		title = None
 	) -> None:
 		"""
 		Plays audio clips for given regions in Jupyter Notebooks.
@@ -34,13 +34,19 @@ class AudioPlayer(ModusaTool):
 		Parameters
 		----------
 		y : np.ndarray
-			Audio data.
-		t : np.ndarray
-			Timestamp.
-		regions : list[tuple[float, float, str] | None
-			Regions to extract and play (in sec), e.g. [(0, 10.2, "tag"]
+			- Audio data.
+			- Mono (1D) numpy array.
+		sr: float
+			- Sampling rate of the audio.
+		t0: float
+			- Starting timestamp, incase the audio is cropped
+			- Default: 0.0 → Starts from 0.0 sec
+		regions : list[tuple[float, float, str]] | tuple[float, float, str] | None
+			- Regions to extract and play (in sec), e.g. [(0, 10.2, "tag")]
+			- If there is only one region, a tuple should also work. e.g. (0, 10.2, "tag")
+			- Default: None → The entire song is selected.
 		title : str | None
-			Title to display above audio players.
+			- Title to display above audio players.
 
 		Returns
 		-------
@@ -56,6 +62,8 @@ class AudioPlayer(ModusaTool):
 		timings = []
 		players = []
 		t = t0 + np.arange(len(y)) / sr
+		
+		if isinstance(regions, tuple): regions = [regions] # (10, 20, "Region 1") -> [(10, 20, "Region 1")]
 		
 		if regions is not None:
 			for region in regions:

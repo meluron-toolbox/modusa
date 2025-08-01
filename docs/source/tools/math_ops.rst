@@ -1,7 +1,7 @@
 MathOps
 =======
 
-.. autoclass:: modusa.tools.math_ops.MathOps
+.. autoclass:: modusa.tools.MathOps
    :members:
    :undoc-members:
    :show-inheritance:

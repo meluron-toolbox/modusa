@@ -1,7 +1,7 @@
 FourierTransform
 ================
 
-.. autoclass:: modusa.tools.fourier_tranform.FourierTransform
+.. autoclass:: modusa.tools.FourierTransform
    :members:
    :undoc-members:
    :show-inheritance:

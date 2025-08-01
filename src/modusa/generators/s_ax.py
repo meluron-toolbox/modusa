@@ -3,12 +3,11 @@
 
 from modusa import excp
 from modusa.decorators import validate_args_type
-from modusa.generators.base import ModusaGenerator
-
+from .base import ModusaGenerator
 from modusa.models.s_ax import SAx
 import numpy as np
 
-class SAxGenerator(ModusaGenerator):
+class SAxGen(ModusaGenerator):
 	"""
 	Provides user friendly APIs to generate axis for
 	signals (instances of `SAx`).
@@ -16,7 +15,7 @@ class SAxGenerator(ModusaGenerator):
 	
 	#--------Meta Information----------
 	_name = "SignalAxisGenerator"
-	_description = ""
+	_description = "APIs to generate axis for signals."
 	_author_name = "Ankit Anand"
 	_author_email = "ankit0.anand0@gmail.com"
 	_created_at = "2025-07-25"
@@ -36,10 +35,21 @@ class SAxGenerator(ModusaGenerator):
 		.. code-block:: python
 
 			import modusa as ms
-			time_sax = ms.sax.linear(n_points=100, sr=2, start=10, label="Time (sec)")
-			print(time_sax)
+			x = ms.sax.from_array([1, 2, 3])
+			print(x)
 			time_sax.print_info()
-		
+
+		Parameters
+		----------
+		values: np.ndarray | list | float | int | np.generic
+			- The values for the axis.
+		label: str
+			- Label for the axis.
+
+		Returns
+		-------
+		SAx
+			An instance of SAx.
 		"""
 		
 		if isinstance(values, (int, float, np.generic)): values = [values] # Scalar to 1D
@@ -56,10 +66,25 @@ class SAxGenerator(ModusaGenerator):
 		.. code-block:: python
 
 			import modusa as ms
-			time_sax = ms.sax.linear(n_points=100, sr=2, start=10, label="Time (sec)")
-			print(time_sax)
-			time_sax.print_info()
+			x = ms.sax.linear(n_points=100, sr=2, start=10, label="Time (sec)")
+			print(x)
+			x.print_info()
 		
+		Parameters
+		----------
+		n_points: int
+			- Number of data points for the axis.
+		sr: int | float
+			- Sampling rate of the axis.
+		start: int | float
+			- Start value.
+		label: str
+			- Label for the axis.
+		
+		Returns
+		-------
+		SAx
+			An instance of SAx.
 		"""
 		
 		assert isinstance(n_points, int)

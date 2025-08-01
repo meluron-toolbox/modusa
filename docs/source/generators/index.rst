@@ -5,6 +5,10 @@ Generators
    :maxdepth: 1
 
    base
-   audio_waveforms
    s_ax
-   signal
+   t_ax
+   s1d
+   tds
+   audio
+   s2d
+   ftds

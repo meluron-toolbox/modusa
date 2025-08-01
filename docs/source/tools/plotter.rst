@@ -1,7 +1,7 @@
 Plotter
 =======
 
-.. autoclass:: modusa.tools.plotter.Plotter
+.. autoclass:: modusa.tools.Plotter
    :members:
    :undoc-members:
    :show-inheritance:

@@ -313,7 +313,7 @@ class MathOps(ModusaTool):
 	@staticmethod
 	def ge(a: Any, b: Any) -> np.ndarray:
 		try:
-			mask = a <= b
+			mask = a >= b
 		except Exception as e:
 			raise excp.InputError(f"`a` and `b` can't be compared") from e
 		return mask

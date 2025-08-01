@@ -1,7 +1,7 @@
-ModusaGenerator
-===============
+Base
+====
 
-.. autoclass:: modusa.generators.base.ModusaGenerator
+.. autoclass:: modusa.generators.ModusaGenerator
    :members:
    :undoc-members:
    :show-inheritance:

@@ -46,5 +46,25 @@ class ModusaSignalAxis(ABC):
 	def __init__(self):
 		pass
 	
+class ModusaSignalData(ABC):
+	"""
+	Base class for any modusa signal data in the modusa framework.
+	
+	Note
+	----
+	- Intended to be subclassed.
+	"""
+	
+	#--------Meta Information----------
+	_name = "Modusa Signal Data"
+	_nickname = "MSData" # This is to be used in repr/str methods
+	_description = "Base class for any modusa signal data in the modusa framework."
+	_author_name = "Ankit Anand"
+	_author_email = "ankit0.anand0@gmail.com"
+	_created_at = "2025-07-27"
+	#----------------------------------
+	
+	def __init__(self):
+		pass
 
 	

@@ -4,28 +4,35 @@
 from modusa import excp
 from modusa.decorators import immutable_property, validate_args_type
 from .base import ModusaSignalAxis
+from .data import Data
 from modusa.tools.math_ops import MathOps
-import modusa as ms
 from typing import Self, Any, Callable
 import numpy as np
 import matplotlib.pyplot as plt
 
 class SAx(ModusaSignalAxis):
 	"""
-	Space to represent signal's axis.
+	Space to represent any signal's axis.
+
+	Parameters
+	----------
+	values: array-like
+		- Any array-like object on which np.asarray can be applied.
+	label: str
+		- Label for the axis.
+		- Default: None => ''
 
 	Note
 	----
-	- All the signal class needs to have `SAx` instance to store a meaningful axis.
-	- It acts as a middle layer between indexes and the signal.
-	- 	SIGNAL: x1, x2, x3, ..., xn \n
-		SAx:	v1, v2, v3, ..., vn [Can be any values that has some meaning for different signal] \n
-		Index:	1, 	2,  3,  ..., n
+	- Use :class:`~modusa.generators.s_ax.SAxGen` API to instantiate this class.
+	- It can be uniform/non-uniform.
+	- It is numpy compatible, so you can use numpy methods directly on this class object.
+	- Since the object of this class represents an axis, any mathematical operations on it will result in another object of :class:`~modusa.models.s1d.S1D` class with `y` being the result of the operation and `x` being the axis itself.
 	"""
 	
 	#--------Meta Information----------
 	_name = "Signal Axis"
-	_nickname = "SAx" # This is to be used in repr/str methods
+	_nickname = "axis" # This is to be used in repr/str methods
 	_description = "Axis for different types of signals."
 	_author_name = "Ankit Anand"
 	_author_email = "ankit0.anand0@gmail.com"
@@ -33,95 +40,180 @@ class SAx(ModusaSignalAxis):
 	#----------------------------------
 	
 	@validate_args_type()
-	def __init__(self, values: np.ndarray, label: str):
+	def __init__(self, values, label = None):
 		
-		super().__init__() # Instantiating `ModusaSignal` class
+		super().__init__() # Instantiating `ModusaSignalAxis` class
+
+		values = np.asarray(values)
+		if values.ndim == 0:
+			values = np.asarray([values])
 		
 		assert values.ndim == 1
-		assert isinstance(label, str)
-		
-		self.__values = values
-		self.__label = label
-		
-	#------------------------------------
-	# Properties (Hidden)
-	#------------------------------------
-	@immutable_property("Read only property")
-	def _values(self) -> np.ndarray:
-		return self.__values
 	
-	@immutable_property("Use .set_meta_info method.")
-	def _label(self) -> str:
-		return self.__label
-	
-	@immutable_property("Read only property")
-	def _is_uniform(self) -> bool:
-		values = self._values
-		if len(values) == 1:
-			return True
-		elif len(values) > 1:
-			diffs = np.diff(values)
-			if np.allclose(diffs, diffs[0]): # Maybe we can later change it to look for any instead of all to save some compute
-				return True
-		return False
-	
-	#====================================
+		self._values = values
+		self._label = label or ""
 	
 	#-----------------------------------
 	# Properties (User Facing)
 	#-----------------------------------
 	
-	@immutable_property("Read only.")
-	def shape(self) -> tuple:
-		"""Shape of the axis."""
-		return self._values.shape
+	@property
+	def values(self) -> np.ndarray:
+		return self._values
 	
-	@immutable_property("Read only.")
-	def ndim(self) -> tuple:
-		"""Dimension of the axis array (=1)"""
-		return self._values.ndim # Should be 1
+	@property
+	def label(self) -> str:
+		return self._label
+		
+	@property
+	def shape(self) -> tuple:
+		return self.values.shape
+	
+	@property
+	def ndim(self) -> int:
+		return self.values.ndim # Should be 1
+	
+	def __len__(self) -> int:
+		return len(self.values)
 	
 	#====================================
 	
 	#------------------------------------
-	# Setter
+	# Utility methods
 	#------------------------------------
-	def set_meta_info(self, label: str = None) -> Self:
+	
+	def is_same_as(self, other) -> bool:
 		"""
-		Set meta info about the axis.
+		Compare it with another SAx object.
 
 		Parameters
 		----------
-		label: str
-			Label for the axis (e.g. "Time (sec)")
+		other: SAx
+			Another object to compare with.
+		
+		Returns
+		-------
+		bool
+			True if same ow False
+
+		Note
+		----
+		- We check the shape and all the values.
+		- We are not checking the labels for now.
+		"""
+		
+		axis1_arr = np.asarray(self)
+		axis2_arr = np.asarray(other)
+		
+		if not isinstance(axis2_arr, type(axis1_arr)):
+			return False
+		if axis1_arr.shape != axis2_arr.shape:
+			return False
+		if not np.allclose(axis1_arr, axis2_arr):
+			return False
+		
+		return True
+	
+	def copy(self) -> Self:
+		"""
+		Return a new copy of SAx object.
+		
 		Returns
 		-------
 		SAx
-			SAx instance with new label
+			A new copy of the SAx object.
 		"""
-		label = str(label) if label is not None else self._label
-		values = self._values
+		copied_values = np.asarray(self).copy()
+		copied_label = self.label
 		
-		return self.__class__(values=values, label=label)
+		return self.__class__(values=copied_values, label=copied_label)
 	
+	def set_meta_info(self, label):
+		"""
+		Set meta info for the axis.
+		
+		.. code-block:: python
+		
+			import modusa as ms
+			x = ms.sax.linear(100, 10)
+			print(x)
+			x = x.set_meta_info("My Axis (unit)")
+			print(x)
+
+			# I personally prefer setting it inline
+			x = ms.sax.linear(100, 10).set_meta_info("My Axis (unit)")
+			print(x)
+		
+		Parameters
+		----------
+		label: str
+			Label for the axis (e.g. "Time (sec)").
+		Returns
+		-------
+		Self
+			A new Self instance with new label.
+		"""
+		
+		if label is None:
+			return self
+		else:
+			return self.__class__(values=self.values.copy(), label=label)
+
 	#====================================
+	
+	#-------------------------------
+	# NumPy Protocol
+	#-------------------------------
+	def __array__(self, dtype=None) -> np.ndarray:
+		return np.asarray(self.values, dtype=dtype)
+	
+	def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+		"""
+		Provides operation support for the universal functions
+		on the Data object.
+		"""
+		from .s1d import S1D
+		from .data import Data
+		
+		raw_inputs = [x.values if isinstance(x, type(self)) else x for x in inputs]
+		
+		# Call the actual ufunc
+		result = getattr(ufunc, method)(*raw_inputs, **kwargs)
+		
+		if isinstance(result, (np.ndarray, np.generic)):
+			y = Data(values=result, label=None)
+			x = self
+			return S1D(y=y, x=x, title=None)
+		else:
+			return result
+	
+	#================================
 	
 	
 	#------------------------------------
 	# Visualisation
 	#------------------------------------
 	
-	def plot(self, ax: plt.Axes | None = None, color: str = "b") -> plt.Figure | None:
+	def plot(self, ax = None, fmt = "b-", show_stem=False):
 		"""
-		Plot vertical lines showing the axis.
+		Plot the axis values. This is useful to analyse
+		the axis if it is linear or follows some other
+		trend.
+
+		.. code-block:: python
+			
+			import modusa as ms
+			x = ms.sax.linear(100, 10)
+			x.plot()
 
 		Parameters
 		----------
 		ax: plt.Axes | None
 			- Incase, you want to plot it on your defined matplot ax.
-			- If not provided, set to None, meaning we create a new figure and return that.
-		color: str
-			- Color of the vertival lines.
+			- If not provided, We create a new figure and return that.
+		fmt: str
+			- Matplotlib fmt for setting different colors and styles for the plot.
+			- General fmt is [color][marker][line], e.g. "bo:"
 			- Useful while plotting multiple SAx instances on the same plot.
 
 		Returns
@@ -131,275 +223,166 @@ class SAx(ModusaSignalAxis):
 			- None is ax is not None.
 		"""
 		from modusa.tools.plotter import Plotter
-		values = self._values
-		label = self._label
 		
-		fig: plt.Figure | None = Plotter.plot_event(event=values, ax=ax, title=label, y_label="", x_label=label, color=color)
+		fig: plt.Figure | None = Plotter.plot_signal(y=self.values, x=np.arange(len(self)), ax=ax, fmt=fmt, title=self.label, y_label=self.label, x_label="Index", show_stem=show_stem)
 		
 		return fig
-	#====================================
-
-	
-	#------------------------------------
-	# Utility methods
-	#------------------------------------
-	
-	def _is_same_as(self, other_sax: Self) -> bool:
-		"""
-		Check if two axes are same.
-		"""
-		assert isinstance(other_sax, self.__class__)
-		if self.shape != other_sax.shape:
-			return False
-		if np.allclose(self._values, other_sax._values):
-			return True
-		return False
-	
 	#====================================
 	
 	#-----------------------------------
 	# Indexing
 	#-----------------------------------
 	
-	def __getitem__(self, key: slice | int | np.ndarray) -> Self:
-		from modusa.models.signal1D import Signal1D
-		
-		assert key.__class__ in [slice, int, np.ndarray, Signal1D], "Invalid key"
-		
-		values = self._values
-		label = self._label
-	
-		if key.__class__ in [slice, int, np.ndarray]:
-			sliced_values = values[key]
-		elif key.__class__ in [Signal1D]:
-			mask = key._y
-			sliced_values = values[mask]
-		
-		if isinstance(sliced_values, (int, float, np.generic)): sliced_values = [sliced_values]
-		sliced_values = np.asarray(sliced_values)
-		
-		return self.__class__(values=sliced_values, label=label)
-	
-	#====================================
-	
-	#-----------------------------------
-	# Comparison operators return 
-	# boolean masks
-	#-----------------------------------
-	
-	def _perform_comparison_ops(self, other: int | float | np.generic, op: Callable):
-		
-		assert self.__class__ in [SAx]
-		assert other.__class__ in [int, float] or isintance(other, np.generic)
-		
-		label = self._label
-		mask = op(self._values, other)
-		
-		# We should return it as signal1D with data as mask and sax
-		from modusa.models.signal1D import Signal1D
-		sax = self # We pass on the entire SAx while creating the boolean signal
-		
-		return Signal1D(data=mask, data_label="Mask", sax=(sax, ), title="Boolean Mask")
-		
-	
-	def __lt__(self, other: int | float | np.generic) -> "Signal1D":
-		return self._perform_comparison_ops(other=other, op=MathOps.lt)
-	
-	def __le__(self, other: int | float | np.generic) -> "Signal1D":
-		return self._perform_comparison_ops(other=other, op=MathOps.le)
-	
-	def __gt__(self, other: int | float | np.generic) -> "Signal1D":
-		return self._perform_comparison_ops(other=other, op=MathOps.gt)
-	
-	def __ge__(self, other: int | float | np.generic) -> "Signal1D":
-		return self._perform_comparison_ops(other=other, op=MathOps.ge)
-	
-	def __eq__(self, other: int | float | np.generic) -> "Signal1D":
-		return self._perform_comparison_ops(other=other, op=MathOps.eq)
-	
-	def __ne__(self, other: int | float | np.generic) -> "Signal1D":
-		return self._perform_comparison_ops(other=other, op=MathOps.ne)
-	
-	#======================================
-	
-	
-	#-----------------------------------
-	# Basic Math Operations
-	#-----------------------------------
-	
-	def _perform_binary_ops(self, other: int | float, op: Callable, reverse=False):
-		from modusa.models.signal1D import Signal1D
-		
-		assert self.__class__ in [SAx]
-		assert other.__class__ in [int, float, complex]
-		
-		values = self._values
-		label = self._label
-		
-		new_sax = self.__class__(values=values, label=label) # We make sure that we create a new instance rather than self
-		
-		if isinstance(other, (int, float, complex)):
-			result = op(values, other) if not reverse else op(other, values)
-		else:
-			raise excp.InputTypeError("Unsupported operand type")
+	def __getitem__(self, key) -> Self:
+		"""
+		Defining how to index SAx instance.
 
-		return Signal1D(data=result, sax=(new_sax, ), data_label="Y", title="Signal 1D")
+		.. code-block:: python
 			
-			
+			import modusa as ms
+			x = ms.sax.linear(100, 10)
+			print(x)
+			print(x[10:20])
+
+		Parameters
+		----------
+		key: int | slice
+			What can go inside the square bracket [] for indexing.
+		
+		Returns
+		-------
+		SAx:
+			Sliced instance of the axis.
+		"""
+		
+		from .s1d import S1D
+		
+		if not isinstance(key, (int, slice, tuple)):
+			raise TypeError(f"Invalid key type {type(key)}")
+	
+		sliced_values = self.values[key]
+		
+		# If the number of dimensions is reduced, add back singleton dims
+		while np.ndim(sliced_values) < self.ndim:
+			sliced_values = np.expand_dims(sliced_values, axis=0)
+		
+		return self.__class__(values=sliced_values, label=self.label)
+	
+	
+	def __setitem__(self, key, value):
+		"""
+		Raises error if trying to set values
+		of an axis.
+
+		Meaningful axis are not meant to be altered.
+		"""
+		raise TypeError("Axis do not support item assignment.")
+
+	#===============================
+	
+	#-------------------------------
+	# Basic arithmetic operations
+	#-------------------------------
 	def __add__(self, other):
-		return self._perform_binary_ops(other, MathOps.add) 
+		return np.add(self, other) 
 	
 	def __radd__(self, other):
-		return self._perform_binary_ops(other, MathOps.add, reverse=True) 
+		return np.add(other, self)
 	
 	def __sub__(self, other):
-		return self._perform_binary_ops(other, MathOps.subtract)
+		return np.subtract(self, other)
 	
 	def __rsub__(self, other):
-		return self._perform_binary_ops(other, MathOps.subtract, reverse=True)
+		return np.subtract(other, self)
 	
 	def __mul__(self, other):
-		return self._perform_binary_ops(other, MathOps.multiply)
+		return np.multiply(self, other) 
 	
 	def __rmul__(self, other):
-		return self._perform_binary_ops(other, MathOps.multiply, reverse=True)
+		return np.multiply(other, self)
 	
 	def __truediv__(self, other):
-		return self._perform_binary_ops(other, MathOps.divide)
+		return np.divide(self, other) 
 	
 	def __rtruediv__(self, other):
-		return self._perform_binary_ops(other, MathOps.divide, reverse=True)
+		return np.divide(other, self)
 	
 	def __floordiv__(self, other):
-		return self._perform_binary_ops(other, MathOps.floor_divide)
+		return np.floor_divide(self, other) 
 	
 	def __rfloordiv__(self, other):
-		return self._perform_binary_ops(other, MathOps.floor_divide, reverse=True)
+		return np.floor_divide(other, self)
 	
 	def __pow__(self, other):
-		return self._perform_binary_ops(other, MathOps.power)
+		return np.power(self, other) 
 	
 	def __rpow__(self, other):
-		return self._perform_binary_ops(other, MathOps.power, reverse=True)
+		return np.power(other, self)
 	
-	#======================================
+	#===============================
 	
 	
-	#-----------------------------------
-	# Unary Operations (Transformations)
-	#-----------------------------------
+	#-------------------------------
+	# Basic comparison operations
+	#-------------------------------
+	def __eq__(self, other):
+		return np.equal(self, other)
 	
-	def _perform_unary_ops(self, op: Callable) -> Self:
-		from modusa.models.signal1D import Signal1D
-		assert self.__class__ in [SAx]
-		
-		values = self._values
-		label = self._label
-		
-		new_sax = self.__class__(values=values, label=label)
-		result = op(values)
-		
-		return Signal1D(data=result, data_label="Y", sax=(new_sax, ), title="Signal 1D")
+	def __ne__(self, other):
+		return np.not_equal(self, other)
+	
+	def __lt__(self, other):
+		return np.less(self, other)
+	
+	def __le__(self, other):
+		return np.less_equal(self, other)
+	
+	def __gt__(self, other):
+		return np.greater(self, other)
+	
+	def __ge__(self, other):
+		return np.greater_equal(self, other)
+	
+	#===============================
 
-			
-	def abs(self) -> Self:
-		"""Compute the element-wise abs of the signal data."""
-		return self._perform_unary_ops(MathOps.abs)
-	
-	def sin(self) -> Self:
-		"""Compute the element-wise sine of the signal data."""
-		return self._perform_unary_ops(MathOps.sin)
-	
-	def cos(self) -> Self:
-		"""Compute the element-wise cosine of the signal data."""
-		return self._perform_unary_ops(MathOps.cos)
-	
-	def exp(self) -> Self:
-		"""Compute the element-wise exponential of the signal data."""
-		return self._perform_unary_ops(MathOps.exp)
-	
-	def tanh(self) -> Self:
-		"""Compute the element-wise hyperbolic tangent of the signal data."""
-		return self._perform_unary_ops(MathOps.tanh)
-	
-	def log(self) -> Self:
-		"""Compute the element-wise natural logarithm of the signal data."""
-		return self._perform_unary_ops(MathOps.log)
-	
-	def log1p(self) -> Self:
-		"""Compute the element-wise natural logarithm of (1 + signal data)."""
-		return self._perform_unary_ops(self, MathOps.log1p)
-	
-	def log10(self) -> Self:
-		"""Compute the element-wise base-10 logarithm of the signal data."""
-		return self._perform_unary_ops(MathOps.log10)
-	
-	def log2(self) -> Self:
-		"""Compute the element-wise base-2 logarithm of the signal data."""
-		return self._perform_unary_ops(MathOps.log2)
-	
-	def floor(self) -> Self:
-		"""Apply np.floor to the signal data."""
-		return self._perform_unary_ops(MathOps.floor)
-	
-	def ceil(self) -> Self:
-		"""Apply np.ceil to the signal data."""
-		return self._perform_unary_ops(MathOps.ceil)
-	
-	def round(self) -> Self:
-		"""Apply np.round to the signal data."""
-		return self._perform_unary_ops(MathOps.round)
-	
-	def __abs__(self):
-		return self._perform_unary_ops(MathOps.abs)
-	
-	#===================================
-	
 	#----------------------------------
 	# Information
 	#----------------------------------
 	
 	def print_info(self) -> None:
-		"""Prints info about the audio."""
+		"""
+		Prints info about the SAx instance.
+		
+		.. code-block:: python
+			
+			import modusa as ms
+			# For SAx
+			x = ms.sax.linear(100, 10)
+			x.print_info()
+			# For TAx
+			x = ms.tax.linear(100, 10)
+			x.print_info()
+		
+		Returns
+		-------
+		None
+		"""
 		print("-" * 50)
 		print("Axis Info")
 		print("-" * 50)
-		print(f"{'Label':<20}: {self._label}")
-		print(f"{'Shape':<20}: {self._values.shape}")
-		print(f"{'Start Value':<20}: {self._values[0]:.2f}")
-		print(f"{'End Value':<20}: {self._values[-1]:.2f}")
+		print(f"{'Label':<20}: {self.label}")
+		print(f"{'Shape':<20}: {self.shape}")
 		# Inheritance chain
 		cls_chain = " → ".join(cls.__name__ for cls in reversed(self.__class__.__mro__[:-1]))
 		print(f"{'Inheritance':<20}: {cls_chain}")
 		print("=" * 50)
 	
 	def __str__(self):
-		data = self._values
-		label = self._label
-		shape = self.shape
-		arr_str = np.array2string(
-			data,
-			separator=", ",
-			threshold=30,       # limit number of elements shown
-			edgeitems=3,          # show first/last 3 rows and columns
-			max_line_width=120,   # avoid wrapping
-		)
-		
-		return f"{self._nickname}({arr_str}, shape={shape}, label={label})"
+		arr_str = np.array2string(self.values, separator=", ", threshold=30, edgeitems=3, max_line_width=120)
+		return f"{self._nickname}({arr_str})"
 	
 	def __repr__(self):
-		data = self._values
-		label = self._label
-		shape = self.shape
-		
-		arr_str = np.array2string(
-			data,
-			separator=", ",
-			threshold=30,       # limit number of elements shown
-			edgeitems=3,          # show first/last 3 rows and columns
-			max_line_width=120,   # avoid wrapping
-		)
-		
-		
-		return f"{self._nickname}({arr_str}, shape={shape}, label={label})"
+		arr_str = np.array2string(self.values, separator=", ", threshold=30, edgeitems=3, max_line_width=120)
+		return f"{self._nickname}({arr_str})"
 	#===================================
+	

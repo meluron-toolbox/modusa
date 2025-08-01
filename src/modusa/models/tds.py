@@ -1,0 +1,501 @@
+#!/usr/bin/env python3
+
+
+from modusa import excp
+from modusa.decorators import immutable_property, validate_args_type
+from .s1d import S1D
+from .t_ax import TAx
+from .data import Data
+from modusa.tools.math_ops import MathOps
+from typing import Self, Any, Callable
+from types import NoneType
+import numpy as np
+import matplotlib.pyplot as plt
+
+class TDS(S1D):
+	"""
+	Space to represent time domain signals.
+	
+	Note
+	----
+	- Use :class:`~modusa.generators.tds.TDSGen` to instantiate this class.
+
+	Parameters
+	----------
+	y: Data
+		- Data object holding the main array.
+	t: TAx
+		- Time axis for the signal.
+	title: str
+		- Title for the signal.
+		- Default: None => ''
+		- e.g. "MySignal"
+		- This is used as the title while plotting.
+	"""
+	
+	#--------Meta Information----------
+	_name = "Time Domain Signal"
+	_nickname = "signal" # This is to be used in repr/str methods
+	_description = "Space to represent uniform time domain signal."
+	_author_name = "Ankit Anand"
+	_author_email = "ankit0.anand0@gmail.com"
+	_created_at = "2025-07-20"
+	#----------------------------------
+	
+
+	def __init__(self, y, t, title = None):
+		
+		if not (isinstance(y, Data) and isinstance(t, TAx)):
+			raise TypeError(f"`y` must be `Data` instance and `t` must be `TAx` object, got {type(y)} and {type(x)}")
+			
+		assert y.ndim == 1
+		
+		super().__init__(y=y, x=t, title=title) # Instantiating `Signal1D` class
+	
+	#---------------------------------
+	# Properties (Hidden)
+	#---------------------------------
+	
+	@property
+	def y(self) -> Data:
+		return self._y
+	
+	@property
+	def t(self) -> TAx:
+		return self.x
+	
+	@property
+	def title(self) -> str:
+		return self._title
+	
+	@property
+	def shape(self) -> tuple:
+		return self.y.shape
+	
+	@property
+	def ndim(self) -> tuple:
+		return self.y.ndim # Should be 1
+	
+	def __len__(self) -> int:
+		return len(self.y.values)
+	
+	#==================================
+	
+	#-------------------------------
+	# NumPy Protocol
+	#-------------------------------
+	
+	def __array__(self, dtype=None) -> np.ndarray:
+		return np.asarray(self.y.values, dtype=dtype)
+	
+	def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+		"""
+		Supports NumPy universal functions on the Signal1D object.
+		"""
+		from .data import Data  # Ensure this is the same Data class you're using
+		from modusa.utils import np_func_cat as nfc
+		
+		raw_inputs = [
+			np.asarray(obj.y) if isinstance(obj, type(self)) else obj
+			for obj in inputs
+		]
+		
+		result = getattr(ufunc, method)(*raw_inputs, **kwargs)
+		
+		y = Data(values=result, label=None)  # label=None or you could copy from self.y.label
+		t = self.t.copy()
+		
+		if y.shape != t.shape:
+			raise ValueError(f"`{ufunc.__name__}` caused shape mismatch between data and axis, please create a github issue")
+			
+		return self.__class__(y=y, t=t, title=self.title)
+	
+	def __array_function__(self, func, types, args, kwargs):
+		"""
+		Additional numpy function support.
+		"""
+		from .data import Data
+		from modusa.utils import np_func_cat as nfc
+		
+		if not all(issubclass(t, type(self)) for t in types):
+			return NotImplemented
+		
+		# Not supporting concatenate like operations as axis any random axis can't be concatenated
+		if func in nfc.CONCAT_FUNCS:
+			raise NotImplementedError(f"`{func.__name__}` is not yet tested on modusa signal, please create a GitHub issue.")
+			
+		# Single signal input expected
+		signal = args[0]
+		signal_array = np.asarray(signal.y) if isinstance(signal, type(self)) else signal
+		result = func(signal_array, **kwargs)
+		
+		if func in nfc.REDUCTION_FUNCS:
+			result = Data(values=result, label=func.__name__)
+			return result  # A scalar or reduced array; no x-axis or signal structure
+		
+		elif func in nfc.X_NEEDS_ADJUSTMENT_FUNCS:
+			# You must define logic for adjusting x
+			raise NotImplementedError(f"{func.__name__} requires x-axis adjustment logic.")
+			
+		else:
+			raise NotImplementedError(f"`{func.__name__}` is not yet tested on modusa signal, please create a GitHub issue.")
+		
+	#================================
+	
+	#-------------------------------
+	# Indexing
+	#-------------------------------
+			
+	def __getitem__(self, key):
+		"""
+		Return a sliced or indexed view of the data.
+		
+		Parameters
+		----------
+		key : array-like
+			- Index to apply to the values.
+		
+		Returns
+		-------
+		TDS
+			A new TDS object with sliced values and same meta data.
+		"""
+		if not isinstance(key, (int, slice)):
+			raise TypeError(f"Invalid key type: {type(key)}")
+		
+		sliced_y = self.y[key]
+		sliced_t = self.t[key]
+		
+		if sliced_y.ndim == 0:
+			sliced_y = Data(values=sliced_y.values, label=sliced_y.label, ndim=1)
+			
+		return self.__class__(y=sliced_y, t=sliced_t, title=self.title)
+	
+	def __setitem__(self, key, value):
+		"""
+		Set values at the specified index.
+	
+		Parameters
+		----------
+		key : int | slice | array-like | boolean array | S1D
+			Index to apply to the values.
+		value : int | float | array-like
+			Value(s) to set.
+		"""
+		
+		self.y[key] = value  # In-place assignment
+		
+	#===================================
+	
+	
+	#-----------------------------------
+	# Utility Methods
+	#-----------------------------------
+	
+	def unpack(self):
+		"""
+		Unpacks the object into easy to work
+		with data structures.
+
+		Returns
+		-------
+		(np.ndarray, float, float)
+			- y: Signal data array.
+			- sr: Sampling rate of the signal.
+			- t0: Starting timestamp.
+		"""
+		
+		arr = self.y.values
+		sr = self.t.sr
+		t0 = self.t.t0
+		
+		return (arr, sr, t0)
+		
+	def copy(self) -> Self:
+		"""
+		Returns a new copy of the signal.
+		
+		Returns
+		-------
+		Self
+			A new copy of the object.
+		"""
+		copied_y = self.y.copy()
+		copied_x = self.x.copy()
+		title = self.title # Immutable, hence no need to copy
+		
+		return self.__class__(y=copied_y, x=copied_x, title=title)
+		
+	
+	def set_meta_info(self, title = None, y_label = None, t_label = None) -> None:
+		"""
+		Set meta info about the signal.
+
+		Parameters
+		----------
+		title: str
+			- Title for the signal
+			- e.g. "Speedometer"
+		y_label: str
+			- Label for the y-axis.
+			- e.g. "Speeed (m/s)"
+		t_label: str
+			- Label for the time-axis.
+			- e.g. "Distance (m)"
+		"""
+
+		y, t = self.y, self.t
+		
+		new_title = str(title) if title is not None else self.title
+		new_y_label = str(y_label) if y_label is not None else y.label
+		new_t_label = str(t_label) if t_label is not None else t.label
+		
+		# We create a new copy of the data and axis
+		new_y = y.copy().set_meta_info(y_label)
+		new_t = t.copy().set_meta_info(t_label)
+		
+		return self.__class__(y=new_y, t=new_t, title=title)
+	
+	
+	def is_same_as(self, other: Self) -> bool:
+		"""
+		Check if two `TDS` instances are equal.
+		"""
+		
+		if not isinstance(other, type(self)):
+			return False
+		
+		if not self.y.is_same_as(other.y):
+			return False
+		
+		if not self.t.is_same_as(other.t):
+			return False
+		
+		return True
+	
+	def has_same_axis_as(self, other) -> bool:
+		"""
+		Check if two 'TDS' instances have same
+		axis. Many operations need to satify this.
+		"""
+		return self.t.is_same_as(other.t)
+	#===================================
+	
+	#-------------------------------
+	# Tools
+	#-------------------------------
+		
+	@validate_args_type()
+	def translate_t(self, n_samples: int):
+		"""
+		Translate the signal along time axis.
+		
+		Note
+		----
+		- Negative indexing is allowed but just note that you might end up getting time < 0
+
+
+		.. code-block:: python
+			
+			import modusa as ms
+			s1 = ms.tds([1, 2, 4, 4, 5, 3, 2, 1])
+			ms.plot(s1, s1.translate_t(-1), s1.translate_t(3))
+		
+		Parameters
+		----------
+		n_samples: int
+			By how many sample you would like to translate the signal.
+		
+		Returns
+		-------
+		TDS
+			Translated signal.
+		"""
+		
+		# Extract internal data
+		y, t = self._y, self._t
+		y_val, t_val = y._values, t._values
+		y_label, t_label = y._label, t._label
+		sr, t0 = t._sr, t._t0
+		title = self._title
+		
+		new_t0 = t0 + (n_samples / sr)
+		
+		new_t = t.__class__(n_points=t.shape[0], sr=sr, t0=new_t0, label=t_label)
+		new_y = y.__class__(values=y_val.copy(), label=y_label)
+		
+		return self.__class__(data=new_y, tax=(new_t, ), title=title)
+	
+	def pad(self, left=None, right=None) -> Self:
+		"""
+		Pad the signal with array like object from the
+		left or right.
+
+		Parameters
+		----------
+		left: arraylike
+			- What to pad to the left of the signal.
+			- E.g. 1 or [1, 0, 1], np.array([1, 2, 3])
+		right: arraylike
+			- What to pad to the right of the signal.
+			- E.g. 1 or [1, 0, 1], np.array([1, 2, 3])
+
+		Returns
+		-------
+		TDS
+			Padded signal.
+		"""
+		
+		if right is None and left is None:
+			raise ValueError("Both arguments can't be None")
+		
+		# Extract internal data
+		y, t = self._y, self._t
+		y_val, t_val = y._values, t._values
+		y_label, t_label = y._label, t._label
+		sr, t0 = t._sr, t._t0
+		title = self._title
+		
+		# Pad to the left
+		if left is not None:
+			if isinstance(left, (int, float)): left = [left]
+			left = np.asarray(left)
+			y_val_padded = np.concatenate([left, y_val])
+		
+		# Pad to the right
+		if right is not None:
+			if isinstance(right, (int, float)): right = [right]
+			right = np.asarray(right)
+			y_val_padded = np.concatenate([y_val_padded, right])
+			
+		# Find the new t0
+		if left is not None:
+			new_t0 = t0 - (left.shape[0] / sr)
+		else:
+			new_t0 = t0
+		
+		
+		y_padded = y.__class__(values=y_val_padded, label=y_label)
+		t_padded = t.__class__(n_points=y_padded.shape[0], sr=sr, t0=new_t0, label=t_label)
+		
+		return self.__class__(data=y_padded, tax=(t_padded, ), title=title)
+		
+		
+	
+	def crop(self, t_min = None, t_max = None, like = None) -> Self:
+		"""
+		Crop the signal to a time range [t_min, t_max].
+
+		.. code-block:: python
+
+			import modusa as ms
+			import numpy as np
+			s1 = ms.tds(np.random.random(1000), sr=10)
+			ms.plot(s1, s1.crop(5, 40), s1.crop(20), s1.crop(60, 80))
+
+	
+		Parameters
+		----------
+		t_min : float or None
+			Inclusive lower time bound in second (other units). If None, no lower bound.
+		t_max : float or None
+			Exclusive upper time bound in second (other units). If None, no upper bound.
+		like: TDS
+			- An instance of TDS whose start and end time will be used.
+			- If you have a window signal, just pass that to get the correct portion of the signal.
+		
+		Returns
+		-------
+		TDS
+			Cropped signal.
+		"""
+		
+		y, t = self._y, self._t
+		y_val, t_val = y._values, t._values
+		y_label, t_label = y._label, t._label
+		sr = t._sr
+		title = self._title
+		
+		if like is not None:
+			like_sr = like._t._sr
+			assert sr == like_sr, "Sample rates must match."
+			
+			# Get number of points in the like signal
+			expected_len = like.shape[0]
+			
+			# Step 1: Snap t_min to the closest point in self
+			t_min_like = like._t._values[0]
+			idx_min = np.argmin(np.abs(t_val - t_min_like))
+			t_min_snap = t_val[idx_min]
+			
+			# Step 2: Check if snapping offset is acceptable
+			tolerance = 1e-8  # Adjustable; typically smaller than 1e-6 for 32-bit floats
+			if abs(t_min_snap - t_min_like) > tolerance:
+				raise ValueError(f"t_min ({t_min_like}) does not align closely enough with signal time axis.")
+				
+			# Step 3: Check if we have enough samples from idx_min onward
+			idx_max = idx_min + expected_len
+			if idx_max > len(t_val):
+				raise ValueError(f"Cannot crop {expected_len} samples starting from t={t_min_snap}; exceeds signal bounds.")
+				
+			# Step 4: Perform cropping using slicing
+			cropped_y_val = y_val[idx_min:idx_max]
+			cropped_t_val = t_val[idx_min:idx_max]
+			
+			# Compute other parameters that need to be updated
+			new_n_points = len(cropped_t_val)
+			new_sr = sr
+			new_t0 = cropped_t_val[0] if len(cropped_t_val) > 0 else 0.0
+			
+			new_y = y.__class__(values=cropped_y_val, label=y_label)
+			new_t = t.__class__(n_points=new_n_points, sr=new_sr, t0=new_t0, label=t_label)
+			
+			return self.__class__(data=new_y, tax=(new_t, ), title=title)
+		
+		# Create a mask based on the t_min and t_max
+		mask = (t_val >= t_min) & (t_val <= t_max)
+		
+		# Apply mask on the signal
+		cropped_y_val = y_val[mask]
+		cropped_t_val = t_val[mask]
+
+		
+		# Compute other parameters that need to be updated
+		new_n_points = len(cropped_t_val)
+		new_sr = sr
+		new_t0 = cropped_t_val[0] if len(cropped_t_val) > 0 else 0.0
+		
+		new_y = y.__class__(values=cropped_y_val, label=y_label)
+		new_t = t.__class__(n_points=new_n_points, sr=new_sr, t0=new_t0, label=t_label)
+		
+		return self.__class__(data=new_y, tax=(new_t, ), title=title)
+	
+	#===================================
+	
+	#-----------------------------------
+	# Information
+	#-----------------------------------
+	
+	def print_info(self) -> None:
+		"""Prints info about the audio."""
+		t = self._t
+		sr = t._sr
+		duration = t._values[-1]
+		shape = self.shape
+		title = self._title
+		
+		print("-" * 50)
+		print(f"{'Title'}: {title}")
+		print("-" * 50)
+		print(f"{'Type':<20}: {self.__class__.__name__}")
+		print(f"{'Shape':<20}: {shape}")
+		print(f"{'Duration':<20}: {duration:.2f} sec")
+		print(f"{'Sampling Rate':<20}: {sr} Hz")
+		print(f"{'Sampling Period':<20}: {(1 / sr * 1000):.2f} ms")
+		
+		# Inheritance chain
+		cls_chain = " → ".join(cls.__name__ for cls in reversed(self.__class__.__mro__[:-1]))
+		print(f"{'Inheritance':<20}: {cls_chain}")
+		print("=" * 50)
+	
+	#======================================

@@ -1,7 +1,7 @@
 AudioConverter
 ==============
 
-.. autoclass:: modusa.tools.audio_converter.AudioConverter
+.. autoclass:: modusa.tools.AudioConverter
    :members:
    :undoc-members:
    :show-inheritance:

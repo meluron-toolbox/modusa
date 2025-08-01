@@ -5,7 +5,5 @@ How to use
    :maxdepth: 1
    :caption: Examples
    
-   ex1
-   ex2
-   ex3
-   ex4
+   Getting Started <ex1>
+   Working with Audio Signal<ex2>

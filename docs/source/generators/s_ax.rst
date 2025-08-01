@@ -1,7 +1,7 @@
-SAxGenerator
-============
+SAxGen
+======
 
-.. autoclass:: modusa.generators.s_ax.SAxGenerator
+.. autoclass:: modusa.generators.SAxGen
    :members:
    :undoc-members:
    :show-inheritance:

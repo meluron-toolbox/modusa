@@ -9,17 +9,17 @@ from collections import defaultdict
 # === Configuration ===
 BASE_MODULES = [
     'modusa.tools',
-    'modusa.signals',
+    'modusa.models',
     'modusa.generators',
     'modusa.plugins',
-    'modusa.io'
+#   'modusa.io'
 ]
 OUTPUT_DIRS = [
     Path('docs/source/tools'),
-    Path('docs/source/signals'),
+    Path('docs/source/models'),
     Path('docs/source/generators'),
     Path('docs/source/plugins'),
-    Path('docs/source/io')
+#   Path('docs/source/io')
 ]
 
 # Ensure output directories exist

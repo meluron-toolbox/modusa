@@ -1,7 +1,7 @@
 YoutubeDownloader
 =================
 
-.. autoclass:: modusa.tools.youtube_downloader.YoutubeDownloader
+.. autoclass:: modusa.tools.YoutubeDownloader
    :members:
    :undoc-members:
    :show-inheritance:

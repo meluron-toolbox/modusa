@@ -1,7 +1,7 @@
 AudioPlayer
 ===========
 
-.. autoclass:: modusa.tools.audio_player.AudioPlayer
+.. autoclass:: modusa.tools.AudioPlayer
    :members:
    :undoc-members:
    :show-inheritance:

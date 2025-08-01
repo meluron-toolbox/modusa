@@ -112,11 +112,11 @@ class Plotter(ModusaTool):
 		
 		"""
 		
-		assert y.ndim == 1 and y.shape[0] > 0 # 1D, Non-empty
+		assert y.ndim == 1 # 1D
 		if x is None:
 			x = np.arange(y.shape[0])
 		else:
-			assert x.ndim == 1 and x.shape[0] > 0 and x.shape[0] == y.shape[0] # 1D, Non-empty, Compatible
+			assert x.ndim == 1 and x.shape[0] == y.shape[0] # 1D, Compatible
 			
 		# Load figure to plot the signal
 		if ax is None: # Creating a new figure
@@ -316,7 +316,7 @@ class Plotter(ModusaTool):
 		else: assert c.ndim == 1 and c.shape[0] == M.shape[1]
 			
 		# Scale the signal if needed
-		if gamma is not None: M = np.log1p(float(gamma) * np.abs(M))
+		if gamma is not None: M = np.log1p(float(gamma) * M)
 			
 		# Load figure to plot the signal
 		if ax is None: # Creating a new figure

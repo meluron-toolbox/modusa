@@ -4,7 +4,7 @@ MIR
 .. toctree::
    :maxdepth: 1
 
-   mir-tempo-01
+   Tempo Detection <mir-tempo-01>
 
 DSP
 ===

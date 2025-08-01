@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
-from modusa.models.signal1D import Signal1D
-from modusa.models.signal2D import Signal2D
+from modusa.models.s1d import S1D
+from modusa.models.s2d import S2D
 import matplotlib.pyplot as plt
+from collections import defaultdict
+import itertools
 
 def _in_notebook() -> bool:
 	"""
@@ -17,6 +19,7 @@ def _in_notebook() -> bool:
 
 def plot_multiple_signals(
 	*args,
+	loc = None,
 	x_lim: tuple[float, float] | None = None,
 	highlight_regions: list[tuple[float, float, str]] | None = None,
 	vlines: list[float, ...] | None = None,
@@ -24,44 +27,97 @@ def plot_multiple_signals(
 	"""
 	Plots multiple instances of uniform `Signal1D` and `Signal2D`
 	with proper formatting and time aligned.
+
+	Parameters
+	----------
+	loc: tuple[int]
+		- The len should match the number of signals sent as args.
+		- e.g. (0, 1, 1) => First plot at ax 0, second and third plot at ax 1
+		- Default: None => (0, 1, 2, ...) all plots on a new ax.
+	highlight_regions: list[tuple[float, float, str]]
+		-
 	
-	Note
-	----
-	- The signals must be have uniform time axis.
 	"""
 	assert len(args) >= 1, "No signal provided to plot"
-	
 	for signal in args: 
-		assert isinstance(signal, (Signal1D, Signal2D))
-#		assert signal.sax[-1].is_uniform
-		
+		assert isinstance(signal, (S1D, S2D))
+	
+	if loc is None:
+		loc = tuple([i for i in range(len(args))]) # Create (0, 1, 2, ...) that serves as ax number for plots
+	else:
+		assert len(args) == len(loc)
+	
+	# Make sure that all the elements in loc do not miss any number in between (0, 1, 1, 2, 4) -> Not allowed
+	assert min(loc) == 0
+	max_loc = max(loc)
+	for i in range(max_loc):
+		if i not in loc:
+			raise ValueError()
+	
+	# Create a dict that maps subplot to signals that need to be plotted on that subplot e.g. {0: [signal1, signal3], ...}
+	subplot_signal_map = defaultdict(list)
+	for signal, i in zip(args, loc):
+		subplot_signal_map[i].append(signal)
+	
+	# We need to create a figure with right configurations
 	height_ratios = []
-	n_signal1D = 0
-	n_signal2D = 0
-	for signal in args:
-		if isinstance(signal, Signal1D):
-			n_signal1D += 1
-			height_ratios.append(0.4)
-		elif isinstance(signal, Signal2D):
-			n_signal2D += 1
-			height_ratios.append(1)
-		else:
-			raise ms.excp.InputTypeError
-			
-	n_subplots = len(args)
+	height_1d_subplot = 0.4
+	height_2d_subplot = 1
+	n_1d_subplots = 0
+	n_2d_subplots = 0
+	for l, signals in subplot_signal_map.items():
+
+		# If there is any 2D signal, the subplot will be 2D
+		if any(isinstance(s, S2D) for s in signals):
+			n_2d_subplots += 1
+			height_ratios.append(height_2d_subplot)
+		
+		# If all are 1D signal, the subplot will be 1D
+		elif all(isinstance(s, S1D) for s in signals):
+			n_1d_subplots += 1
+			height_ratios.append(height_1d_subplot)
+	
+	
+	n_subplots = n_1d_subplots + n_2d_subplots
 	fig_width = 15
-	fig_height = n_signal1D * 2 + n_signal2D * 4 # This is as per the figsize height set in the plotter tool
+	fig_height = n_1d_subplots * 2 + n_2d_subplots * 4 # This is as per the figsize height set in the plotter tool
 	fig, axs = plt.subplots(n_subplots, 2, figsize=(fig_width, fig_height), width_ratios=[1, 0.01], height_ratios=height_ratios) # 2nd column for cbar
+	
 	if n_subplots == 1:
 		axs = [axs]  # axs becomes list of one pair [ (ax, cbar_ax) ]
-	for i, signal in enumerate(args):
-		if isinstance(signal, Signal1D):
-			signal.plot(axs[i][0], x_lim=x_lim, highlight_regions=highlight_regions, show_grid=True, vlines=vlines)
-			axs[i][1].remove()
-		elif isinstance(signal, Signal2D):
-			signal.plot(axs[i][0], x_lim=x_lim, show_colorbar=True, cax=axs[i][1], highlight_regions=highlight_regions, vlines=vlines)
-		axs[i][0].sharex(axs[0][0])
 		
+	for l, signals in subplot_signal_map.items():
+		# Incase we have plot multiple signals in the same subplot, we change the color
+		fmt_cycle = itertools.cycle(['k-', 'r-', 'g-', 'b-', 'm-', 'c-', 'y-'])
+		
+		# For each subplot, we want to know if it is 2D or 1D
+		if any(isinstance(s, S2D) for s in signals): is_1d_subplot = False
+		else: is_1d_subplot = True
+		
+		if is_1d_subplot: # All the signals are 1D
+			for signal in signals:
+				fmt = next(fmt_cycle)
+				if len(signals) == 1: # highlight region works properly only if there is one signal for a subplot
+					signal.plot(axs[l][0], x_lim=x_lim, highlight_regions=highlight_regions, show_grid=True, vlines=vlines, fmt=fmt, legend=signal._title)
+				else:
+					y, x = signal._x._values, signal._y._values
+					signal.plot(axs[l][0], x_lim=x_lim, show_grid=True, vlines=vlines, fmt=fmt, legend=signal.title, y_label=signal.y.label, x_label=signal.x.label, title="")
+				
+			# Remove the colorbar column (if the subplot is 1d)
+			axs[l][1].remove()
+			
+		if not is_1d_subplot: # Atleast 1 signal is 2D, we we have a 2D subplot
+			for signal in signals:
+				if len(signals) == 1: # Only one 2D signal is to be plotted
+					signal.plot(axs[l][0], x_lim=x_lim, show_colorbar=True, cax=axs[l][1], highlight_regions=highlight_regions, vlines=vlines)
+				else:
+					if isinstance(signal, S1D):
+						fmt = next(fmt_cycle)
+						signal.plot(axs[l][0], x_lim=x_lim, show_grid=True, vlines=vlines, fmt=fmt, legend=signal.title, y_label=signal.y.label, x_label=signal.x.label, title="")
+					elif isinstance(signal, S2D):
+						signal.plot(axs[l][0], x_lim=x_lim, show_colorbar=True, cax=axs[l][1], vlines=vlines, x_label=signal.x.label, y_label=signal.y.label, title="")
+				
+		axs[l][0].sharex(axs[0][0])
 		
 	if _in_notebook():
 		plt.tight_layout()

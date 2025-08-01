@@ -1,5 +1,5 @@
-ModusaPlugin
-============
+Base
+====
 
 .. autoclass:: modusa.plugins.base.ModusaPlugin
    :members:
