@@ -387,8 +387,7 @@ class TDS(S1D):
 		.. code-block:: python
 
 			import modusa as ms
-			import numpy as np
-			s1 = ms.tds(np.random.random(1000), sr=10)
+			s1 = ms.tds.random(1000, sr=10)
 			ms.plot(s1, s1.crop(5, 40), s1.crop(20), s1.crop(60, 80))
 
 	
@@ -399,8 +398,8 @@ class TDS(S1D):
 		t_max : float or None
 			Exclusive upper time bound in second (other units). If None, no upper bound.
 		like: TDS
-			- An instance of TDS whose start and end time will be used.
-			- If you have a window signal, just pass that to get the correct portion of the signal.
+			- A `TDS` object whose start and end time will be used.
+			- If you have a window signal, you can crop the signal to get the correct portion.
 		
 		Returns
 		-------
@@ -408,7 +407,18 @@ class TDS(S1D):
 			Cropped signal.
 		"""
 		
-		raise NotImplementedError
+		# We first will find out the time in samples
+		if t_min is not None:
+			t_min_sample = self.t.index_of(t_min)
+		else:
+			t_min_sample = 0
+			
+		if t_max is not None:
+			t_max_sample = self.t.index_of(t_max)
+		else:
+			t_max_sample = -1
+		
+		return self[t_min_sample: t_max_sample]
 	
 	#===================================
 	

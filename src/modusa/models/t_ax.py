@@ -179,7 +179,6 @@ class TAx(SAx):
 		else:
 			return self.__class__(n_points=self.shape[0], sr=self.sr, t0=self.t0, label=label)
 		
-		
 	def translate(self, n_samples):
 		"""
 		Translate the time axis by `n_samples`.
@@ -218,7 +217,7 @@ class TAx(SAx):
 	def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
 		"""
 		Provides operation support for the universal functions
-		on the Data object.
+		on the TAx object.
 		"""
 		from .tds import TDS
 		from .data import Data
@@ -234,6 +233,39 @@ class TAx(SAx):
 			return TDS(y=y, t=t, title=None)
 		else:
 			return result
+		
+	def __array_function__(self, func, types, args, kwargs):
+		"""
+		Additional numpy function support.
+		"""
+		from modusa.utils import np_func_cat as nfc
+		from .data import Data
+		
+		if not all(issubclass(t, type(self)) for t in types):
+			return NotImplemented
+		
+		# Not supporting concatenate like operations as axis any random axis can't be concatenated
+		if func in nfc.CONCAT_FUNCS:
+			raise NotImplementedError(f"`{func.__name__}` is not yet tested on modusa signal, please create a GitHub issue.")
+			
+		# Single signal input expected
+		t = args[0]
+		t_arr = np.asarray(t)
+		result = func(t_arr, **kwargs)
+		
+		if func in nfc.REDUCTION_FUNCS:
+			# If the number of dimensions is reduced
+			if result.ndim == 0:
+				return Data(values=result, label=None)
+			else:
+				raise RuntimeError(f"Unexpected result: `result` has more than 0 dimensions, {result.ndim}")
+		
+		elif func in nfc.X_NEEDS_ADJUSTMENT_FUNCS:
+			# You must define logic for adjusting x
+			raise NotImplementedError(f"{func.__name__} requires x-axis adjustment logic.")
+			
+		else:
+			raise NotImplementedError(f"`{func.__name__}` is not yet tested on modusa signal, please create a GitHub issue.")
 
 	#================================
 	

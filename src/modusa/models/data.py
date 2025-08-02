@@ -145,6 +145,9 @@ class Data(ModusaSignalData):
 	def __array__(self, dtype=None) -> np.ndarray:
 		return np.asarray(self.values, dtype=dtype)
 	
+	def __index__(self):
+		return int(self.values)
+	
 	def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
 		"""
 		Provides operation support for the universal functions
