@@ -173,6 +173,60 @@ class Data(ModusaSignalData):
 			updated_data = Data(values=data_arr, label=self.label)
 			
 			return updated_data
+	
+	def pad(self, left=None, right=None) -> Self:
+		"""
+		Pad the data from left or right.
+
+		Parameters
+		----------
+		left: arraylike
+			- What to pad to the left of the signal.
+			- E.g. 1 or [1, 0, 1], np.array([1, 2, 3])
+		right: arraylike
+			- What to pad to the right of the signal.
+			- E.g. 1 or [1, 0, 1], np.array([1, 2, 3])
+
+		Returns
+		-------
+		TDS
+			Padded signal.
+		"""
+		
+		if right is None and left is None: # No padding applied
+			return self
+		
+		values = np.asarray(self).copy()
+		if self.ndim == 1: # 1D
+			if isinstance(left, (int, float)): left = [left]
+			if isinstance(right, (int, float)): right = [right]
+			
+			if left is not None:
+				values = np.concatenate((left, values))
+			if right is not None:
+				values = np.concatenate((values, right))
+				
+			return self.__class__(values=values, label=self.label)
+			
+		elif self.ndim == 2: # 2D
+			if isinstance(left, (int, float)): left = [left]
+			if isinstance(right, (int, float)): right = [right]
+			
+			if left is not None:
+				left = np.asarray(left)
+				if left.ndim != 1:
+					raise ValueError(f"left must be 1 dimension")
+				left_cols = np.tile(left, (self.shape[0], 1))
+				values = np.concatenate((left_cols, values), axis=1)
+				
+			if right is not None:
+				right = np.asarray(right)
+				if right.ndim != 1:
+					raise ValueError(f"right must be 1 dimension")
+				right_cols = np.tile(right, (self.shape[0], 1))
+				values = np.concatenate((values, right_cols), axis=1)
+			
+			return self.__class__(values=values, label=self.label)
 			
 	
 	#================================

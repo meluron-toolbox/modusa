@@ -516,6 +516,44 @@ class FTDS(S2D):
 			# Since we're just updating the data, there is no change in the axis
 			return self.__class__(M=new_data, f=self.f.copy(), t=self.t.copy(), title=self.title)
 		
+		
+	def pad(self, left=None, right=None) -> Self:
+		"""
+		Pad the signal with array like object from the
+		left or right.
+
+		Parameters
+		----------
+		left: arraylike
+			- What to pad to the left of the signal.
+			- E.g. 1 or [1, 0, 1], np.array([1, 2, 3])
+		right: arraylike
+			- What to pad to the right of the signal.
+			- E.g. 1 or [1, 0, 1], np.array([1, 2, 3])
+
+		Returns
+		-------
+		FTDS
+			Padded signal.
+		"""
+		
+		if right is None and left is None: # No padding applied
+			return self
+	
+		# Pad the data
+		M_padded = self.M.pad(left=left, right=right)
+	
+		# Find the new t0
+		if left is not None:
+			if np.ndim(left) == 0: left = np.asarray([left])
+			else: left = np.asarray(left)
+			new_t0 = self.t.t0 - (left.shape[0] / self.t.sr)
+		else:
+			new_t0 = self.t.t0
+
+		t_padded = self.t.__class__(n_points=M_padded.shape[1], sr=self.t.sr, t0=new_t0, label=self.t.label)
+		
+		return self.__class__(M=M_padded, f=self.f.copy(), t=t_padded, title=self.title)
 	
 	#====================================
 	

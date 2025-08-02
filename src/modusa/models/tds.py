@@ -383,39 +383,23 @@ class TDS(S1D):
 			Padded signal.
 		"""
 		
-		if right is None and left is None:
-			raise ValueError("Both arguments can't be None")
+		if right is None and left is None: # No padding applied
+			return self
 		
-		# Extract internal data
-		y, t = self._y, self._t
-		y_val, t_val = y._values, t._values
-		y_label, t_label = y._label, t._label
-		sr, t0 = t._sr, t._t0
-		title = self._title
-		
-		# Pad to the left
-		if left is not None:
-			if isinstance(left, (int, float)): left = [left]
-			left = np.asarray(left)
-			y_val_padded = np.concatenate([left, y_val])
-		
-		# Pad to the right
-		if right is not None:
-			if isinstance(right, (int, float)): right = [right]
-			right = np.asarray(right)
-			y_val_padded = np.concatenate([y_val_padded, right])
+		# Pad the data
+		y_padded = self.y.pad(left=left, right=right)
 			
 		# Find the new t0
 		if left is not None:
-			new_t0 = t0 - (left.shape[0] / sr)
+			if np.ndim(left) == 0: left = np.asarray([left])
+			else: left = np.asarray(left)
+			new_t0 = self.t.t0 - (left.shape[0] / self.t.sr)
 		else:
-			new_t0 = t0
+			new_t0 = self.t.t0
 		
+		t_padded = self.t.__class__(n_points=y_padded.shape[0], sr=self.t.sr, t0=new_t0, label=self.t.label)
 		
-		y_padded = y.__class__(values=y_val_padded, label=y_label)
-		t_padded = t.__class__(n_points=y_padded.shape[0], sr=sr, t0=new_t0, label=t_label)
-		
-		return self.__class__(data=y_padded, tax=(t_padded, ), title=title)
+		return self.__class__(y=y_padded, t=t_padded, title=self.title)
 		
 		
 	
