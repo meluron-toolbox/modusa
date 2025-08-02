@@ -78,6 +78,10 @@ class TAx(SAx):
 		return self.values.ndim # Should be 1
 	
 	@property
+	def size(self) -> int:
+		return self.values.size
+	
+	@property
 	def sr(self) -> float:
 		return self._sr
 	
@@ -121,6 +125,9 @@ class TAx(SAx):
 		- We check the shape and all the values.
 		- We are not checking the labels for now.
 		"""
+		
+		if other.size == 1: # Meaning it is scalar
+			return True
 		
 		axis1_arr = np.asarray(self)
 		axis2_arr = np.asarray(other)

@@ -80,6 +80,10 @@ class FTDS(S2D):
 	def ndim(self) -> tuple:
 		return self.M.ndim # Should be 2
 	
+	@property
+	def size(self) -> int:
+		return self.M.size
+	
 	#===================================
 	
 		
@@ -130,24 +134,37 @@ class FTDS(S2D):
 		signal = args[0]
 		result: Data = func(signal.M, **kwargs)
 		axis = kwargs.get("axis", None)
+		keepdims = kwargs.get("keepdims", None)
 		
 		if func in nfc.REDUCTION_FUNCS:
-			if axis is None: # Both axes collapsed
-				dummy_f = SAx(0, "")
-				dummy_t = TAx(n_points=1, sr=signal.t.sr, t0=0.0, label="")
-				return self.__class__(M=result, f=dummy_f, t=dummy_t, title=signal.title)
-		
-			if isinstance(axis, int): # One of the axis collapsed
-				if axis == 0:
+			if keepdims is None or keepdims is True:
+				if axis is None: # Both axes collapsed
 					dummy_f = SAx(0, "")
-					return self.__class__(M=result, f=dummy_f, t=signal.t.copy(), title=signal.title)
-				elif axis in [1, -1]:
 					dummy_t = TAx(n_points=1, sr=signal.t.sr, t0=0.0, label="")
-					return self.__class__(M=result, f=signal.f.copy(), t=dummy_t, title=signal.title)
+					return self.__class__(M=result, f=dummy_f, t=dummy_t, title=signal.title)
+			
+				if isinstance(axis, int): # One of the axis collapsed
+					if axis == 0:
+						dummy_f = SAx(0, "")
+						return self.__class__(M=result, f=dummy_f, t=signal.t.copy(), title=signal.title)
+					elif axis in [1, -1]:
+						dummy_t = TAx(n_points=1, sr=signal.t.sr, t0=0.0, label="")
+						return self.__class__(M=result, f=signal.f.copy(), t=dummy_t, title=signal.title)
+					else:
+						raise ValueError
+			elif keepdims is False:
+				if axis is None: # Return Data
+					return result
+				if axis == 0: # Return TDS
+					from .tds import TDS
+					return TDS(y=result, t=signal.t, title=signal.title)
+				elif axis in [1, -1]: # Return S1D
+					from .s1d import S1D
+					return S1D(y=result, x=signal.f, title=signal.title)
 				else:
 					raise ValueError
-					
-			
+							
+	
 			# Case 3: Reduction keeps both axes (unlikely)
 			else:
 				raise NotImplementedError(f"{func.__name__} result shape={result.shape} not handled for modusa signal")

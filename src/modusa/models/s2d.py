@@ -89,6 +89,10 @@ class S2D(ModusaSignal):
 	def ndim(self) -> tuple:
 		return self.M.ndim # Should be 2
 	
+	@property
+	def size(self) -> int:
+		return self.M.size
+	
 	#===============================
 	
 	
@@ -139,20 +143,33 @@ class S2D(ModusaSignal):
 		signal = args[0]
 		result: Data = func(signal.M, **kwargs)
 		axis = kwargs.get("axis", None)
+		keepdims = kwargs.get("keepdims", None)
 
 		if func in nfc.REDUCTION_FUNCS:
-			if axis is None: # Both axes collapsed
-				dummy_y = SAx(0, label=None)
-				dummy_x = SAx(values=0, label=None)
-				return self.__class__(M=result, y=dummy_y, x=dummy_x, title=signal.title)
-			
-			if isinstance(axis, int): # One of the axis collapsed
-				if axis == 0:
+			if keepdims is None or keepdims is True:
+				if axis is None: # Both axes collapsed
 					dummy_y = SAx(0, label=None)
-					return self.__class__(M=result, y=dummy_y, x=signal.x.copy(), title=signal.title)
-				elif axis in [1, -1]:
 					dummy_x = SAx(values=0, label=None)
-					return self.__class__(M=result, y=signal.y.copy(), x=dummy_x, title=signal.title)
+					return self.__class__(M=result, y=dummy_y, x=dummy_x, title=signal.title)
+				
+				if isinstance(axis, int): # One of the axis collapsed
+					if axis == 0:
+						dummy_y = SAx(0, label=None)
+						return self.__class__(M=result, y=dummy_y, x=signal.x.copy(), title=signal.title)
+					elif axis in [1, -1]:
+						dummy_x = SAx(values=0, label=None)
+						return self.__class__(M=result, y=signal.y.copy(), x=dummy_x, title=signal.title)
+					else:
+						raise ValueError
+			elif keepdims is False:
+				if axis is None: # Return Data
+					return result
+				if axis == 0: # Return S1D
+					from .s1d import S1D
+					return S1D(y=result, x=signal.x, title=signal.title)
+				elif axis in [1, -1]: # Return S1D
+					from .s1d import S1D
+					return S1D(y=result, x=signal.y, title=signal.title)
 				else:
 					raise ValueError
 				

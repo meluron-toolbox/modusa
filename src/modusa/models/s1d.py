@@ -84,8 +84,9 @@ class S1D(ModusaSignal):
 	def ndim(self) -> int:
 		return self.y.ndim # Should be 1
 	
-	def __len__(self) -> int:
-		return len(self.y.values)
+	@property
+	def size(self) -> int:
+		return self.y.size
 	
 	#===================================
 	
@@ -133,23 +134,18 @@ class S1D(ModusaSignal):
 
 		# Single signal input expected
 		signal = args[0]
-		signal_arr = np.asarray(signal.y) if isinstance(signal, type(self)) else signal
-		result = func(signal_arr, **kwargs)
-		result_arr = np.asarray(result)
+		result: Data = func(signal.y, **kwargs)
+		axis = kwargs.get("axis", None)
+		keepdims = kwargs.get("keepdims", None)
 	
 		if func in nfc.REDUCTION_FUNCS:
-			# If the number of dimensions is reduced, add back singleton dims
-			while np.ndim(result_arr) < np.ndim(signal_arr):
-				result_arr = np.expand_dims(result_arr, axis=0)
-			
-			from .s_ax import SAx
-			from .data import Data
-			
-			result = Data(values=result_arr, label="")
-			dummy_x = SAx(values=0, label="")
-				
-			result = signal.__class__(y=result, x=dummy_x, title=signal.title)
-			return result
+			if keepdims is None or keepdims is True: # Default state is True => return 1D signal by wrapping the scalar
+				from .s_ax import SAx
+				dummy_x = SAx(0, "")
+				return self.__class__(y=result, x=dummy_x, title=signal.title)
+			elif keepdims is False: # Return Data
+				from .data import Data
+				return Data(values=result, label=None)
 	
 		elif func in nfc.X_NEEDS_ADJUSTMENT_FUNCS:
 			# You must define logic for adjusting x

@@ -73,8 +73,9 @@ class SAx(ModusaSignalAxis):
 	def ndim(self) -> int:
 		return self.values.ndim # Should be 1
 	
-	def __len__(self) -> int:
-		return len(self.values)
+	@property
+	def size(self) -> int:
+		return self.values.size
 	
 	#====================================
 	
@@ -101,6 +102,9 @@ class SAx(ModusaSignalAxis):
 		- We check the shape and all the values.
 		- We are not checking the labels for now.
 		"""
+		
+		if other.size == 1: # Meaning it is scalar
+			return True
 		
 		axis1_arr = np.asarray(self)
 		axis2_arr = np.asarray(other)

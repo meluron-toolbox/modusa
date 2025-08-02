@@ -76,8 +76,9 @@ class TDS(S1D):
 	def ndim(self) -> tuple:
 		return self.y.ndim # Should be 1
 	
-	def __len__(self) -> int:
-		return len(self.y.values)
+	@property
+	def size(self) -> int:
+		return self.y.size
 	
 	#==================================
 	
@@ -114,7 +115,6 @@ class TDS(S1D):
 		"""
 		Additional numpy function support.
 		"""
-		from .data import Data
 		from modusa.utils import np_func_cat as nfc
 		
 		if not all(issubclass(t, type(self)) for t in types):
@@ -126,12 +126,18 @@ class TDS(S1D):
 			
 		# Single signal input expected
 		signal = args[0]
-		signal_array = np.asarray(signal.y) if isinstance(signal, type(self)) else signal
-		result = func(signal_array, **kwargs)
+		result: Data = func(signal.y, **kwargs)
+		axis = kwargs.get("axis", None)
+		keepdims = kwargs.get("keepdims", None)
 		
 		if func in nfc.REDUCTION_FUNCS:
-			result = Data(values=result, label=func.__name__)
-			return result  # A scalar or reduced array; no x-axis or signal structure
+			if keepdims is None or keepdims is True: # Default state is True => return 1D signal by wrapping the scalar
+				from .t_ax import TAx
+				dummy_t = TAx(n_points=1, sr=signal.t.sr, t0=0, label=None)
+				return self.__class__(y=result, t=dummy_t, title=signal.title)
+			elif keepdims is False: # Return Data
+				from .data import Data
+				return Data(values=result, label=None)
 		
 		elif func in nfc.X_NEEDS_ADJUSTMENT_FUNCS:
 			# You must define logic for adjusting x

@@ -65,6 +65,10 @@ class Data(ModusaSignalData):
 	def ndim(self) -> tuple:
 		return self.values.ndim
 	
+	@property
+	def size(self) -> int:
+		return self.values.size
+	
 	#===================================
 
 	#-------------------------------
@@ -177,7 +181,7 @@ class Data(ModusaSignalData):
 		# Not supporting concatenate like operations as axis any random axis can't be concatenated
 		if func in nfc.CONCAT_FUNCS:
 			raise NotImplementedError(f"`{func.__name__}` is not yet tested on modusa signal, please create a GitHub issue.")
-			
+		
 		# Single signal input expected
 		data = args[0]
 		data_arr = np.asarray(data)
