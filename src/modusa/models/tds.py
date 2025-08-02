@@ -349,19 +349,9 @@ class TDS(S1D):
 			Translated signal.
 		"""
 		
-		# Extract internal data
-		y, t = self._y, self._t
-		y_val, t_val = y._values, t._values
-		y_label, t_label = y._label, t._label
-		sr, t0 = t._sr, t._t0
-		title = self._title
+		translated_t = self.t.translate(n_samples=n_samples)
 		
-		new_t0 = t0 + (n_samples / sr)
-		
-		new_t = t.__class__(n_points=t.shape[0], sr=sr, t0=new_t0, label=t_label)
-		new_y = y.__class__(values=y_val.copy(), label=y_label)
-		
-		return self.__class__(data=new_y, tax=(new_t, ), title=title)
+		return self.__class__(y=self.y.copy(), t=translated_t, title=self.title)
 	
 	def pad(self, left=None, right=None) -> Self:
 		"""
