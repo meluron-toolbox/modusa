@@ -34,7 +34,7 @@ class Data(ModusaSignalData):
 	_created_at = "2025-07-27"
 	#----------------------------------
 	
-	def __init__(self, values, label):
+	def __init__(self, values, label=None):
 		super().__init__() # Instantiating `ModusaSignalData` class
 		
 		values = np.asarray(values)
@@ -43,7 +43,7 @@ class Data(ModusaSignalData):
 			raise ValueError("We do not currently support, > 2 dim arrays, please create a GitHub issue")
 		
 		self._values = values
-		self._label = label
+		self._label = label or ""
 	
 	#-----------------------------------
 	# Properties

@@ -138,15 +138,9 @@ class TDSGen(ModusaGenerator):
 		
 		assert isinstance(signal, TDS)
 		
-		# Extract internal data
-		y, t = signal._y, signal._t
-		y_label, t_label = y._label, t._label
-		sr, t0 = t._sr, t._t0
-		title = signal._title
+		shape = signal.shape if shape is None else shape
 		
-		shape = y.shape if shape is None else shape
-		
-		return cls.from_array(y=np.zeros(shape), sr=sr, t0=t0, y_label=y_label, t_label=t_label, title=title)
+		return cls.from_array(y=np.zeros(shape), sr=signal.t.sr, t0=signal.t.t0, y_label=signal.y.label, t_label=signal.t.label, title=signal.title)
 	
 	
 	@classmethod
@@ -206,14 +200,9 @@ class TDSGen(ModusaGenerator):
 		"""
 		assert isinstance(signal, TDS)
 		
-		# Extract internal data
-		y, t = signal._y, signal._t
-		y_label, t_label = y._label, t._label
-		sr, t0 = t._sr, t._t0
-		title = signal._title
-		shape = y.shape if shape is None else shape
+		shape = signal.shape if shape is None else shape
 		
-		return cls.from_array(y=np.ones(shape), sr=sr, t0=t0, y_label=y_label, t_label=t_label, title=title)
+		return cls.from_array(y=np.ones(shape), sr=signal.t.sr, t0=signal.t.t0, y_label=signal.y.label, t_label=signal.t.label, title=signal.title)
 	
 	@classmethod
 	def random(cls, shape, sr=1.0, t0=0.0) -> TDS:
@@ -272,12 +261,7 @@ class TDSGen(ModusaGenerator):
 		"""
 		assert isinstance(signal, TDS)
 		
-		# Extract internal data
-		y, t = signal._y, signal._t
-		y_label, t_label = y._label, t._label
-		sr, t0 = t._sr, t._t0
-		title = signal._title
-		shape = y.shape if shape is None else shape
+		shape = signal.shape if shape is None else shape
 		
-		return cls.from_array(y=np.random.random(shape), sr=sr, t0=t0, y_label=y_label, t_label=t_label, title=title)
+		return cls.from_array(y=np.random.random(shape), sr=signal.t.sr, t0=signal.t.t0, y_label=signal.y.label, t_label=signal.t.label, title=signal.title)
 	
