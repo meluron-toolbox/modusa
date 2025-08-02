@@ -420,6 +420,13 @@ class TDS(S1D):
 			Cropped signal.
 		"""
 		
+		if like is not None:
+			ref_signal = like
+			assert self.t.sr == ref_signal.t.sr
+			# Set t_min and t_max as per the signal
+			t_min = ref_signal.t.t0
+			t_max = ref_signal.t.end_time
+		
 		# We first will find out the time in samples
 		if t_min is not None:
 			t_min_sample = self.t.index_of(t_min)
@@ -431,7 +438,7 @@ class TDS(S1D):
 		else:
 			t_max_sample = -1
 		
-		return self[t_min_sample: t_max_sample]
+		return self[t_min_sample: t_max_sample+1]
 	
 	#===================================
 	
