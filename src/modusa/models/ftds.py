@@ -482,6 +482,39 @@ class FTDS(S2D):
 		translated_signal = self.__class__(M=self.M.copy(), f=self.f.copy(), t=translated_t, title=self.title)
 		
 		return translated_signal
+	
+	
+	def mask(self, condition, set_to=None) -> Self:
+		"""
+		Mask the signal based on condition and
+		the values can be set.
+		
+		Parameters
+		----------
+		condition: Callable
+			- Condition function to apply on values of the signal.
+			- E.g. lambda x: x > 10
+		set_to: Number
+			- Number to replace the masked position values.
+
+		Returns
+		-------
+		S2D
+			Masked Signal
+		"""
+		
+		mask = condition(self)
+		new_val = set_to
+		
+		if set_to is None: # Return the mask as the same signal but with booleans
+			return mask
+	
+		else:
+			# We apply the mask and update the signal data
+			new_data = self.M.mask(condition=condition, set_to=new_val)
+			
+			# Since we're just updating the data, there is no change in the axis
+			return self.__class__(M=new_data, f=self.f.copy(), t=self.t.copy(), title=self.title)
 		
 	
 	#====================================

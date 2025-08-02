@@ -139,6 +139,41 @@ class Data(ModusaSignalData):
 			return self
 		else:
 			return self.__class__(values=self.values.copy(), label=label)
+		
+	def mask(self, condition, set_to=None) -> Self:
+		"""
+		Mask the data based on condition and
+		the values can be set using the `set_to` argument.
+		
+		Parameters
+		----------
+		condition: Callable
+			- Condition function to apply on values of the data.
+			- E.g. lambda x: x > 10
+		set_to: Number
+			- Number to replace the masked position values.
+
+		Returns
+		-------
+		Data
+			Masked Data with either booleans as per the condition or with updated values.
+		"""
+		
+		mask = condition(self)
+		new_value = set_to
+		
+		if new_value is None: # Return the mask as the same signal but with booleans
+			return mask
+	
+		else:
+			# We apply the mask and update the signal data
+			data_arr = self.values.copy() # We do not want to modify the data inplace
+			data_arr[mask] = new_value
+			
+			updated_data = Data(values=data_arr, label=self.label)
+			
+			return updated_data
+			
 	
 	#================================
 	
