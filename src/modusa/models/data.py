@@ -39,6 +39,9 @@ class Data(ModusaSignalData):
 		
 		values = np.asarray(values)
 		
+		if values.ndim > 2:
+			raise ValueError("We do not currently support, > 2 dim arrays, please create a GitHub issue")
+		
 		self._values = values
 		self._label = label
 	
@@ -175,16 +178,12 @@ class Data(ModusaSignalData):
 		# Single signal input expected
 		data = args[0]
 		data_arr = np.asarray(data)
-		result = func(data_arr, **kwargs)
-		result_arr = np.asarray(result)
+		if "keepdims" not in kwargs: # We keep keepdim to True by default so that we remain in the same signal space.
+			kwargs["keepdims"] = True
+		result_arr = func(data_arr, **kwargs)
 		
 		if func in nfc.REDUCTION_FUNCS:
-			# If the number of dimensions is reduced, add back singleton dims
-			while np.ndim(result_arr) < np.ndim(data_arr):
-				result_arr = np.expand_dims(result_arr, axis=0)
-				
-			result = Data(values=result_arr, label=func.__name__)
-			return result
+			return self.__class__(values=result_arr, label=data.label)
 		
 		elif func in nfc.X_NEEDS_ADJUSTMENT_FUNCS:
 			# You must define logic for adjusting x

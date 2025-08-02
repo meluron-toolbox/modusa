@@ -136,34 +136,25 @@ class S2D(ModusaSignal):
 		if func in nfc.CONCAT_FUNCS:
 			raise NotImplementedError(f"`{func.__name__}` is not yet tested on modusa signal, please create a GitHub issue.")
 			
-		obj = args[0]
-		M_arr = np.asarray(obj.M)
-		
+		signal = args[0]
+		result: Data = func(signal.M, **kwargs)
 		axis = kwargs.get("axis", None)
-		keepdims = kwargs.get("keepdims", False)
-		
-		result = func(M_arr, **kwargs)
-		result = Data(values=result, label=None)
-		
-		if func in nfc.REDUCTION_FUNCS:
-			# Case 1: Full reduction → scalar or 0D result
-			if axis is None or result.ndim == 0:
-				return result
 
-			# Case 2: Reduced to 1D → return S1D with correct axis
-			elif result.ndim == 1:
-				from .s1d import S1D  # avoid circular import issues
-				
-				if axis == 0:
-					return S1D(y=result, x=self.x, title=None) # keep column axis
-				elif axis == 1:
-					return S1D(y=result, x=self.y, title=None)  # keep row axis
-				else:
-					raise ValueError(f"Unsupported axis={axis} for reduction on shape {signal_array.shape}")
+		if func in nfc.REDUCTION_FUNCS:
+			if axis is None: # Both axes collapsed
+				dummy_y = SAx(0, label=None)
+				dummy_x = SAx(values=0, label=None)
+				return self.__class__(M=result, y=dummy_y, x=dummy_x, title=signal.title)
 			
-			# Case 3: Reduction keeps both axes (unlikely)
-			else:
-				raise NotImplementedError(f"{func.__name__} result shape={result.shape} not handled for modusa signal")
+			if isinstance(axis, int): # One of the axis collapsed
+				if axis == 0:
+					dummy_y = SAx(0, label=None)
+					return self.__class__(M=result, y=dummy_y, x=signal.x.copy(), title=signal.title)
+				elif axis in [1, -1]:
+					dummy_x = SAx(values=0, label=None)
+					return self.__class__(M=result, y=signal.y.copy(), x=dummy_x, title=signal.title)
+				else:
+					raise ValueError
 				
 		elif func in nfc.X_NEEDS_ADJUSTMENT_FUNCS:
 			raise NotImplementedError(f"{func.__name__} requires x-axis adjustment logic.")

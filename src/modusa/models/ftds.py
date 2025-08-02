@@ -127,31 +127,26 @@ class FTDS(S2D):
 		if func in nfc.CONCAT_FUNCS:
 			raise NotImplementedError(f"`{func.__name__}` is not yet tested on modusa signal, please create a GitHub issue.")
 			
-		obj = args[0]
-		M_arr = np.asarray(obj.M)
-		
+		signal = args[0]
+		result: Data = func(signal.M, **kwargs)
 		axis = kwargs.get("axis", None)
-		keepdims = kwargs.get("keepdims", False)
-		
-		result = func(M_arr, **kwargs)
-		result = Data(values=result, label=None)
 		
 		if func in nfc.REDUCTION_FUNCS:
-			# Case 1: Full reduction → scalar or 0D result
-			if axis is None or result.ndim == 0:
-				return result
-			
-			# Case 2: Reduced to 1D → return S1D with correct axis
-			elif result.ndim == 1:
-				from .s1d import S1D
-				from .s2d import TDS
-				
+			if axis is None: # Both axes collapsed
+				dummy_f = SAx(0, "")
+				dummy_t = TAx(n_points=1, sr=signal.t.sr, t0=0.0, label="")
+				return self.__class__(M=result, f=dummy_f, t=dummy_t, title=signal.title)
+		
+			if isinstance(axis, int): # One of the axis collapsed
 				if axis == 0:
-					return TDS(y=result, t=self.t, title=None)
-				elif axis == 1:
-					return S1D(y=result, x=self.f, title=None)
+					dummy_f = SAx(0, "")
+					return self.__class__(M=result, f=dummy_f, t=signal.t.copy(), title=signal.title)
+				elif axis in [1, -1]:
+					dummy_t = TAx(n_points=1, sr=signal.t.sr, t0=0.0, label="")
+					return self.__class__(M=result, f=signal.f.copy(), t=dummy_t, title=signal.title)
 				else:
-					raise ValueError(f"Unsupported axis={axis} for reduction on shape {signal_array.shape}")
+					raise ValueError
+					
 			
 			# Case 3: Reduction keeps both axes (unlikely)
 			else:
