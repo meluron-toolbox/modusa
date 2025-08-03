@@ -101,7 +101,7 @@ class FTDSGen(ModusaGenerator):
 		return FTDS(M=M, f=f, t=t, title=title)
 	
 	@classmethod
-	def zeros(cls, shape: tuple[int, int]) -> FTDS:
+	def zeros(cls, shape, f=None, sr=1.0, t0=0.0) -> FTDS:
 		"""
 		Create `FTDS` instance with all zeros.
 
@@ -126,7 +126,7 @@ class FTDSGen(ModusaGenerator):
 		assert isinstance(shape, tuple)
 		M = np.zeros(shape)
 		
-		return cls.from_array(M=M, title="Zeros")
+		return cls.from_array(M=M, f=f, sr=sr, t0=t0, title="Zeros")
 	
 	@classmethod
 	def zeros_like(cls, signal: FTDS) -> FTDS:

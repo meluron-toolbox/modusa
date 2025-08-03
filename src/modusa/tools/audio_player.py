@@ -1,33 +1,9 @@
 #!/usr/bin/env python3
 
-
-from modusa import excp
-from modusa.decorators import validate_args_type
-from modusa.tools.base import ModusaTool
-from IPython.display import display, HTML, Audio
 import numpy as np
+from IPython.display import display, HTML, Audio
 
-class AudioPlayer(ModusaTool):
-	"""
-	Provides audio player in the jupyter notebook environment.
-	"""
-	
-	#--------Meta Information----------
-	_name = "Audio Player"
-	_description = ""
-	_author_name = "Ankit Anand"
-	_author_email = "ankit0.anand0@gmail.com"
-	_created_at = "2025-07-08"
-	#----------------------------------
-	
-	@staticmethod
-	def play(
-		y: np.ndarray,
-		sr: float,
-		t0: float = 0.0,
-		regions = None,
-		title = None
-	) -> None:
+def play(y: np.ndarray, sr: float, t0: float = 0.0, regions = None, title = None) -> None:
 		"""
 		Plays audio clips for given regions in Jupyter Notebooks.
 
@@ -52,18 +28,15 @@ class AudioPlayer(ModusaTool):
 		-------
 		None
 		"""
-		if not AudioPlayer._in_notebook():
-			return
-		
 		if title:
 			display(HTML(f"<h4>{title}</h4>"))
-		
+			
 		clip_tags = []
 		timings = []
 		players = []
-		
+	
 		if isinstance(regions, tuple): regions = [regions] # (10, 20, "Region 1") -> [(10, 20, "Region 1")]
-		
+	
 		if regions is not None:
 			for region in regions:
 				assert len(region) == 3
@@ -82,8 +55,11 @@ class AudioPlayer(ModusaTool):
 		else:
 			audio_player = Audio(data=y, rate=sr)._repr_html_()
 			
+			start_sec = t0
+			end_sec = t0 + y.shape[0] / sr
+			
 			clip_tags.append(f"<td style='text-align:center; border-right:1px solid #ccc; padding:6px;'>1</td>")
-			timings.append(f"<td style='text-align:center; border-right:1px solid #ccc; padding:6px;'>{t[0]:.2f}s → {t[-1]:.2f}s</td>")
+			timings.append(f"<td style='text-align:center; border-right:1px solid #ccc; padding:6px;'>{start_sec:.2f}s → {end_sec:.2f}s</td>")
 			players.append(f"<td style='padding:6px;'>{audio_player}</td>")
 			
 		# Wrap rows in a table with border
@@ -105,18 +81,9 @@ class AudioPlayer(ModusaTool):
 			</table>
 		</div>
 		"""
-		
+	
 		return HTML(table_html)
-		
-			
-	@staticmethod
-	def _in_notebook() -> bool:
-		try:
-			from IPython import get_ipython
-			shell = get_ipython()
-			return shell and shell.__class__.__name__ == "ZMQInteractiveShell"
-		except ImportError:
-			return False
+
 		
 		
 		

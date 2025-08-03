@@ -108,7 +108,7 @@ class AudioGen(ModusaGenerator):
 		"""
 		
 		from modusa.tools.youtube_downloader import YoutubeDownloader
-		from modusa.tools.audio_converter import AudioConverter
+		from modusa import convert
 		import soundfile as sf
 		from scipy.signal import resample
 		import tempfile
@@ -118,7 +118,7 @@ class AudioGen(ModusaGenerator):
 			audio_fp: Path = YoutubeDownloader.download(url=url, content_type="audio", output_dir=Path(tmpdir))
 			
 			# Convert the audio to ".wav" form for loading
-			wav_audio_fp: Path = AudioConverter.convert(inp_audio_fp=audio_fp, output_audio_fp=audio_fp.with_suffix(".wav"))
+			wav_audio_fp: Path = convert(inp_audio_fp=audio_fp, output_audio_fp=audio_fp.with_suffix(".wav"))
 			
 			# Load the audio in memory
 			audio_data, audio_sr = sf.read(wav_audio_fp)
