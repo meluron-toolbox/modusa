@@ -1,16 +1,6 @@
 # modusa
 
-[**modusa**](https://meluron-toolbox.github.io/modusa/) is a modular framework for audio signal analysis and processing, designed to help audio researchers and developers build DSP chains with minimal code.
-
----
-
-## Core Components
-
-- ⚙️ **modusa Signals**
-- 🧩 **modusa Plugins**
-- 📊 **modusa Genetators**
-- 📥 **modusa I/O**
-- ♻️ **modusa Engines**
+[**modusa**](https://meluron-toolbox.github.io/modusa/) is a library with utility tools especially for audio signals.
 
 ---
 
@@ -18,17 +8,15 @@
 
 > modusa is under active development. You can install the latest version via:
 
-```bash
-git clone https://github.com/meluron/modusa.git
-cd modusa
-pdm install
+```
+pip install modusa
 ```
 
 ---
 
 ## Tests
 
-```bash
+```
 pytest tests/
 ```
 
@@ -40,6 +28,23 @@ modusa is in **early alpha**. Expect rapid iteration, breaking changes, and big 
 If you like the direction, consider ⭐ starring the repo and opening issues or ideas.
 
 ---
+
+## Few useful command
+
+To push doc changes
+```
+ghp-import -n -p -f docs/build/html
+```
+
+To create a dist
+```
+pdm build
+```
+
+To upload on pypi
+```
+twine upload dist/*
+```
 
 ## About
 
