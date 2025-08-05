@@ -1,8 +1,10 @@
 Plotter
 =======
 
-.. autoclass:: modusa.tools.Plotter
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. autofunction:: modusa.plot1d
+
+.. autofunction:: modusa.plot2d
+
+
+
 

@@ -4,10 +4,8 @@ Tools
 .. toctree::
    :maxdepth: 1
 
-   base
+   audio_loader
    audio_converter
-   audio_player
-   fourier_tranform
-   math_ops
-   plotter
    youtube_downloader
+   plotter
+   audio_player

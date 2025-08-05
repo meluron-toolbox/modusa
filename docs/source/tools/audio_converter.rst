@@ -1,8 +1,5 @@
-AudioConverter
-==============
+Audio Convertor
+===============
 
-.. autoclass:: modusa.tools.AudioConverter
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. autofunction:: modusa.convert
 

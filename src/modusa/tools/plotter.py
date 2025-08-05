@@ -8,7 +8,7 @@ from matplotlib.patches import Rectangle
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 
 #======== 1D ===========
-def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylabel=None, title=None, legend=None, get_ax=False):
+def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylabel=None, title=None, legend=None):
 		"""
 		Plots a 1D signal using matplotlib.
 
@@ -25,8 +25,9 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 	
 		Parameters
 		----------
-		*args : tuple[array-like, array-like]
-			- The signal values to be plotted.
+		*args : tuple[array-like, array-like] | tuple[array-like]
+			- The signal y and axis x to be plotted.
+			- If only values are provided, we generate the axis using arange.
 			- E.g. (y1, x1), (y2, x2), ...
 		ann : list[tuple[Number, Number, str] | None
 			- A list of annotations to mark specific points. Each tuple should be of the form (start, end, label).
@@ -60,8 +61,8 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 		"""
 	
 		for arg in args:
-			if len(arg) != 2:
-				raise ValueError(f"Data to plot needs to have 2 arrays (y, x)")
+			if len(arg) not in [1, 2]: # 1 if it just provides values, 2 if it provided axis as well
+				raise ValueError(f"1D signal needs to have max 2 arrays (y, x) or simply (y, )")
 		if isinstance(legend, str): legend = (legend, )
 		
 		if legend is not None:
@@ -85,9 +86,19 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 		
 			
 		# Add signal plot
-		for signal in args:
-			y, x = signal
-			signal_ax.plot(x, y, label=legend)
+		for i, signal in enumerate(args):
+			if len(signal) == 1:
+				y = signal[0]
+				if legend is not None:
+					signal_ax.plot(y, label=legend[i])
+				else:
+					signal_ax.plot(y)
+			elif len(signal) == 2:
+				y, x = signal[0], signal[1]
+				if legend is not None:
+					signal_ax.plot(x, y, label=legend[i])
+				else:
+					signal_ax.plot(x, y)
 		
 		# Add annotations
 		if ann is not None:
@@ -119,11 +130,7 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 		# Add legend
 		if legend is not None:
 			handles, labels = signal_ax.get_legend_handles_labels()
-			fig.legend(handles, legend,
-								loc='upper right',
-								bbox_to_anchor=(0.9, 1.2),
-								ncol=len(legend),
-								frameon=False)
+			fig.legend(handles, labels, loc='upper right', bbox_to_anchor=(0.9, 1.2), ncol=len(legend), frameon=False)
 			
 		# Set title, labels
 		if title is not None:
@@ -142,13 +149,10 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 		
 		fig.subplots_adjust(hspace=0.01, wspace=0.05)
 		plt.close()
-		if get_ax is True:
-			return fig, annotation_ax, signal_ax
-		else:
-			return fig
+		return fig
 
 #======== 2D ===========
-def plot2d(*args, ann=None, events=None, xlim=None, ylim=None, origin="lower", Mlabel=None, xlabel=None, ylabel=None, title=None, legend=None):
+def plot2d(*args, ann=None, events=None, xlim=None, ylim=None, origin="lower", Mlabel=None, xlabel=None, ylabel=None, title=None, legend=None, lm=False):
 	"""
 	Plots a 2D matrix (e.g., spectrogram or heatmap) with optional annotations and events.
 
@@ -198,6 +202,10 @@ def plot2d(*args, ann=None, events=None, xlim=None, ylim=None, origin="lower", M
 	legend : list[str] | None
 		- Legend labels for any overlaid lines or annotations.
 		- Default: None.
+	lm: bool
+		- Adds a circular marker for the line.
+		- Default: False
+		- Useful to show the data points.
 
 	Returns
 	-------
@@ -206,9 +214,10 @@ def plot2d(*args, ann=None, events=None, xlim=None, ylim=None, origin="lower", M
 	"""
 	
 	for arg in args:
-		if len(arg) != 3:
+		if len(arg) not in [1, 2, 3]: # Either provide just the matrix or with both axes info
 			raise ValueError(f"Data to plot needs to have 3 arrays (M, y, x)")
-
+	if isinstance(legend, str): legend = (legend, )
+	
 	fig = plt.figure(figsize=(16, 4))
 	gs = gridspec.GridSpec(3, 1, height_ratios=[0.2, 0.1, 1]) # colorbar, annotation, signal
 
@@ -229,12 +238,46 @@ def plot2d(*args, ann=None, events=None, xlim=None, ylim=None, origin="lower", M
 		signal_ax.set_ylim(ylim)
 		
 	# Add signal plot
+	i = 0 # This is to track the legend for 1D plots
 	for signal in args:
-		M, y, x = signal
-		dx = x[1] - x[0]
-		dy = y[1] - y[0]
-		extent=[x[0] - dx/2, x[-1] + dx/2, y[0] - dy/2, y[-1] + dy/2]
-		im = signal_ax.imshow(M, aspect="auto", origin=origin, extent=extent)
+		
+		data = signal[0] # This can be 1D or 2D (1D meaning we have to overlay on the matrix)
+			
+		if data.ndim == 1: # 1D
+			if len(signal) == 1: # It means that the axis was not passed
+				x = np.arange(data.shape[0])
+			
+			if lm is False:
+				if legend is not None:
+					signal_ax.plot(x, data, label=legend[i])
+					signal_ax.legend(loc="upper right")
+				else:
+					signal_ax.plot(x, data)
+			else:
+				if legend is not None:
+					signal_ax.plot(x, data, marker="o", markersize=7, markerfacecolor='red', linestyle="--", linewidth=2, label=legend[i])
+					signal_ax.legend(loc="upper right")
+				else:
+					signal_ax.plot(x, data, marker="o", markersize=7, markerfacecolor='red', linestyle="--", linewidth=2)
+					
+			i += 1
+			
+		elif data.ndim == 2: # 2D
+			M = data
+			if len(signal) == 1: # It means that the axes were not passed
+				y = np.arange(M.shape[0])
+				x = np.arange(M.shape[1])
+				dx = x[1] - x[0]
+				dy = y[1] - y[0]
+				extent=[x[0] - dx/2, x[-1] + dx/2, y[0] - dy/2, y[-1] + dy/2]
+				im = signal_ax.imshow(M, aspect="auto", origin=origin, cmap="gray_r", extent=extent)
+				
+			elif len(signal) == 3: # It means that the axes were passed
+				M, y, x = signal[0], signal[1], signal[2]
+				dx = x[1] - x[0]
+				dy = y[1] - y[0]
+				extent=[x[0] - dx/2, x[-1] + dx/2, y[0] - dy/2, y[-1] + dy/2]
+				im = signal_ax.imshow(M, aspect="auto", origin=origin, cmap="gray_r", extent=extent)
 	
 	# Add annotations
 	if ann is not None:
@@ -262,7 +305,13 @@ def plot2d(*args, ann=None, events=None, xlim=None, ylim=None, origin="lower", M
 					annotation_ax.axvline(x=xpos, color='black', linestyle='--', linewidth=1.5)
 			else:
 				annotation_ax.axvline(x=xpos, color='black', linestyle='--', linewidth=1.5)
-				
+	
+	# Add legend incase there are 1D overlays
+	if legend is not None:
+		handles, labels = signal_ax.get_legend_handles_labels()
+		if handles:  # Only add legend if there's something to show
+			signal_ax.legend(handles, labels, loc="upper right")
+	
 	# Add colorbar
 	# Create an inset axis on top-right of signal_ax
 	cax = inset_axes(

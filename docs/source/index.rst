@@ -1,5 +1,7 @@
 modusa
 ======
+
+
 **modusa** is a modular framework for signal processing and visualisation.
 
 .. admonition:: **Motivation behind building 'modusa' project:**
@@ -18,18 +20,16 @@ modusa
 
 .. toctree::
    :maxdepth: 1
-   :caption: Quick Guide
+   :caption: Quick Tour to Modusa
    
-   examples/index
-   contrib/index
+   quicktour/evolution
+   Quick Guide <quicktour/qg>
+   quicktour/contribution
 
 .. toctree::
    :maxdepth: 1
    :caption: API Reference
    
-   generators/index
-   models/index
-   plugins/index
    tools/index
 
 .. toctree::

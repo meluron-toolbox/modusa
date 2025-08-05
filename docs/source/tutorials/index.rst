@@ -5,21 +5,20 @@ MIR
    :maxdepth: 1
 
    Tempo Detection <mir-tempo-01>
+   Rhytmicity Detection <mir-rhythmicity-01>
 
 DSP
 ===
 
 .. toctree::
    :maxdepth: 1
-   
-   dsp-fourier_transform-01
+
    
 AI/ML
 =====
 .. toctree::
    :maxdepth: 1
    
-   aiml-song_segmentation-01
 
 
 Python
@@ -28,4 +27,3 @@ Python
 .. toctree::
    :maxdepth: 1
    
-   py-class-01
