@@ -261,26 +261,8 @@
         </div>
         <article role="main" id="furo-main-content">
           <section id="modusa">
-<h1>modusa<a class="headerlink" href="#modusa" title="Link to this heading">¶</a></h1>
-<p><strong>modusa</strong> is a modular framework for signal processing and visualisation.</p>
-<div class="admonition-motivation-behind-building-modusa-project admonition">
-<p class="admonition-title"><strong>Motivation behind building ‘modusa’ project:</strong></p>
-<ul class="simple">
-<li><p>We use numpy for numerical operations that are completely mathematical and index based (does not contain any semantics). The axis does not mean anything and every operation you do that changes the shape of the array, you need to recompute the new axis. This needs to be automated if you are dealing with physical signals that has meaning.</p></li>
-<li><p>We use matplotlib for plotting which again is a general purpose library for visualisation. It will be much more user friendly if every physical signal automatically knows how to plot itself.</p></li>
-<li><p>Same goes for scipy for signal based operations, all these libraries are built to provide us a general framefork.</p></li>
-<li><p>‘modusa’ library is trying to build on top of these libraries but with more meaningful semantic-rich operations for physical signals that you are working on and provding you the right tools for any physical signal based on the signal space it is currently in.</p></li>
-<li><p>Another problem working with non-semantic libraries are that you can end up performing operations between two signals from different signal space as long as they are compatible. ‘modusa’ puts check in place to avoid such mistakes.</p></li>
-</ul>
-</div>
-<div class="admonition-who-are-the-target-users admonition">
-<p class="admonition-title"><strong>Who are the target users?</strong></p>
-<ul class="simple">
-<li><p><strong>Researchers</strong> working with digital signals.</p></li>
-<li><p><strong>Educators</strong> can use it for demonstrating signal processing concepts much easily without the hassle of bringing different tools from different places.</p></li>
-<li><p><strong>Learners</strong> can use it for experimenting and learning things hands-on.</p></li>
-</ul>
-</div>
+<h1>MODUSA<a class="headerlink" href="#modusa" title="Link to this heading">¶</a></h1>
+<p>A library with utility tools especially for audio signals.</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Quick Tour to Modusa</span></p>
 <ul>
