@@ -31,12 +31,6 @@ modusa
    :caption: API Reference
    
    tools/index
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Tutorials
-   
-   tutorials/index
    
 
 
