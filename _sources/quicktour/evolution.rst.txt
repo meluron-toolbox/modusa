@@ -8,13 +8,9 @@ This page documents modusa's journey and how it progressed over time. I will be 
 	Although I use LLMs to document stuff, correct grammatical errors but this page will be free of any sort of such activity. I want it to be just me and you.
 
 
-April 21, 2025: Left Job
-------------------------
-I am leaving my full time job as a research assistant at a Digital Audio Lab, Mumbai, India after working for 1 year with them. I am thinking of working as a freelancer than dedicating full time. I am doing this so that I can look into other avenues and figure out how can I contribute better to the community.
-
 Jun 5, 2025: Inception
 ----------------------
-I had been working on audio domain (particularly music) for quite some years and had some pain points that I always wished somebody would have solved. I am thinking of solving it myself than waiting for someone else.
+I had been working on audio domain (particularly music) for quite some time and had some pain points that I always wished somebody would have solved. I am thinking of solving it myself than waiting for someone else.
 
 .. admonition:: **Pain points leading to 'modusa':**
 
@@ -32,11 +28,11 @@ I had been working on audio domain (particularly music) for quite some years and
 
 Aug 1, 2025: Sad Realisation
 ----------------------------
-After working for about 2 months straight where I did nothing else just literally waking up, coding, eating, coding again. Everyday I use to sleep with satisfaction that I built something and then the next morning just to wake up with the thought that whatever I did yesterday needs to handle these cases too. My brain was literally thinking about the problem even when I was asleep. I think that really started taking toll on my health.
+After working for about 2 months straight where I did nothing else just literally waking up, coding, eating, coding again. Everyday I use to sleep with satisfaction that I built something and then the next morning just to wake up with the thought that whatever I did yesterday needs to handle these cases too. My brain was literally thinking about the problem even when I was asleep.
 
-Apart from all this, I think that I have gone way too far to make a general system for signals. The idea was to make it frictionless for people to use but I think it has drifted from the core mission and adding more friction rather than reducing it. The problem is that building any axis-aware system needs to be built from scratch piece by piece as every case is different, for example when you use numpy operations, the system should know what that each operation mean for the axis. This makes it much harder if you want to support all the numpy operations.
+Apart from all this, I think that I have gone way too far to make a general system for signals. The idea was to make it frictionless for people to use but I think it has drifted from the core mission adding more friction rather. The problem is that building any axis-aware system needs to be built from scratch piece by piece as every case is different, for example when you use numpy operations, the system should know what that each operation mean for the axis. This makes it much harder if you want to support all the numpy operations.
 
-Although it feels like I lost all the work I put into this but there are still things that are useful, it is just that I moved in a direction to build tools that handle everything automatically. I am now changing the focus to building small utility tools that works together coherently with the existing libraries. I deleted almost the entire codebase and making it a library for utility tools that really helps people solving one very specific problem at a time. I have also decided to focus more on audio domain than trying to make something general.
+Although it feels like I lost all the work I put into this but there are still few things that I find really useful, it is just that I moved in a direction to build tools that handle everything automatically. I am now changing the focus to building small utility tools that works together coherently with the existing libraries. I have also decided to focus more on audio domain than trying to make something general.
 
 So far, I have not yet shared my library with people as I wanted to share it once everything is properly set but I think that never happens. So I will be sharing it with them anyway to get feedbacks.
 
