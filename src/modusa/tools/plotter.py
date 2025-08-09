@@ -246,6 +246,8 @@ def plot2d(*args, ann=None, events=None, xlim=None, ylim=None, origin="lower", M
 		if data.ndim == 1: # 1D
 			if len(signal) == 1: # It means that the axis was not passed
 				x = np.arange(data.shape[0])
+			else:
+				x = signal[1]
 			
 			if lm is False:
 				if legend is not None:
