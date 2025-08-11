@@ -59,7 +59,7 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 		plt.Figure
 			Matplolib figure.
 		"""
-	
+
 		for arg in args:
 			if len(arg) not in [1, 2]: # 1 if it just provides values, 2 if it provided axis as well
 				raise ValueError(f"1D signal needs to have max 2 arrays (y, x) or simply (y, )")
@@ -115,9 +115,16 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 				width = end - start
 				rect = Rectangle((start, 0), width, 1, color=color, alpha=0.7)
 				annotation_ax.add_patch(rect)
-				annotation_ax.text((start + end) / 2, 0.5, tag,
-									ha='center', va='center',
-									fontsize=10, color='white', fontweight='bold', zorder=10)
+				
+				text_obj = annotation_ax.text(
+					(start + end) / 2, 0.5, tag,
+					ha='center', va='center',
+					fontsize=10, color='white', fontweight='bold', zorder=10, clip_on=True
+				)
+				
+				text_obj.set_clip_path(rect)
+				
+				
 		# Add vlines
 		if events is not None:
 			for xpos in events:
@@ -140,7 +147,7 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 		if ylabel is not None:
 			signal_ax.set_ylabel(ylabel)
 		
-		# Decorating annotation axis thicker
+		# Remove the boundaries and ticks from an axis
 		if ann is not None:
 			annotation_ax.tick_params(left=False, bottom=False, labelleft=False, labelbottom=False)
 		else:
@@ -296,9 +303,14 @@ def plot2d(*args, ann=None, events=None, xlim=None, ylim=None, origin="lower", M
 			width = end - start
 			rect = Rectangle((start, 0), width, 1, color=color, alpha=0.7)
 			annotation_ax.add_patch(rect)
-			annotation_ax.text((start + end) / 2, 0.5, tag,
-								ha='center', va='center',
-								fontsize=10, color='white', fontweight='bold', zorder=10)
+			text_obj = annotation_ax.text(
+				(start + end) / 2, 0.5, tag,
+				ha='center', va='center',
+				fontsize=10, color='white', fontweight='bold', zorder=10, clip_on=True
+			)
+			
+			text_obj.set_clip_path(rect)
+			
 	# Add vlines
 	if events is not None:
 		for xpos in events:
