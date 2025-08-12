@@ -24,7 +24,7 @@ def load_ann(path):
 		- [(start, end, tag), ...]
 	"""
 	
-	if isinstance(path, (str, Path)):
+	if not isinstance(path, (str, Path)):
 		raise ValueError(f"`path` must be one of (str, Path), got {type(path)}")
 	
 	ann = []
