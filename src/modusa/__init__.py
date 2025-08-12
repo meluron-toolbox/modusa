@@ -6,4 +6,4 @@ from modusa.tools import plot1d, plot2d, plot_dist
 
 from modusa.tools import play, convert
 from modusa.tools import download
-from modusa.tools import load
+from modusa.tools import load, load_ann
