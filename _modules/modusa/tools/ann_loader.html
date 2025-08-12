@@ -6,7 +6,7 @@
         <link rel="prefetch" href="../../../_static/logo.png" as="image" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2025.07.19 -->
-        <title>modusa.tools.base - modusa 0.3.22 documentation</title>
+        <title>modusa.tools.ann_loader - modusa 0.3.22 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -253,53 +253,48 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Source code for modusa.tools.base</h1><div class="highlight"><pre>
+          <h1>Source code for modusa.tools.ann_loader</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="c1">#---------------------------------</span>
+<span class="c1"># Author: Ankit Anand</span>
+<span class="c1"># Date: 12/08/25</span>
+<span class="c1"># Email: ankit0.anand0@gmail.com</span>
+<span class="c1">#---------------------------------</span>
 
-<div class="viewcode-block" id="ModusaTool">
-<a class="viewcode-back" href="../../../tools/base.html#modusa.tools.base.ModusaTool">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ModusaTool</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<div class="viewcode-block" id="load_ann">
+<a class="viewcode-back" href="../../../tools/ann_loader.html#modusa.load_ann">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_ann</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Base class for all tool: youtube downloader, audio converter, filter.</span>
-<span class="sd">	</span>
-<span class="sd">	&gt;&gt;&gt; modusa-dev create io</span>
+<span class="sd">	Load annotation from audatity label text file.</span>
 
-<span class="sd">	.. code-block:: python</span>
-<span class="sd">		</span>
-<span class="sd">		# General template of a subclass of ModusaTool</span>
-<span class="sd">		from modusa.tools.base import ModusaTool</span>
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	path: str</span>
+<span class="sd">		label text file path.</span>
 
-<span class="sd">		class MyCustomIOClass(ModusaIO):</span>
-<span class="sd">			#--------Meta Information----------</span>
-<span class="sd">			_name = &quot;My Custom Tool&quot;</span>
-<span class="sd">			_description = &quot;My custom class for Tool.&quot;</span>
-<span class="sd">			_author_name = &quot;Ankit Anand&quot;</span>
-<span class="sd">			_author_email = &quot;ankit0.anand0@gmail.com&quot;</span>
-<span class="sd">			_created_at = &quot;2025-07-06&quot;</span>
-<span class="sd">			#----------------------------------</span>
-<span class="sd">			</span>
-<span class="sd">			@staticmethod</span>
-<span class="sd">			def do_something():</span>
-<span class="sd">				pass</span>
-<span class="sd">		</span>
-<span class="sd">	</span>
-<span class="sd">	Note</span>
-<span class="sd">	----</span>
-<span class="sd">	- This class is intended to be subclassed by any tool built for the modusa framework.</span>
-<span class="sd">	- In order to create a tool, you can use modusa-dev CLI to generate a template.</span>
-<span class="sd">	- It is recommended to treat subclasses of ModusaTool as namespaces and define @staticmethods with control parameters, rather than using instance-level __init__ methods.</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	list[tuple, ...]</span>
+<span class="sd">		- annotation data structure</span>
+<span class="sd">		- [(start, end, tag), ...]</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	
-	<span class="c1">#--------Meta Information----------</span>
-	<span class="n">_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Modusa Tool&quot;</span>
-	<span class="n">_description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Base class for any tool in the Modusa framework.&quot;</span>
-	<span class="n">_author_name</span> <span class="o">=</span> <span class="s2">&quot;Ankit Anand&quot;</span>
-	<span class="n">_author_email</span> <span class="o">=</span> <span class="s2">&quot;ankit0.anand0@gmail.com&quot;</span>
-	<span class="n">_created_at</span> <span class="o">=</span> <span class="s2">&quot;2025-07-11&quot;</span></div>
+	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">)):</span>
+		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`path` must be one of (str, Path), got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+	
+	<span class="n">ann</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+		<span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">]</span>
+		<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+			<span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">tag</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+			<span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">start</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
+			<span class="n">ann</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">tag</span><span class="p">))</span>
+			
+	<span class="k">return</span> <span class="n">ann</span></div>
 
-	<span class="c1">#----------------------------------</span>
 </pre></div>
         </article>
       </div>

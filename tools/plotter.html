@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Audio Player" href="audio_player.html" /><link rel="prev" title="Youtube Downloader" href="youtube_downloader.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Youtube Downloader" href="youtube_downloader.html" /><link rel="prev" title="Audio Player" href="audio_player.html" />
         <link rel="prefetch" href="../_static/logo.png" as="image" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2025.07.19 -->
@@ -215,9 +215,9 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Tools</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tools</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="audio_loader.html">Audio Loader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="audio_converter.html">Audio Convertor</a></li>
-<li class="toctree-l2"><a class="reference internal" href="youtube_downloader.html">Youtube Downloader</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Plotter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="audio_player.html">Audio Player</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Plotter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="youtube_downloader.html">Youtube Downloader</a></li>
 </ul>
 </li>
 </ul>
@@ -427,6 +427,91 @@
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="modusa.plot_dist">
+<span class="sig-prename descclassname"><span class="pre">modusa.</span></span><span class="sig-name descname"><span class="pre">plot_dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ann</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_hist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#plot_dist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.plot_dist" title="Link to this definition">¶</a></dt>
+<dd><p>Plot distribution.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">modusa</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ms</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">ms</span><span class="o">.</span><span class="n">plot_dist</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data</span><span class="o">+</span><span class="mi">5</span><span class="p">,</span> <span class="n">data</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="n">ann</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">)],</span> <span class="n">legend</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;D1&quot;</span><span class="p">,</span> <span class="s2">&quot;D2&quot;</span><span class="p">,</span> <span class="s2">&quot;D3&quot;</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Counts&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Distribution&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>*args</strong> (<em>ndarray</em>) – <ul>
+<li><p>Data arrays for which distribution needs to be plotted.</p></li>
+<li><p>Arrays will be flattened.</p></li>
+</ul>
+</p></li>
+<li><p><strong>ann</strong> (<em>list</em><em>[</em><em>tuple</em><em>[</em><em>Number</em><em>, </em><em>Number</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – <ul>
+<li><p>A list of annotations to mark specific points. Each tuple should be of the form (start, end, label).</p></li>
+<li><p>Default: None =&gt; No annotation.</p></li>
+</ul>
+</p></li>
+<li><p><strong>events</strong> (<em>list</em><em>[</em><em>Number</em><em>] </em><em>| </em><em>None</em>) – <ul>
+<li><p>A list of x-values where vertical lines (event markers) will be drawn.</p></li>
+<li><p>Default: None</p></li>
+</ul>
+</p></li>
+<li><p><strong>xlim</strong> (<em>tuple</em><em>[</em><em>Number</em><em>, </em><em>Number</em><em>] </em><em>| </em><em>None</em>) – <ul>
+<li><p>Limits for the x-axis as (xmin, xmax).</p></li>
+<li><p>Default: None</p></li>
+</ul>
+</p></li>
+<li><p><strong>ylim</strong> (<em>tuple</em><em>[</em><em>Number</em><em>, </em><em>Number</em><em>] </em><em>| </em><em>None</em>) – <ul>
+<li><p>Limits for the y-axis as (ymin, ymax).</p></li>
+<li><p>Default: None</p></li>
+</ul>
+</p></li>
+<li><p><strong>xlabel</strong> (<em>str</em><em> | </em><em>None</em>) – <ul>
+<li><p>Label for the x-axis.</p></li>
+<li><ul>
+<li><p>Default: None</p></li>
+</ul>
+</li>
+</ul>
+</p></li>
+<li><p><strong>ylabel</strong> (<em>str</em><em> | </em><em>None</em>) – <ul>
+<li><p>Label for the y-axis.</p></li>
+<li><p>Default: None</p></li>
+</ul>
+</p></li>
+<li><p><strong>title</strong> (<em>str</em><em> | </em><em>None</em>) – <ul>
+<li><p>Title of the plot.</p></li>
+<li><p>Default: None</p></li>
+</ul>
+</p></li>
+<li><p><strong>legend</strong> (<em>list</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>) – <ul>
+<li><p>List of legend labels corresponding to each signal if plotting multiple distributions.</p></li>
+<li><p>Default: None</p></li>
+</ul>
+</p></li>
+<li><p><strong>show_hist</strong> (<em>bool</em>) – <ul>
+<li><p>Want to show histogram as well.</p></li>
+</ul>
+</p></li>
+<li><p><strong>npoints</strong> (<em>int</em>) – <ul>
+<li><p>Number of points for which gaussian needs to be computed between min and max.</p></li>
+<li><p>Higher value means more points are evaluated with the fitted gaussian, thereby higher resolution.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>Matplotlib figure.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>plt.Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
         </article>
@@ -434,23 +519,23 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="audio_player.html">
+          <a class="next-page" href="youtube_downloader.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Audio Player</div>
+                <div class="title">Youtube Downloader</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="youtube_downloader.html">
+          <a class="prev-page" href="audio_player.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Youtube Downloader</div>
+                <div class="title">Audio Player</div>
                 
               </div>
             </a>
@@ -487,6 +572,7 @@
 <li><a class="reference internal" href="#">Plotter</a><ul>
 <li><a class="reference internal" href="#modusa.plot1d"><code class="docutils literal notranslate"><span class="pre">plot1d()</span></code></a></li>
 <li><a class="reference internal" href="#modusa.plot2d"><code class="docutils literal notranslate"><span class="pre">plot2d()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.plot_dist"><code class="docutils literal notranslate"><span class="pre">plot_dist()</span></code></a></li>
 </ul>
 </li>
 </ul>
