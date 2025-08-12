@@ -458,7 +458,7 @@ def plot_dist(*args, ann=None, xlim=None, ylim=None, ylabel=None, xlabel=None, t
 				else:
 						dist_ax.plot(x_vals, y_vals, color=colors[i])
 						if show_hist is True:
-								dist_ax.hist(data, bins=30, density=True, alpha=0.3, facecolor=colors[i], edgecolor='black', label=legeng[i])
+								dist_ax.hist(data, bins=30, density=True, alpha=0.3, facecolor=colors[i], edgecolor='black', label=legend[i])
 							
 		# Add annotations
 		if ann is not None:
