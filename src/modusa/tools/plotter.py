@@ -7,8 +7,27 @@ import matplotlib.gridspec as gridspec
 from matplotlib.patches import Rectangle
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 
+# Helper for 2D plot
+def _calculate_extent(x, y):
+	# Handle spacing safely
+	if len(x) > 1:
+		dx = x[1] - x[0]
+	else:
+		dx = 1  # Default spacing for single value
+	if len(y) > 1:
+		dy = y[1] - y[0]
+	else:
+		dy = 1  # Default spacing for single value
+		
+	return [
+		x[0] - dx / 2,
+		x[-1] + dx / 2,
+		y[0] - dy / 2,
+		y[-1] + dy / 2
+	]
+
 #======== 1D ===========
-def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylabel=None, title=None, legend=None):
+def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylabel=None, title=None, legend=None, show_grid=False):
 		"""
 		Plots a 1D signal using matplotlib.
 
@@ -53,6 +72,9 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 		legend : list[str] | None
 			- List of legend labels corresponding to each signal if plotting multiple lines.
 			- Default: None
+		show_grid: bool
+			- If you want to show the grid.
+			- Default: False
 	
 		Returns
 		-------
@@ -146,6 +168,10 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 			signal_ax.set_xlabel(xlabel)
 		if ylabel is not None:
 			signal_ax.set_ylabel(ylabel)
+			
+		# Add grid to the plot
+		if show_grid is True:
+			signal_ax.grid(True, linestyle=':', linewidth=0.7, color='gray', alpha=0.7)
 		
 		# Remove the boundaries and ticks from an axis
 		if ann is not None:
@@ -159,7 +185,7 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 		return fig
 
 #======== 2D ===========
-def plot2d(*args, ann=None, events=None, xlim=None, ylim=None, origin="lower", Mlabel=None, xlabel=None, ylabel=None, title=None, legend=None, lm=False):
+def plot2d(*args, ann=None, events=None, xlim=None, ylim=None, origin="lower", Mlabel=None, xlabel=None, ylabel=None, title=None, legend=None, lm=False, show_grid=False):
 	"""
 	Plots a 2D matrix (e.g., spectrogram or heatmap) with optional annotations and events.
 
@@ -213,6 +239,9 @@ def plot2d(*args, ann=None, events=None, xlim=None, ylim=None, origin="lower", M
 		- Adds a circular marker for the line.
 		- Default: False
 		- Useful to show the data points.
+	show_grid: bool
+		- If you want to show the grid.
+		- Default: False
 
 	Returns
 	-------
@@ -276,16 +305,12 @@ def plot2d(*args, ann=None, events=None, xlim=None, ylim=None, origin="lower", M
 			if len(signal) == 1: # It means that the axes were not passed
 				y = np.arange(M.shape[0])
 				x = np.arange(M.shape[1])
-				dx = x[1] - x[0]
-				dy = y[1] - y[0]
-				extent=[x[0] - dx/2, x[-1] + dx/2, y[0] - dy/2, y[-1] + dy/2]
+				extent = _calculate_extent(x, y)
 				im = signal_ax.imshow(M, aspect="auto", origin=origin, cmap="gray_r", extent=extent)
 				
 			elif len(signal) == 3: # It means that the axes were passed
 				M, y, x = signal[0], signal[1], signal[2]
-				dx = x[1] - x[0]
-				dy = y[1] - y[0]
-				extent=[x[0] - dx/2, x[-1] + dx/2, y[0] - dy/2, y[-1] + dy/2]
+				extent = _calculate_extent(x, y)
 				im = signal_ax.imshow(M, aspect="auto", origin=origin, cmap="gray_r", extent=extent)
 	
 	# Add annotations
@@ -352,7 +377,10 @@ def plot2d(*args, ann=None, events=None, xlim=None, ylim=None, origin="lower", M
 		signal_ax.set_xlabel(xlabel)
 	if ylabel is not None:
 		signal_ax.set_ylabel(ylabel)
-	
+		
+	# Add grid to the plot
+	if show_grid is True:
+		signal_ax.grid(True, linestyle=':', linewidth=0.7, color='gray', alpha=0.7)
 	
 	# Making annotation axis spines thicker
 	if ann is not None:
