@@ -5,6 +5,8 @@ Plotter
 
 .. autofunction:: modusa.plot2d
 
+.. autofunction:: modusa.plot_dist
+
 
 
 

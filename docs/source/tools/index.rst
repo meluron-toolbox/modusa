@@ -6,6 +6,6 @@ Tools
 
    audio_loader
    audio_converter
-   youtube_downloader
-   plotter
    audio_player
+   plotter
+   youtube_downloader

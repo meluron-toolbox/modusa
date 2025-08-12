@@ -9,17 +9,15 @@ from collections import defaultdict
 # === Configuration ===
 BASE_MODULES = [
     'modusa.tools',
-    'modusa.models',
-    'modusa.generators',
-    'modusa.plugins',
-#   'modusa.io'
+#   'modusa.models',
+#   'modusa.generators',
+#   'modusa.plugins',
 ]
 OUTPUT_DIRS = [
     Path('docs/source/tools'),
-    Path('docs/source/models'),
-    Path('docs/source/generators'),
-    Path('docs/source/plugins'),
-#   Path('docs/source/io')
+#   Path('docs/source/models'),
+#   Path('docs/source/generators'),
+#   Path('docs/source/plugins'),
 ]
 
 # Ensure output directories exist
@@ -89,8 +87,6 @@ def generate_docs_source():
             write_module_rst_file(module_path, class_list, output_dir)
     
         section_name = base_module.split('.')[-1].capitalize()
-        if section_name == "Io":
-            section_name = "IO"
     
         write_index_rst_file(module_class_map, output_dir, section_name=section_name)
         print(f"✅ Documentation generated for {base_module} in {output_dir}")

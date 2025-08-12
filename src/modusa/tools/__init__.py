@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from .plotter import plot1d, plot2d
+from .plotter import plot1d, plot2d, plot_dist
 from .audio_player import play
 from .audio_converter import convert
 from .youtube_downloader import download

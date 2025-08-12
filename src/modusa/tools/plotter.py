@@ -363,3 +363,141 @@ def plot2d(*args, ann=None, events=None, xlim=None, ylim=None, origin="lower", M
 	fig.subplots_adjust(hspace=0.01, wspace=0.05)
 	plt.close()
 	return fig
+
+#======== Plot distribution ===========
+def plot_dist(*args, ann=None, xlim=None, ylim=None, ylabel=None, xlabel=None, title=None, legend=None, show_hist=True, npoints=200):
+		"""
+		Plot distribution.
+
+		.. code-block:: python
+			
+			import modusa as ms
+			import numpy as np
+			np.random.seed(42)
+			data = np.random.normal(loc=1, scale=1, size=1000)
+			ms.plot_dist(data, data+5, data-10, ann=[(0, 1, "A")], legend=("D1", "D2", "D3"), ylim=(0, 1), xlabel="X", ylabel="Counts", title="Distribution")
+
+		Parameters
+		----------
+		*args: ndarray
+			- Data arrays for which distribution needs to be plotted.
+			- Arrays will be flattened.
+		ann : list[tuple[Number, Number, str] | None
+			- A list of annotations to mark specific points. Each tuple should be of the form (start, end, label).
+			- Default: None => No annotation.
+		events : list[Number] | None
+			- A list of x-values where vertical lines (event markers) will be drawn.
+			- Default: None
+		xlim : tuple[Number, Number] | None
+			- Limits for the x-axis as (xmin, xmax).
+			- Default: None
+		ylim : tuple[Number, Number] | None
+			- Limits for the y-axis as (ymin, ymax).
+			- Default: None
+		xlabel : str | None
+			- Label for the x-axis.
+			- - Default: None
+		ylabel : str | None
+			- Label for the y-axis.
+			- Default: None
+		title : str | None
+			- Title of the plot.
+			- Default: None
+		legend : list[str] | None
+			- List of legend labels corresponding to each signal if plotting multiple distributions.
+			- Default: None
+		show_hist: bool
+			- Want to show histogram as well.
+		npoints: int
+			- Number of points for which gaussian needs to be computed between min and max.
+			- Higher value means more points are evaluated with the fitted gaussian, thereby higher resolution.
+
+		Returns
+		-------
+		plt.Figure
+			- Matplotlib figure.
+		"""
+		from scipy.stats import gaussian_kde
+	
+		if isinstance(legend, str):
+				legend = (legend, )
+			
+		if legend is not None:
+				if len(legend) < len(args):
+						raise ValueError(f"Legend should be provided for each signal.")
+					
+		# Create figure
+		fig = plt.figure(figsize=(16, 4))
+		gs = gridspec.GridSpec(2, 1, height_ratios=[0.1, 1])
+	
+		colors = plt.get_cmap('tab10').colors
+	
+		dist_ax = fig.add_subplot(gs[1, 0])
+		annotation_ax = fig.add_subplot(gs[0, 0], sharex=dist_ax)
+	
+		# Set limits
+		if xlim is not None:
+				dist_ax.set_xlim(xlim)
+			
+		if ylim is not None:
+				dist_ax.set_ylim(ylim)
+			
+		# Add plot
+		for i, data in enumerate(args):
+				# Fit gaussian to the data
+				kde = gaussian_kde(data)
+			
+				# Create points to evaluate KDE
+				x_vals = np.linspace(min(data), max(data), npoints)
+				y_vals = kde(x_vals)
+			
+				if legend is not None:
+						dist_ax.plot(x_vals, y_vals, color=colors[i], label=legend[i])
+						if show_hist is True:
+								dist_ax.hist(data, bins=30, density=True, alpha=0.3, facecolor=colors[i], edgecolor='black', label=legend[i])
+				else:
+						dist_ax.plot(x_vals, y_vals, color=colors[i])
+						if show_hist is True:
+								dist_ax.hist(data, bins=30, density=True, alpha=0.3, facecolor=colors[i], edgecolor='black', label=legeng[i])
+							
+		# Add annotations
+		if ann is not None:
+				annotation_ax.set_ylim(0, 1)
+				for i, (start, end, tag) in enumerate(ann):
+						if xlim is not None:
+								if end < xlim[0] or start > xlim[1]:
+										continue  # Skip out-of-view regions
+								# Clip boundaries to xlim
+								start = max(start, xlim[0])
+								end = min(end, xlim[1])
+							
+						color = colors[i % len(colors)]
+						width = end - start
+						rect = Rectangle((start, 0), width, 1, color=color, alpha=0.7)
+						annotation_ax.add_patch(rect)
+					
+						text_obj = annotation_ax.text((start + end) / 2, 0.5, tag, ha='center', va='center', fontsize=10, color='white', fontweight='bold', zorder=10, clip_on=True)
+						text_obj.set_clip_path(rect)
+					
+		# Add legend
+		if legend is not None:
+				handles, labels = dist_ax.get_legend_handles_labels()
+				fig.legend(handles, labels, loc='upper right', bbox_to_anchor=(0.9, 1.1), ncol=len(legend), frameon=True)
+			
+		# Set title, labels
+		if title is not None:
+				annotation_ax.set_title(title, pad=10, size=11)
+		if xlabel is not None:
+				dist_ax.set_xlabel(xlabel)
+		if ylabel is not None:
+				dist_ax.set_ylabel(ylabel)
+			
+		# Remove the boundaries and ticks from annotation axis
+		if ann is not None:
+				annotation_ax.tick_params(left=False, bottom=False, labelleft=False, labelbottom=False)
+		else:
+				annotation_ax.axis("off")
+			
+		fig.subplots_adjust(hspace=0.01, wspace=0.05)
+		plt.close()
+		return fig
