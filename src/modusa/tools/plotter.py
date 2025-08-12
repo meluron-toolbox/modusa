@@ -365,7 +365,7 @@ def plot2d(*args, ann=None, events=None, xlim=None, ylim=None, origin="lower", M
 	return fig
 
 #======== Plot distribution ===========
-def plot_dist(*args, ann=None, xlim=None, ylim=None, ylabel=None, xlabel=None, title=None, legend=None, show_hist=True, npoints=200):
+def plot_dist(*args, ann=None, xlim=None, ylim=None, ylabel=None, xlabel=None, title=None, legend=None, show_hist=True, npoints=200, bins=30):
 		"""
 		Plot distribution.
 
@@ -411,6 +411,9 @@ def plot_dist(*args, ann=None, xlim=None, ylim=None, ylabel=None, xlabel=None, t
 		npoints: int
 			- Number of points for which gaussian needs to be computed between min and max.
 			- Higher value means more points are evaluated with the fitted gaussian, thereby higher resolution.
+		bins: int
+			- The number of bins for histogram.
+			- This is used only to plot the histogram.
 
 		Returns
 		-------
@@ -454,11 +457,11 @@ def plot_dist(*args, ann=None, xlim=None, ylim=None, ylabel=None, xlabel=None, t
 				if legend is not None:
 						dist_ax.plot(x_vals, y_vals, color=colors[i], label=legend[i])
 						if show_hist is True:
-								dist_ax.hist(data, bins=30, density=True, alpha=0.3, facecolor=colors[i], edgecolor='black', label=legend[i])
+								dist_ax.hist(data, bins=bins, density=True, alpha=0.3, facecolor=colors[i], edgecolor='black', label=legend[i])
 				else:
 						dist_ax.plot(x_vals, y_vals, color=colors[i])
 						if show_hist is True:
-								dist_ax.hist(data, bins=30, density=True, alpha=0.3, facecolor=colors[i], edgecolor='black')
+								dist_ax.hist(data, bins=bins, density=True, alpha=0.3, facecolor=colors[i], edgecolor='black')
 							
 		# Add annotations
 		if ann is not None:
