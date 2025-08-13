@@ -166,7 +166,7 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 		# Add legend
 		if legend is not None:
 			handles, labels = signal_ax.get_legend_handles_labels()
-			fig.legend(handles, labels, loc='upper right', bbox_to_anchor=(0.9, 1.2), ncol=len(legend), frameon=False)
+			fig.legend(handles, labels, loc='upper right', bbox_to_anchor=(0.9, 1.2), ncol=len(legend), frameon=True)
 			
 		# Set title, labels
 		if title is not None:
