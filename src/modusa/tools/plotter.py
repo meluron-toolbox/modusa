@@ -85,6 +85,7 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 		for arg in args:
 			if len(arg) not in [1, 2]: # 1 if it just provides values, 2 if it provided axis as well
 				raise ValueError(f"1D signal needs to have max 2 arrays (y, x) or simply (y, )")
+			
 		if isinstance(legend, str): legend = (legend, )
 		
 		if legend is not None:
@@ -111,10 +112,11 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 		for i, signal in enumerate(args):
 			if len(signal) == 1:
 				y = signal[0]
+				x = np.arange(y.size)
 				if legend is not None:
-					signal_ax.plot(y, label=legend[i])
+					signal_ax.plot(x, y, label=legend[i])
 				else:
-					signal_ax.plot(y)
+					signal_ax.plot(x, y)
 			elif len(signal) == 2:
 				y, x = signal[0], signal[1]
 				if legend is not None:
@@ -124,14 +126,19 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 		
 		# Add annotations
 		if ann is not None:
-			annotation_ax.set_ylim(0, 1)
+			annotation_ax.set_ylim(0, 1) # For consistent layout
+			# Determine visible x-range
+			x_view_min = xlim[0] if xlim is not None else np.min(x)
+			x_view_max = xlim[1] if xlim is not None else np.max(x)
+			
 			for i, (start, end, tag) in enumerate(ann):
-				if xlim is not None:
-					if end < xlim[0] or start > xlim[1]:
-						continue  # Skip out-of-view regions
-					# Clip boundaries to xlim
-					start = max(start, xlim[0])
-					end = min(end, xlim[1])
+				# We make sure that we only plot annotation that are within the x range of the current view
+				if start >= x_view_max or end <= x_view_min:
+					continue
+				
+				# Clip boundaries to xlim
+				start = max(start, x_view_min)
+				end = min(end, x_view_max)
 					
 				color = colors[i % len(colors)]
 				width = end - start
@@ -315,14 +322,19 @@ def plot2d(*args, ann=None, events=None, xlim=None, ylim=None, origin="lower", M
 	
 	# Add annotations
 	if ann is not None:
-		annotation_ax.set_ylim(0, 1)
+		annotation_ax.set_ylim(0, 1) # For consistent layout
+		# Determine visible x-range
+		x_view_min = xlim[0] if xlim is not None else np.min(x)
+		x_view_max = xlim[1] if xlim is not None else np.max(x)
+		
 		for i, (start, end, tag) in enumerate(ann):
-			if xlim is not None:
-				if end < xlim[0] or start > xlim[1]:
-					continue  # Skip out-of-view regions
-				# Clip boundaries to xlim
-				start = max(start, xlim[0])
-				end = min(end, xlim[1])
+			# We make sure that we only plot annotation that are within the x range of the current view
+			if start >= x_view_max or end <= x_view_min:
+				continue
+			
+			# Clip boundaries to xlim
+			start = max(start, x_view_min)
+			end = min(end, x_view_max)
 				
 			color = colors[i % len(colors)]
 			width = end - start
@@ -479,36 +491,40 @@ def plot_dist(*args, ann=None, xlim=None, ylim=None, ylabel=None, xlabel=None, t
 				kde = gaussian_kde(data)
 			
 				# Create points to evaluate KDE
-				x_vals = np.linspace(min(data), max(data), npoints)
-				y_vals = kde(x_vals)
+				x = np.linspace(min(data), max(data), npoints)
+				y = kde(x)
 			
 				if legend is not None:
-						dist_ax.plot(x_vals, y_vals, color=colors[i], label=legend[i])
+						dist_ax.plot(x, y, color=colors[i], label=legend[i])
 						if show_hist is True:
 								dist_ax.hist(data, bins=bins, density=True, alpha=0.3, facecolor=colors[i], edgecolor='black', label=legend[i])
 				else:
-						dist_ax.plot(x_vals, y_vals, color=colors[i])
+						dist_ax.plot(x, y, color=colors[i])
 						if show_hist is True:
 								dist_ax.hist(data, bins=bins, density=True, alpha=0.3, facecolor=colors[i], edgecolor='black')
 							
 		# Add annotations
 		if ann is not None:
-				annotation_ax.set_ylim(0, 1)
-				for i, (start, end, tag) in enumerate(ann):
-						if xlim is not None:
-								if end < xlim[0] or start > xlim[1]:
-										continue  # Skip out-of-view regions
-								# Clip boundaries to xlim
-								start = max(start, xlim[0])
-								end = min(end, xlim[1])
-							
-						color = colors[i % len(colors)]
-						width = end - start
-						rect = Rectangle((start, 0), width, 1, color=color, alpha=0.7)
-						annotation_ax.add_patch(rect)
+			annotation_ax.set_ylim(0, 1) # For consistent layout
+			# Determine visible x-range
+			x_view_min = xlim[0] if xlim is not None else np.min(x)
+			x_view_max = xlim[1] if xlim is not None else np.max(x)
+			for i, (start, end, tag) in enumerate(ann):
+				# We make sure that we only plot annotation that are within the x range of the current view
+				if start >= x_view_max or end <= x_view_min:
+					continue
+				
+				# Clip boundaries to xlim
+				start = max(start, x_view_min)
+				end = min(end, x_view_max)
 					
-						text_obj = annotation_ax.text((start + end) / 2, 0.5, tag, ha='center', va='center', fontsize=10, color='white', fontweight='bold', zorder=10, clip_on=True)
-						text_obj.set_clip_path(rect)
+				color = colors[i % len(colors)]
+				width = end - start
+				rect = Rectangle((start, 0), width, 1, color=color, alpha=0.7)
+				annotation_ax.add_patch(rect)
+			
+				text_obj = annotation_ax.text((start + end) / 2, 0.5, tag, ha='center', va='center', fontsize=10, color='white', fontweight='bold', zorder=10, clip_on=True)
+				text_obj.set_clip_path(rect)
 					
 		# Add legend
 		if legend is not None:
