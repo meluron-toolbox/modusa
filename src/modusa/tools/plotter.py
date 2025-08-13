@@ -463,11 +463,11 @@ def plot_dist(*args, ann=None, xlim=None, ylim=None, ylabel=None, xlabel=None, t
 		from scipy.stats import gaussian_kde
 	
 		if isinstance(legend, str):
-				legend = (legend, )
+			legend = (legend, )
 			
 		if legend is not None:
-				if len(legend) < len(args):
-						raise ValueError(f"Legend should be provided for each signal.")
+			if len(legend) < len(args):
+				raise ValueError(f"Legend should be provided for each signal.")
 					
 		# Create figure
 		fig = plt.figure(figsize=(16, 4))
@@ -480,28 +480,28 @@ def plot_dist(*args, ann=None, xlim=None, ylim=None, ylabel=None, xlabel=None, t
 	
 		# Set limits
 		if xlim is not None:
-				dist_ax.set_xlim(xlim)
+			dist_ax.set_xlim(xlim)
 			
 		if ylim is not None:
-				dist_ax.set_ylim(ylim)
+			dist_ax.set_ylim(ylim)
 			
 		# Add plot
 		for i, data in enumerate(args):
-				# Fit gaussian to the data
-				kde = gaussian_kde(data)
-			
-				# Create points to evaluate KDE
-				x = np.linspace(np.min(data), np.max(data), npoints)
-				y = kde(x)
-			
-				if legend is not None:
-						dist_ax.plot(x, y, color=colors[i], label=legend[i])
-						if show_hist is True:
-								dist_ax.hist(data, bins=bins, density=True, alpha=0.3, facecolor=colors[i], edgecolor='black', label=legend[i])
-				else:
-						dist_ax.plot(x, y, color=colors[i])
-						if show_hist is True:
-								dist_ax.hist(data, bins=bins, density=True, alpha=0.3, facecolor=colors[i], edgecolor='black')
+			# Fit gaussian to the data
+			kde = gaussian_kde(data)
+		
+			# Create points to evaluate KDE
+			x = np.linspace(np.min(data), np.max(data), npoints)
+			y = kde(x)
+		
+			if legend is not None:
+				dist_ax.plot(x, y, color=colors[i], label=legend[i])
+				if show_hist is True:
+					dist_ax.hist(data, bins=bins, density=True, alpha=0.3, facecolor=colors[i], edgecolor='black', label=legend[i])
+			else:
+				dist_ax.plot(x, y, color=colors[i])
+				if show_hist is True:
+					dist_ax.hist(data, bins=bins, density=True, alpha=0.3, facecolor=colors[i], edgecolor='black')
 							
 		# Add annotations
 		if ann is not None:
@@ -528,22 +528,22 @@ def plot_dist(*args, ann=None, xlim=None, ylim=None, ylabel=None, xlabel=None, t
 					
 		# Add legend
 		if legend is not None:
-				handles, labels = dist_ax.get_legend_handles_labels()
-				fig.legend(handles, labels, loc='upper right', bbox_to_anchor=(0.9, 1.1), ncol=len(legend), frameon=True)
+			handles, labels = dist_ax.get_legend_handles_labels()
+			fig.legend(handles, labels, loc='upper right', bbox_to_anchor=(0.9, 1.1), ncol=len(legend), frameon=True)
 			
 		# Set title, labels
 		if title is not None:
-				annotation_ax.set_title(title, pad=10, size=11)
+			annotation_ax.set_title(title, pad=10, size=11)
 		if xlabel is not None:
-				dist_ax.set_xlabel(xlabel)
+			dist_ax.set_xlabel(xlabel)
 		if ylabel is not None:
-				dist_ax.set_ylabel(ylabel)
+			dist_ax.set_ylabel(ylabel)
 			
 		# Remove the boundaries and ticks from annotation axis
 		if ann is not None:
-				annotation_ax.tick_params(left=False, bottom=False, labelleft=False, labelbottom=False)
+			annotation_ax.tick_params(left=False, bottom=False, labelleft=False, labelbottom=False)
 		else:
-				annotation_ax.axis("off")
+			annotation_ax.axis("off")
 			
 		fig.subplots_adjust(hspace=0.01, wspace=0.05)
 		plt.close()
