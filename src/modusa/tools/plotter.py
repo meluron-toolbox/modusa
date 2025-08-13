@@ -491,7 +491,7 @@ def plot_dist(*args, ann=None, xlim=None, ylim=None, ylabel=None, xlabel=None, t
 				kde = gaussian_kde(data)
 			
 				# Create points to evaluate KDE
-				x = np.linspace(min(data), max(data), npoints)
+				x = np.linspace(np.min(data), np.max(data), npoints)
 				y = kde(x)
 			
 				if legend is not None:
