@@ -137,12 +137,18 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 				y, x = signal[0], signal[1]
 				if legend is not None:
 					if show_stem is True:
-						signal_ax.stem(x, y, linefmt=f"{colors[i]}-", markerfmt=f"{colors[i]}o", basefmt="k-", label=legend[i])
+						markerline, stemlines, baseline = signal_ax.stem(x, y, label=legend[i])
+						markerline.set_color(colors[i])
+						stemlines.set_color(colors[i])
+						baseline.set_color("k")
 					else:
 						signal_ax.plot(x, y, color=colors[i], label=legend[i])
 				else:
 					if show_stem is True:
-						signal_ax.stem(x, y, linefmt=f"{colors[i]}-", markerfmt=f"{colors[i]}o", basefmt="k-")
+						markerline, stemlines, baseline = signal_ax.stem(x, y, label=legend[i])
+						markerline.set_color(colors[i])
+						stemlines.set_color(colors[i])
+						baseline.set_color("k")
 					else:
 						signal_ax.plot(x, y, color=colors[i])
 		
