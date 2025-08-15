@@ -145,7 +145,7 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 						signal_ax.plot(x, y, color=colors[i], label=legend[i])
 				else:
 					if show_stem is True:
-						markerline, stemlines, baseline = signal_ax.stem(x, y, label=legend[i])
+						markerline, stemlines, baseline = signal_ax.stem(x, y)
 						markerline.set_color(colors[i])
 						stemlines.set_color(colors[i])
 						baseline.set_color("k")
