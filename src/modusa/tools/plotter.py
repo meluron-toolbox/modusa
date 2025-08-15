@@ -27,7 +27,7 @@ def _calculate_extent(x, y):
 	]
 
 #======== 1D ===========
-def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylabel=None, title=None, legend=None, show_grid=False):
+def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylabel=None, title=None, legend=None, show_grid=False, show_stem=False):
 		"""
 		Plots a 1D signal using matplotlib.
 
@@ -75,6 +75,9 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 		show_grid: bool
 			- If you want to show the grid.
 			- Default: False
+		show_stem: bool:
+			- If you want stem plot.
+			- Default: False
 	
 		Returns
 		-------
@@ -114,15 +117,34 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 				y = signal[0]
 				x = np.arange(y.size)
 				if legend is not None:
-					signal_ax.plot(x, y, label=legend[i])
+					if show_stem is True:
+						markerline, stemlines, baseline = signal_ax.stem(x, y, label=legend[i])
+						markerline.set_color(colors[i])
+						stemlines.set_color(colors[i])
+						baseline.set_color("k")
+					else:
+						signal_ax.plot(x, y, color=colors[i], label=legend[i])
 				else:
-					signal_ax.plot(x, y)
+					if show_stem is True:
+						markerline, stemlines, baseline = signal_ax.stem(x, y)
+						markerline.set_color(colors[i])
+						stemlines.set_color(colors[i])
+						baseline.set_color("k")
+					else:
+						signal_ax.plot(x, y, color=colors[i])
+						
 			elif len(signal) == 2:
 				y, x = signal[0], signal[1]
 				if legend is not None:
-					signal_ax.plot(x, y, label=legend[i])
+					if show_stem is True:
+						signal_ax.stem(x, y, linefmt=f"{colors[i]}-", markerfmt=f"{colors[i]}o", basefmt="k-", label=legend[i])
+					else:
+						signal_ax.plot(x, y, color=colors[i], label=legend[i])
 				else:
-					signal_ax.plot(x, y)
+					if show_stem is True:
+						signal_ax.stem(x, y, linefmt=f"{colors[i]}-", markerfmt=f"{colors[i]}o", basefmt="k-")
+					else:
+						signal_ax.plot(x, y, color=colors[i])
 		
 		# Add annotations
 		if ann is not None:
