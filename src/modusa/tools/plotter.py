@@ -27,7 +27,7 @@ def _calculate_extent(x, y):
 	]
 
 #======== 1D ===========
-def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylabel=None, title=None, legend=None, show_grid=False, show_stem=False):
+def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylabel=None, title=None, legend=None, fmt=None, show_grid=False, show_stem=False):
 		"""
 		Plots a 1D signal using matplotlib.
 
@@ -72,6 +72,9 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 		legend : list[str] | None
 			- List of legend labels corresponding to each signal if plotting multiple lines.
 			- Default: None
+		fmt: list[str] | None
+			- linefmt for different line plots.
+			- Default: None
 		show_grid: bool
 			- If you want to show the grid.
 			- Default: False
@@ -90,15 +93,19 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 				raise ValueError(f"1D signal needs to have max 2 arrays (y, x) or simply (y, )")
 			
 		if isinstance(legend, str): legend = (legend, )
-		
 		if legend is not None:
 			if len(legend) < len(args):
-				raise ValueError(f"Legend should be provided for each signal.")
+				raise ValueError(f"`legend` should be provided for each signal.")
+		
+		if isinstance(fmt, str): fmt = [fmt]
+		if fmt is not None:
+			if len(fmt) < len(args):
+				raise ValueError(f"`fmt` should be provided for each signal.")
+
+		colors = plt.get_cmap('tab10').colors
 
 		fig = plt.figure(figsize=(16, 2))
 		gs = gridspec.GridSpec(2, 1, height_ratios=[0.2, 1])
-			
-		colors = plt.get_cmap('tab10').colors
 		
 		signal_ax = fig.add_subplot(gs[1, 0])
 		annotation_ax = fig.add_subplot(gs[0, 0], sharex=signal_ax)
@@ -109,7 +116,6 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 		
 		if ylim is not None:
 			signal_ax.set_ylim(ylim)
-		
 			
 		# Add signal plot
 		for i, signal in enumerate(args):
@@ -123,7 +129,10 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 						stemlines.set_color(colors[i])
 						baseline.set_color("k")
 					else:
-						signal_ax.plot(x, y, color=colors[i], label=legend[i])
+						if fmt is not None:
+							signal_ax.plot(x, y, fmt[i], markersize=4, label=legend[i])
+						else:
+							signal_ax.plot(x, y, color=colors[i], label=legend[i])
 				else:
 					if show_stem is True:
 						markerline, stemlines, baseline = signal_ax.stem(x, y)
@@ -131,7 +140,10 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 						stemlines.set_color(colors[i])
 						baseline.set_color("k")
 					else:
-						signal_ax.plot(x, y, color=colors[i])
+						if fmt is not None:
+							signal_ax.plot(x, y, fmt[i], markersize=4)
+						else:
+							signal_ax.plot(x, y, color=colors[i])
 						
 			elif len(signal) == 2:
 				y, x = signal[0], signal[1]
@@ -142,7 +154,10 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 						stemlines.set_color(colors[i])
 						baseline.set_color("k")
 					else:
-						signal_ax.plot(x, y, color=colors[i], label=legend[i])
+						if fmt is not None:
+							signal_ax.plot(x, y, fmt[i], markersize=4, label=legend[i])
+						else:
+							signal_ax.plot(x, y, color=colors[i], label=legend[i])
 				else:
 					if show_stem is True:
 						markerline, stemlines, baseline = signal_ax.stem(x, y)
@@ -150,7 +165,11 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 						stemlines.set_color(colors[i])
 						baseline.set_color("k")
 					else:
-						signal_ax.plot(x, y, color=colors[i])
+						if fmt is not None:
+							signal_ax.plot(x, y, fmt[i], markersize=4)
+						else:
+							signal_ax.plot(x, y, color=colors[i])
+							
 		
 		# Add annotations
 		if ann is not None:
