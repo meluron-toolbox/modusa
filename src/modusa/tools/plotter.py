@@ -25,6 +25,28 @@ def _calculate_extent(x, y):
 		y[0] - dy / 2,
 		y[-1] + dy / 2
 	]
+	
+# Helper to load fonts (devnagri)
+def set_default_hindi_font():
+	"""
+	Hindi fonts works for both english and hindi.
+	"""
+	from pathlib import Path
+	import matplotlib as mpl
+	import matplotlib.font_manager as fm
+	# Path to your bundled font
+	font_path = Path(__file__).resolve().parents[1] / "fonts" / "NotoSansDevanagari-Regular.ttf"
+	
+	# Register the font with matplotlib
+	fm.fontManager.addfont(str(font_path))
+	
+	# Get the font family name from the file
+	hindi_font = fm.FontProperties(fname=str(font_path))
+	
+	# Set as default rcParam
+	mpl.rcParams['font.family'] = hindi_font.get_name()
+
+set_default_hindi_font()
 
 #======== 1D ===========
 def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylabel=None, title=None, legend=None, fmt=None, show_grid=False, show_stem=False):
@@ -87,7 +109,6 @@ def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylab
 		plt.Figure
 			Matplolib figure.
 		"""
-
 		for arg in args:
 			if len(arg) not in [1, 2]: # 1 if it just provides values, 2 if it provided axis as well
 				raise ValueError(f"1D signal needs to have max 2 arrays (y, x) or simply (y, )")
