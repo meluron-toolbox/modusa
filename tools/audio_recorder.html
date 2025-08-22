@@ -3,11 +3,11 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Audio Convertor" href="audio_converter.html" /><link rel="prev" title="Audio Loader" href="audio_loader.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Plotter" href="plotter.html" /><link rel="prev" title="Audio Player" href="audio_player.html" />
         <link rel="prefetch" href="../_static/logo.png" as="image" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2025.07.19 -->
-        <title>Annotation Loader - modusa 0.3.42 documentation</title>
+        <title>Audio Recorder - modusa 0.3.42 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -214,10 +214,10 @@
 <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Tools</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tools</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="audio_loader.html">Audio Loader</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Annotation Loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ann_loader.html">Annotation Loader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="audio_converter.html">Audio Convertor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="audio_player.html">Audio Player</a></li>
-<li class="toctree-l2"><a class="reference internal" href="audio_recorder.html">Audio Recorder</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Audio Recorder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plotter.html">Plotter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="youtube_downloader.html">Youtube Downloader</a></li>
 </ul>
@@ -242,7 +242,7 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="../_sources/tools/ann_loader.rst.txt" title="View this page">
+  <a class="muted-link" href="../_sources/tools/audio_recorder.rst.txt" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
@@ -262,25 +262,24 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="annotation-loader">
-<h1>Annotation Loader<a class="headerlink" href="#annotation-loader" title="Link to this heading">¶</a></h1>
+          <section id="audio-recorder">
+<h1>Audio Recorder<a class="headerlink" href="#audio-recorder" title="Link to this heading">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="modusa.load_ann">
-<span class="sig-prename descclassname"><span class="pre">modusa.</span></span><span class="sig-name descname"><span class="pre">load_ann</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/ann_loader.html#load_ann"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.load_ann" title="Link to this definition">¶</a></dt>
-<dd><p>Load annotation from audatity label text file.</p>
+<dt class="sig sig-object py" id="modusa.record">
+<span class="sig-prename descclassname"><span class="pre">modusa.</span></span><span class="sig-name descname"><span class="pre">record</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/audio_recorder.html#record"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.record" title="Link to this definition">¶</a></dt>
+<dd><p>Create a UI to record audio in jupyter notebook, the
+recorded signal is available as array.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">modusa</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ms</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="n">record</span><span class="p">()</span>
+<span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="n">result</span><span class="p">()</span> <span class="c1"># Keep it in the next cell</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – label text file path.</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A lambda function that returns y(audio signal), sr(sampling rate), title(title set in the UI)</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p>annotation data structure</p></li>
-<li><p>[(start, end, tag), …]</p></li>
-</ul>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[tuple, …]</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Callable</p>
 </dd>
 </dl>
 </dd></dl>
@@ -292,23 +291,23 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="audio_converter.html">
+          <a class="next-page" href="plotter.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Audio Convertor</div>
+                <div class="title">Plotter</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="audio_loader.html">
+          <a class="prev-page" href="audio_player.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Audio Loader</div>
+                <div class="title">Audio Player</div>
                 
               </div>
             </a>
@@ -342,8 +341,8 @@
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Annotation Loader</a><ul>
-<li><a class="reference internal" href="#modusa.load_ann"><code class="docutils literal notranslate"><span class="pre">load_ann()</span></code></a></li>
+<li><a class="reference internal" href="#">Audio Recorder</a><ul>
+<li><a class="reference internal" href="#modusa.record"><code class="docutils literal notranslate"><span class="pre">record()</span></code></a></li>
 </ul>
 </li>
 </ul>

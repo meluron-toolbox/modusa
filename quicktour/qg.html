@@ -7,7 +7,7 @@
         <link rel="prefetch" href="../_static/logo.png" as="image" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2025.07.19 -->
-        <title>&lt;/&gt; - modusa 0.3.22 documentation</title>
+        <title>&lt;/&gt; - modusa 0.3.42 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -171,7 +171,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">modusa 0.3.22 documentation</div></a>
+      <a href="../index.html"><div class="brand">modusa 0.3.42 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -197,7 +197,7 @@
     <img class="sidebar-logo" src="../_static/logo.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">modusa 0.3.22 documentation</span>
+  <span class="sidebar-brand-text">modusa 0.3.42 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -215,8 +215,10 @@
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../tools/index.html">Tools</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tools</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../tools/audio_loader.html">Audio Loader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/ann_loader.html">Annotation Loader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tools/audio_converter.html">Audio Convertor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tools/audio_player.html">Audio Player</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tools/audio_recorder.html">Audio Recorder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tools/plotter.html">Plotter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tools/youtube_downloader.html">Youtube Downloader</a></li>
 </ul>
@@ -516,6 +518,32 @@
 </div>
 </div>
 </section>
+<section id="Distribution">
+<h3>Distribution<a class="headerlink" href="#Distribution" title="Link to this heading">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+
+<span class="n">ms</span><span class="o">.</span><span class="n">plot_dist</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="p">),</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Distribution&quot;</span><span class="p">,</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Prob. Density&quot;</span><span class="p">,</span>
+    <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/quicktour_qg_16_0.png" src="../_images/quicktour_qg_16_0.png" />
+</div>
+</div>
+</section>
 </section>
 <section id="Audio-Player">
 <h2>Audio Player<a class="headerlink" href="#Audio-Player" title="Link to this heading">¶</a></h2>
@@ -540,7 +568,7 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/quicktour_qg_16_0.png" src="../_images/quicktour_qg_16_0.png" />
+<img alt="../_images/quicktour_qg_18_0.png" src="../_images/quicktour_qg_18_0.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -582,8 +610,35 @@
 </div></div>
 </div>
 </section>
-<section id="Converter">
-<h2>Converter<a class="headerlink" href="#Converter" title="Link to this heading">¶</a></h2>
+<section id="Audio-Recorder">
+<h2>Audio Recorder<a class="headerlink" href="#Audio-Recorder" title="Link to this heading">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="n">record</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "df452f06d85f41c9b9c18c894b9a413f", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># After recording, you can run this</span>
+<span class="c1"># to get the recorder signal array</span>
+<span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="n">result</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Audio-Converter">
+<h2>Audio Converter<a class="headerlink" href="#Audio-Converter" title="Link to this heading">¶</a></h2>
 <p>To convert any audio file from one format to another using <code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -669,10 +724,12 @@
 <li><a class="reference internal" href="#Plotting">Plotting</a><ul>
 <li><a class="reference internal" href="#1D">1D</a></li>
 <li><a class="reference internal" href="#2D">2D</a></li>
+<li><a class="reference internal" href="#Distribution">Distribution</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#Audio-Player">Audio Player</a></li>
-<li><a class="reference internal" href="#Converter">Converter</a></li>
+<li><a class="reference internal" href="#Audio-Recorder">Audio Recorder</a></li>
+<li><a class="reference internal" href="#Audio-Converter">Audio Converter</a></li>
 <li><a class="reference internal" href="#Download-from-YouTube">Download from YouTube</a></li>
 </ul>
 </li>
@@ -685,7 +742,7 @@
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=67ce8998"></script>
+</div><script src="../_static/documentation_options.js?v=083f9d4c"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
