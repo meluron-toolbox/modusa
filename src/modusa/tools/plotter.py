@@ -233,7 +233,7 @@ class Figure1D:
 				
 				text_obj.set_clip_path(rect)
 	
-	def add_signal(self, y, x=None, c=None, ls="-", lw=1, m=None, ms=5, label="Signal"):
+	def add_signal(self, y, x=None, c=None, ls="-", lw=1.5, m=None, ms=3, label="Signal"):
 		"""
 		Add signal to the figure.
 			
@@ -620,7 +620,7 @@ class Figure2D:
 		
 		self._add_colorbar(im=im, label=label)
 	
-	def add_signal(self, y, x=None, c=None, ls="-", lw=1, m="o", ms=5, label="Signal"):
+	def add_signal(self, y, x=None, c=None, ls="-", lw=1.5, m="o", ms=3, label="Signal"):
 		"""
 		Add signal on the matrix.
 			
