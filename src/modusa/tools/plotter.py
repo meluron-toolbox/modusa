@@ -1,39 +1,26 @@
 #!/usr/bin/env python3
 
+#---------------------------------
+# Author: Ankit Anand
+# Date: 26/08/25
+# Email: ankit0.anand0@gmail.com
+#---------------------------------
 
-import numpy as np
+from pathlib import Path
+import matplotlib as mpl
+import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 from matplotlib.patches import Rectangle
-from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 
-# Helper for 2D plot
-def _calculate_extent(x, y):
-	# Handle spacing safely
-	if len(x) > 1:
-		dx = x[1] - x[0]
-	else:
-		dx = 1  # Default spacing for single value
-	if len(y) > 1:
-		dy = y[1] - y[0]
-	else:
-		dy = 1  # Default spacing for single value
-		
-	return [
-		x[0] - dx / 2,
-		x[-1] + dx / 2,
-		y[0] - dy / 2,
-		y[-1] + dy / 2
-	]
+import numpy as np
+
+#===== Loading Devanagari font ========
+def _load_devanagari_font():
+	"""
+	Load devanagari font as it works for both English and Hindi.
+	"""
 	
-# Helper to load fonts (devnagri)
-def set_default_hindi_font():
-	"""
-	Hindi fonts works for both english and hindi.
-	"""
-	from pathlib import Path
-	import matplotlib as mpl
-	import matplotlib.font_manager as fm
 	# Path to your bundled font
 	font_path = Path(__file__).resolve().parents[1] / "fonts" / "NotoSansDevanagari-Regular.ttf"
 	
@@ -45,432 +32,714 @@ def set_default_hindi_font():
 	
 	# Set as default rcParam
 	mpl.rcParams['font.family'] = hindi_font.get_name()
+	
+_load_devanagari_font()
+#==============
 
-set_default_hindi_font()
+#--------------------------
+# Figuure 1D
+#--------------------------
+class Figure1D:
+	"""
+	A utility class that provides easy-to-use API
+	for plotting 1D signals along with clean
+	representations of annotations, events.
 
-#======== 1D ===========
-def plot1d(*args, ann=None, events=None, xlim=None, ylim=None, xlabel=None, ylabel=None, title=None, legend=None, fmt=None, show_grid=False, show_stem=False):
+	
+
+	Parameters
+	----------
+	n_aux_subplots: int
+		- Total number of auxiliary subplots
+		- These include annotations and events subplots.
+		- Default: 0
+	title: str
+		- Title of the figure.
+		- Default: Title
+	xlim: tuple[number, number]
+		- xlim for the figure.
+		- All subplots will be automatically adjusted.
+		- Default: None
+	ylim: tuple[number, number]
+		- ylim for the signal.
+		- Default: None
+	"""
+	
+	def __init__(self, n_aux_subplots=0, xlim=None, ylim=None):
+		self._n_aux_subplots: int = n_aux_subplots
+		self._active_subplot_idx: int = 1 # Any addition will happen on this subplot (0 is reserved for reference axis)
+		self._xlim = xlim # Many add functions depend on this, so we fix it while instantiating the class
+		self._ylim = ylim
+		self._subplots, self._fig = self._generate_subplots() # Will contain all the subplots (list, fig)
+	
+	def _get_active_subplot(self):
 		"""
-		Plots a 1D signal using matplotlib.
-
-		.. code-block:: python
+		Get the active subplot where you can add
+		either annotations or events.
+		"""
+		active_subplot = self._subplots[self._active_subplot_idx]
+		self._active_subplot_idx += 1
+		
+		return active_subplot
+		
+	def _generate_subplots(self):
+		"""
+		Generate subplots based on the configuration.
+		"""
+		
+		n_aux_subplots = self._n_aux_subplots
+		
+		# Fixed heights per subplot type
+		ref_height = 0.0
+		aux_height = 0.4
+		signal_height = 2.0
+		
+		# Total number of subplots
+		n_subplots = 1 + n_aux_subplots + 1
+		
+		# Compute total fig height
+		fig_height = ref_height + n_aux_subplots * aux_height + signal_height
+		
+		# Define height ratios
+		height_ratios = [ref_height] + [aux_height] * n_aux_subplots + [signal_height]
+		
+		# Create figure and grid
+		fig = plt.figure(figsize=(16, fig_height))
+		gs = gridspec.GridSpec(n_subplots, 1, height_ratios=height_ratios)
+		
+		# Add subplots
+		subplots_list = []
+		ref_subplot = fig.add_subplot(gs[0, 0])
+		ref_subplot.axis("off")
+		subplots_list.append(ref_subplot)
+		
+		for i in range(1, n_subplots):
+			subplots_list.append(fig.add_subplot(gs[i, 0], sharex=ref_subplot))
+			
+		for i in range(n_subplots - 1):
+			subplots_list[i].tick_params(left=False, bottom=False, labelleft=False, labelbottom=False)
+		
+		# Set xlim
+		if self._xlim is not None: # xlim should be applied on reference subplot, rest all sharex
+			ref_subplot.set_xlim(self._xlim)
+			
+		# Set ylim
+		if self._ylim is not None: # ylim should be applied on the signal subplot
+			subplots_list[-1].set_ylim(self._ylim)
+									
+		fig.subplots_adjust(hspace=0.01, wspace=0.05)
+			
+		return subplots_list, fig
 	
-			import modusa as ms
-			import numpy as np
-			
-			x = np.arange(100) / 100
-			y = np.sin(x)
-			
-			display(ms.plot1d(y, x))
-			
-	
+		
+	def add_events(self, events, c="k", ls="-", lw=1.5, label="Event Label"):
+		"""
+		Add events to the figure.
+		
 		Parameters
 		----------
-		*args : tuple[array-like, array-like] | tuple[array-like]
-			- The signal y and axis x to be plotted.
-			- If only values are provided, we generate the axis using arange.
-			- E.g. (y1, x1), (y2, x2), ...
-		ann : list[tuple[Number, Number, str] | None
-			- A list of annotations to mark specific points. Each tuple should be of the form (start, end, label).
-			- Default: None => No annotation.
-		events : list[Number] | None
-			- A list of x-values where vertical lines (event markers) will be drawn.
-			- Default: None
-		xlim : tuple[Number, Number] | None
-			- Limits for the x-axis as (xmin, xmax).
-			- Default: None
-		ylim : tuple[Number, Number] | None
-			- Limits for the y-axis as (ymin, ymax).
-			- Default: None
-		xlabel : str | None
-			- Label for the x-axis.
-			- - Default: None
-		ylabel : str | None
-			- Label for the y-axis.
-			- Default: None
-		title : str | None
-			- Title of the plot.
-			- Default: None
-		legend : list[str] | None
-			- List of legend labels corresponding to each signal if plotting multiple lines.
-			- Default: None
-		fmt: list[str] | None
-			- linefmt for different line plots.
-			- Default: None
-		show_grid: bool
-			- If you want to show the grid.
-			- Default: False
-		show_stem: bool:
-			- If you want stem plot.
-			- Default: False
-	
+		events: np.ndarray
+			- All the event marker values.
+		c: str
+			- Color of the event marker.
+			- Default: "k"
+		ls: str
+			- Line style.
+			- Default: "-"
+		lw: float
+			- Linewidth.
+			- Default: 1.5
+		label: str
+			- Label for the event type.
+			- This will appear in the legend.
+			- Default: "Event label"
+
 		Returns
 		-------
-		plt.Figure
-			Matplolib figure.
+		None
 		"""
-		for arg in args:
-			if len(arg) not in [1, 2]: # 1 if it just provides values, 2 if it provided axis as well
-				raise ValueError(f"1D signal needs to have max 2 arrays (y, x) or simply (y, )")
-			
-		if isinstance(legend, str): legend = (legend, )
-		if legend is not None:
-			if len(legend) < len(args):
-				raise ValueError(f"`legend` should be provided for each signal.")
+		event_subplot = self._get_active_subplot()
+		xlim = self._xlim
 		
-		if isinstance(fmt, str): fmt = [fmt]
-		if fmt is not None:
-			if len(fmt) < len(args):
-				raise ValueError(f"`fmt` should be provided for each signal.")
-
-		colors = plt.get_cmap('tab10').colors
-
-		fig = plt.figure(figsize=(16, 2))
-		gs = gridspec.GridSpec(2, 1, height_ratios=[0.2, 1])
-		
-		signal_ax = fig.add_subplot(gs[1, 0])
-		annotation_ax = fig.add_subplot(gs[0, 0], sharex=signal_ax)
-		
-		# Set lim
-		if xlim is not None:
-			signal_ax.set_xlim(xlim)
-		
-		if ylim is not None:
-			signal_ax.set_ylim(ylim)
-			
-		# Add signal plot
-		for i, signal in enumerate(args):
-			if len(signal) == 1:
-				y = signal[0]
-				x = np.arange(y.size)
-				if legend is not None:
-					if show_stem is True:
-						markerline, stemlines, baseline = signal_ax.stem(x, y, label=legend[i])
-						markerline.set_color(colors[i])
-						stemlines.set_color(colors[i])
-						baseline.set_color("k")
+		for i, event in enumerate(events):
+			if xlim is not None:
+				if xlim[0] <= event <= xlim[1]:
+					if i == 0: # Label should be set only once for all the events
+						event_subplot.axvline(x=event, color=c, linestyle=ls, linewidth=lw, label=label)
 					else:
-						if fmt is not None:
-							signal_ax.plot(x, y, fmt[i], markersize=4, label=legend[i])
-						else:
-							signal_ax.plot(x, y, color=colors[i], label=legend[i])
+						event_subplot.axvline(x=event, color=c, linestyle=ls, linewidth=lw)
+			else:
+				if i == 0: # Label should be set only once for all the events
+					event_subplot.axvline(x=event, color=c, linestyle=ls, linewidth=lw, label=label)
 				else:
-					if show_stem is True:
-						markerline, stemlines, baseline = signal_ax.stem(x, y)
-						markerline.set_color(colors[i])
-						stemlines.set_color(colors[i])
-						baseline.set_color("k")
-					else:
-						if fmt is not None:
-							signal_ax.plot(x, y, fmt[i], markersize=4)
-						else:
-							signal_ax.plot(x, y, color=colors[i])
-						
-			elif len(signal) == 2:
-				y, x = signal[0], signal[1]
-				if legend is not None:
-					if show_stem is True:
-						markerline, stemlines, baseline = signal_ax.stem(x, y, label=legend[i])
-						markerline.set_color(colors[i])
-						stemlines.set_color(colors[i])
-						baseline.set_color("k")
-					else:
-						if fmt is not None:
-							signal_ax.plot(x, y, fmt[i], markersize=4, label=legend[i])
-						else:
-							signal_ax.plot(x, y, color=colors[i], label=legend[i])
-				else:
-					if show_stem is True:
-						markerline, stemlines, baseline = signal_ax.stem(x, y)
-						markerline.set_color(colors[i])
-						stemlines.set_color(colors[i])
-						baseline.set_color("k")
-					else:
-						if fmt is not None:
-							signal_ax.plot(x, y, fmt[i], markersize=4)
-						else:
-							signal_ax.plot(x, y, color=colors[i])
-							
+					event_subplot.axvline(x=event, color=c, linestyle=ls, linewidth=lw)
 		
-		# Add annotations
-		if ann is not None:
-			annotation_ax.set_ylim(0, 1) # For consistent layout
-			# Determine visible x-range
-			x_view_min = xlim[0] if xlim is not None else np.min(x)
-			x_view_max = xlim[1] if xlim is not None else np.max(x)
+	def add_annotation(self, ann):
+		"""
+		Add annotation to the figure.
+		
+		Parameters
+		----------
+		ann : list[tuple[Number, Number, str]] | None
+			- A list of annotation spans. Each tuple should be (start, end, label).
+			- Default: None (no annotations).
+		
+		Returns
+		-------
+		None
+		"""
+		
+		ann_subplot = self._get_active_subplot()
+		xlim = self._xlim
+		
+		for i, (start, end, tag) in enumerate(ann):
 			
-			for i, (start, end, tag) in enumerate(ann):
-				# We make sure that we only plot annotation that are within the x range of the current view
-				if start >= x_view_max or end <= x_view_min:
+			# We make sure that we only plot annotation that are within the x range of the current view
+			if xlim is not None:
+				if start >= xlim[1] or end <= xlim[0]:
 					continue
 				
 				# Clip boundaries to xlim
-				start = max(start, x_view_min)
-				end = min(end, x_view_max)
-					
-				color = colors[i % len(colors)]
-				width = end - start
-				rect = Rectangle((start, 0), width, 1, color=color, alpha=0.7)
-				annotation_ax.add_patch(rect)
+				start = max(start, xlim[0])
+				end = min(end, xlim[1])
 				
-				text_obj = annotation_ax.text(
+				box_colors = ["gray", "lightgray"] # Alternates color between two
+				box_color = box_colors[i % 2]
+				
+				width = end - start
+				rect = Rectangle((start, 0), width, 1, facecolor=box_color, edgecolor="black", alpha=0.7)
+				ann_subplot.add_patch(rect)
+				
+				text_obj = ann_subplot.text(
 					(start + end) / 2, 0.5, tag,
 					ha='center', va='center',
-					fontsize=10, color='white', fontweight='bold', zorder=10, clip_on=True
+					fontsize=10, color="black", fontweight='bold', zorder=10, clip_on=True
+				)
+				
+				text_obj.set_clip_path(rect)
+			else:
+				box_colors = ["gray", "lightgray"] # Alternates color between two
+				box_color = box_colors[i % 2]
+				
+				width = end - start
+				rect = Rectangle((start, 0), width, 1, facecolor=box_color, edgecolor="black", alpha=0.7)
+				ann_subplot.add_patch(rect)
+				
+				text_obj = ann_subplot.text(
+					(start + end) / 2, 0.5, tag,
+					ha='center', va='center',
+					fontsize=10, color="black", fontweight='bold', zorder=10, clip_on=True
+				)
+				
+				text_obj.set_clip_path(rect)
+	
+	def add_signal(self, y, x=None, c=None, ls="-", lw=1, m=None, ms=5, label="Signal"):
+		"""
+		Add signal to the figure.
+			
+		Parameters
+		----------
+		y: np.ndarray
+			- Signal y values.
+		x: np.ndarray | None
+			- Signal x values.
+			- Default: None (indices will be used)
+		c: str
+			- Color of the line.
+			- Default: None
+		ls: str
+			- Linestyle
+			- Default: "-"
+		lw: Number
+			- Linewidth
+			- Default: 1
+		m: str
+			- Marker
+			- Default: None
+		ms: number
+			- Markersize
+			- Default: 5
+		label: str
+			- Label for the plot.
+			- Legend will use this.
+			- Default: "Signal"
+
+		Returns
+		-------
+		None
+		"""
+		if x is None:
+			x = np.arange(y.size)
+		signal_subplot = self._subplots[-1]
+		signal_subplot.plot(x, y, color=c, linestyle=ls, linewidth=lw, marker=m, markersize=ms, label=label)
+		
+	def add_legend(self, ypos=1.3):
+		"""
+		Add legend to the figure.
+
+		Parameters
+		----------
+		ypos: float
+			- y position from the top.
+			- > 1 to push it higher, < 1 to push it lower
+			- Default: 1.3
+		
+		Returns
+		-------
+		None
+		"""
+		subplots: list = self._subplots
+		fig = self._fig
+		
+		all_handles, all_labels = [], []
+		
+		for subplot in subplots:
+			handles, labels = subplot.get_legend_handles_labels()
+			all_handles.extend(handles)
+			all_labels.extend(labels)
+			
+		# remove duplicates if needed
+		fig.legend(all_handles, all_labels, loc='upper right', bbox_to_anchor=(0.9, ypos), ncol=2, frameon=True, bbox_transform=fig.transFigure)
+		
+	def add_meta_info(self, title="Title", ylabel="Y", xlabel="X"):
+		"""
+		Add meta info to the figure.
+
+		Parameters
+		----------
+		title: str
+			- Title of the figure.
+			- Default: "Title"
+		ylabel: str
+			- y label of the signal.
+			- It will only appear in the signal subplot.
+			- Default: "Y"
+		xlabel: str
+			- x label of the signal.
+			- It will only appear in the signal subplot.
+			- Default: "X"
+
+		Returns
+		-------
+		None
+		"""
+		subplots: list = self._subplots
+		fig = self._fig
+		
+		ref_subplot = subplots[0]
+		signal_subplot = subplots[-1]
+		
+		ref_subplot.set_title(title, pad=10, size=14)
+		signal_subplot.set_xlabel(xlabel, size=12)
+		signal_subplot.set_ylabel(ylabel, size=12)
+		
+		
+	def save(self, path="./figure.png"):
+		"""
+		Save the figure.
+
+		Parameters
+		----------
+		path: str
+			- Path to the output file.
+
+		Returns
+		-------
+		None
+		"""
+		fig = self._fig
+		fig.savefig(path, bbox_inches="tight")
+		
+
+#--------------------------
+# Figuure 2D
+#--------------------------
+class Figure2D:
+	"""
+	A utility class that provides easy-to-use API
+	for plotting 2D signals along with clean
+	representations of annotations, events.
+
+	
+
+	Parameters
+	----------
+	n_aux_subplots: int
+		- Total number of auxiliary subplots
+		- These include annotations and events subplots.
+		- Default: 0
+	title: str
+		- Title of the figure.
+		- Default: Title
+	xlim: tuple[number, number]
+		- xlim for the figure.
+		- All subplots will be automatically adjusted.
+		- Default: None
+	ylim: tuple[number, number]
+		- ylim for the signal.
+		- Default: None
+	"""
+	
+	def __init__(self, n_aux_subplots=0, xlim=None, ylim=None):
+		self._n_aux_subplots: int = n_aux_subplots
+		self._active_subplot_idx: int = 1 # Any addition will happen on this subplot (0 is reserved for reference axis)
+		self._xlim = xlim # Many add functions depend on this, so we fix it while instantiating the class
+		self._ylim = ylim
+		self._subplots, self._fig = self._generate_subplots() # Will contain all the subplots (list, fig)
+		self._im = None # Useful while creating colorbar for the image
+		
+	def _get_active_subplot(self):
+		"""
+		Get the active subplot where you can add
+		either annotations or events.
+		"""
+		active_subplot = self._subplots[self._active_subplot_idx]
+		self._active_subplot_idx += 1
+		
+		return active_subplot
+	
+	def _calculate_extent(self, x, y):
+		# Handle spacing safely
+		if len(x) > 1:
+			dx = x[1] - x[0]
+		else:
+			dx = 1  # Default spacing for single value
+		if len(y) > 1:
+			dy = y[1] - y[0]
+		else:
+			dy = 1  # Default spacing for single value
+			
+		return [x[0] - dx / 2, x[-1] + dx / 2, y[0] - dy / 2, y[-1] + dy / 2]
+	
+	def _add_colorbar(self, im, label=None, width="20%", height="35%"):
+		from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+		
+		ref_subplot = self._subplots[0]
+		
+		# Assume ref_subplot is your reference axes, im is the image
+		cax = inset_axes(
+			ref_subplot,
+			width=width,        # width of colorbar
+			height=height,        # height of colorbar
+			loc='right',
+			bbox_to_anchor=(0, 1, 1, 1),  # move 0.9 right, 1.2 up from the subplot
+			bbox_transform=ref_subplot.transAxes,  # important: use subplot coords
+			borderpad=0
+		)
+		
+		cbar = plt.colorbar(im, cax=cax, orientation='horizontal')
+		cbar.ax.xaxis.set_ticks_position('top')
+		cbar.set_label(label, labelpad=5)
+			
+	
+		
+	def _generate_subplots(self):
+		"""
+		Generate subplots based on the configuration.
+		"""
+		
+		n_aux_subplots = self._n_aux_subplots
+		
+		# Fixed heights per subplot type
+		ref_height = 0.4
+		aux_height = 0.4
+		signal_height = 4.0
+		
+		# Total number of subplots
+		n_subplots = 1 + n_aux_subplots + 1
+		
+		# Compute total fig height
+		fig_height = ref_height + n_aux_subplots * aux_height + signal_height
+		
+		# Define height ratios
+		height_ratios = [ref_height] + [aux_height] * n_aux_subplots + [signal_height]
+		
+		# Create figure and grid
+		fig = plt.figure(figsize=(16, fig_height))
+		gs = gridspec.GridSpec(n_subplots, 1, height_ratios=height_ratios)
+		
+		# Add subplots
+		subplots_list = []
+		ref_subplot = fig.add_subplot(gs[0, 0])
+		ref_subplot.axis("off")
+		subplots_list.append(ref_subplot)
+		
+		for i in range(1, n_subplots):
+			subplots_list.append(fig.add_subplot(gs[i, 0], sharex=ref_subplot))
+			
+		for i in range(n_subplots - 1):
+			subplots_list[i].tick_params(left=False, bottom=False, labelleft=False, labelbottom=False)
+			
+		# Set xlim
+		if self._xlim is not None: # xlim should be applied on reference subplot, rest all sharex
+			ref_subplot.set_xlim(self._xlim)
+		
+		# Set ylim
+		if self._ylim is not None: # ylim should be applied on the signal subplot
+			subplots_list[-1].set_ylim(self._ylim)
+		
+		fig.subplots_adjust(hspace=0.01, wspace=0.05)
+		
+		return subplots_list, fig
+	
+	
+	def add_events(self, events, c="k", ls="-", lw=1.5, label="Event Label"):
+		"""
+		Add events to the figure.
+		
+		Parameters
+		----------
+		events: np.ndarray
+			- All the event marker values.
+		c: str
+			- Color of the event marker.
+			- Default: "k"
+		ls: str
+			- Line style.
+			- Default: "-"
+		lw: float
+			- Linewidth.
+			- Default: 1.5
+		label: str
+			- Label for the event type.
+			- This will appear in the legend.
+			- Default: "Event label"
+
+		Returns
+		-------
+		None
+		"""
+		event_subplot = self._get_active_subplot()
+		xlim = self._xlim
+		
+		for i, event in enumerate(events):
+			if xlim is not None:
+				if xlim[0] <= event <= xlim[1]:
+					if i == 0: # Label should be set only once for all the events
+						event_subplot.axvline(x=event, color=c, linestyle=ls, linewidth=lw, label=label)
+					else:
+						event_subplot.axvline(x=event, color=c, linestyle=ls, linewidth=lw)
+			else:
+				if i == 0: # Label should be set only once for all the events
+					event_subplot.axvline(x=event, color=c, linestyle=ls, linewidth=lw, label=label)
+				else:
+					event_subplot.axvline(x=event, color=c, linestyle=ls, linewidth=lw)
+					
+	def add_annotation(self, ann):
+		"""
+		Add annotation to the figure.
+		
+		Parameters
+		----------
+		ann : list[tuple[Number, Number, str]] | None
+			- A list of annotation spans. Each tuple should be (start, end, label).
+			- Default: None (no annotations).
+		
+		Returns
+		-------
+		None
+		"""
+		ann_subplot = self._get_active_subplot()
+		xlim = self._xlim
+		
+		for i, (start, end, tag) in enumerate(ann):
+			
+			# We make sure that we only plot annotation that are within the x range of the current view
+			if xlim is not None:
+				if start >= xlim[1] or end <= xlim[0]:
+					continue
+				
+				# Clip boundaries to xlim
+				start = max(start, xlim[0])
+				end = min(end, xlim[1])
+					
+				box_colors = ["gray", "lightgray"] # Alternates color between two
+				box_color = box_colors[i % 2]
+				
+				width = end - start
+				rect = Rectangle((start, 0), width, 1, facecolor=box_color, edgecolor="black", alpha=0.7)
+				ann_subplot.add_patch(rect)
+				
+				text_obj = ann_subplot.text(
+					(start + end) / 2, 0.5, tag,
+					ha='center', va='center',
+					fontsize=10, color="black", fontweight='bold', zorder=10, clip_on=True
+				)
+				
+				text_obj.set_clip_path(rect)
+			else:
+				box_colors = ["gray", "lightgray"] # Alternates color between two
+				box_color = box_colors[i % 2]
+				
+				width = end - start
+				rect = Rectangle((start, 0), width, 1, facecolor=box_color, edgecolor="black", alpha=0.7)
+				ann_subplot.add_patch(rect)
+				
+				text_obj = ann_subplot.text(
+					(start + end) / 2, 0.5, tag,
+					ha='center', va='center',
+					fontsize=10, color="black", fontweight='bold', zorder=10, clip_on=True
 				)
 				
 				text_obj.set_clip_path(rect)
 				
-				
-		# Add vlines
-		if events is not None:
-			for xpos in events:
-				if xlim is not None:
-					if xlim[0] <= xpos <= xlim[1]:
-						annotation_ax.axvline(x=xpos, color='black', linestyle='--', linewidth=1.5)
-				else:
-					annotation_ax.axvline(x=xpos, color='black', linestyle='--', linewidth=1.5)
-					
-		# Add legend
-		if legend is not None:
-			handles, labels = signal_ax.get_legend_handles_labels()
-			fig.legend(handles, labels, loc='upper right', bbox_to_anchor=(0.9, 1.2), ncol=len(legend), frameon=True)
+	def add_matrix(self, M, y=None, x=None, c="gray_r", o="lower", label="Matrix"):
+		"""
+		Add matrix to the figure.
 			
-		# Set title, labels
-		if title is not None:
-			annotation_ax.set_title(title, pad=10, size=11)
-		if xlabel is not None:
-			signal_ax.set_xlabel(xlabel)
-		if ylabel is not None:
-			signal_ax.set_ylabel(ylabel)
+		Parameters
+		----------
+		M: np.ndarray
+			- Matrix (2D) array
+		y: np.ndarray | None
+			- y axis values.
+		x: np.ndarray | None (indices will be used)
+			- x axis values.
+			- Default: None (indices will be used)
+		c: str
+			- cmap for the matrix.
+			- Default: None
+		o: str
+			- origin
+			- Default: "lower"
+		label: str
+			- Label for the plot.
+			- Legend will use this.
+			- Default: "Signal"
+		
+		Returns
+		-------
+		None
+		"""
+		if x is None: x = np.arange(M.shape[1])
+		if y is None: y = np.arange(M.shape[0])
 			
-		# Add grid to the plot
-		if show_grid is True:
-			signal_ax.grid(True, linestyle=':', linewidth=0.7, color='gray', alpha=0.7)
+		matrix_subplot = self._subplots[-1]
+		extent = self._calculate_extent(x, y)
+		im = matrix_subplot.imshow(M, aspect="auto", origin=o, cmap=c, extent=extent)
 		
-		# Remove the boundaries and ticks from an axis
-		if ann is not None:
-			annotation_ax.tick_params(left=False, bottom=False, labelleft=False, labelbottom=False)
-		else:
-			annotation_ax.axis("off")
+		self._add_colorbar(im=im, label=label)
+	
+	def add_signal(self, y, x=None, c=None, ls="-", lw=1, m="o", ms=5, label="Signal"):
+		"""
+		Add signal on the matrix.
+			
+		Parameters
+		----------
+		y: np.ndarray
+			- Signal y values.
+		x: np.ndarray | None
+			- Signal x values.
+			- Default: None (indices will be used)
+		c: str
+			- Color of the line.
+			- Default: None
+		ls: str
+			- Linestyle
+			- Default: "-"
+		lw: Number
+			- Linewidth
+			- Default: 1
+		m: str
+			- Marker
+			- Default: None
+		ms: number
+			- Markersize
+			- Default: 5
+		label: str
+			- Label for the plot.
+			- Legend will use this.
+			- Default: "Signal"
 		
+		Returns
+		-------
+		None
+		"""
+		if x is None:
+			x = np.arange(y.size)
+		matrix_subplot = self._subplots[-1]
+		matrix_subplot.plot(x, y, color=c, linestyle=ls, linewidth=lw, marker=m, markersize=ms, label=label)
 		
-		fig.subplots_adjust(hspace=0.01, wspace=0.05)
-		plt.close()
-		return fig
+	
+			
+	def add_legend(self, ypos=1.1):
+		"""
+		Add legend to the figure.
 
-#======== 2D ===========
-def plot2d(*args, ann=None, events=None, xlim=None, ylim=None, origin="lower", Mlabel=None, xlabel=None, ylabel=None, title=None, legend=None, lm=False, show_grid=False):
-	"""
-	Plots a 2D matrix (e.g., spectrogram or heatmap) with optional annotations and events.
-
-	.. code-block:: python
-
-		import modusa as ms
-		import numpy as np
+		Parameters
+		----------
+		ypos: float
+			- y position from the top.
+			- > 1 to push it higher, < 1 to push it lower
+			- Default: 1.3
 		
-		M = np.random.random((10, 30))
-		y = np.arange(M.shape[0])
-		x = np.arange(M.shape[1])
+		Returns
+		-------
+		None
+		"""
+		subplots: list = self._subplots
+		fig = self._fig
 		
-		display(ms.plot2d(M, y, x))
-
-	Parameters
-	----------
-	*args : tuple[array-like, array-like]
-		- The signal values to be plotted.
-		- E.g. (M1, y1, x1), (M2, y2, x2), ...
-	ann : list[tuple[Number, Number, str]] | None
-		- A list of annotation spans. Each tuple should be (start, end, label).
-		- Default: None (no annotations).
-	events : list[Number] | None
-		- X-values where vertical event lines will be drawn.
-		- Default: None.
-	xlim : tuple[Number, Number] | None
-		- Limits for the x-axis as (xmin, xmax).
-		- Default: None (auto-scaled).
-	ylim : tuple[Number, Number] | None
-		- Limits for the y-axis as (ymin, ymax).
-		- Default: None (auto-scaled).
-	origin : {'upper', 'lower'}
-		- Origin position for the image display. Used in `imshow`.
-		- Default: "lower".
-	Mlabel : str | None
-		- Label for the colorbar (e.g., "Magnitude", "Energy").
-		- Default: None.
-	xlabel : str | None
-		- Label for the x-axis.
-		- Default: None.
-	ylabel : str | None
-		- Label for the y-axis.
-		- Default: None.
-	title : str | None
-		- Title of the plot.
-		- Default: None.
-	legend : list[str] | None
-		- Legend labels for any overlaid lines or annotations.
-		- Default: None.
-	lm: bool
-		- Adds a circular marker for the line.
-		- Default: False
-		- Useful to show the data points.
-	show_grid: bool
-		- If you want to show the grid.
-		- Default: False
-
-	Returns
-	-------
-	matplotlib.figure.Figure
-		The matplotlib Figure object.
-	"""
-	
-	for arg in args:
-		if len(arg) not in [1, 2, 3]: # Either provide just the matrix or with both axes info
-			raise ValueError(f"Data to plot needs to have 3 arrays (M, y, x)")
-	if isinstance(legend, str): legend = (legend, )
-	
-	fig = plt.figure(figsize=(16, 4))
-	gs = gridspec.GridSpec(3, 1, height_ratios=[0.2, 0.1, 1]) # colorbar, annotation, signal
-
-	colors = plt.get_cmap('tab10').colors
-	
-	signal_ax = fig.add_subplot(gs[2, 0])
-	annotation_ax = fig.add_subplot(gs[1, 0], sharex=signal_ax)
-	
-	colorbar_ax = fig.add_subplot(gs[0, 0])
-	colorbar_ax.axis("off")
-	
-	
-	# Add lim
-	if xlim is not None:
-		signal_ax.set_xlim(xlim)
+		all_handles, all_labels = [], []
 		
-	if ylim is not None:
-		signal_ax.set_ylim(ylim)
-		
-	# Add signal plot
-	i = 0 # This is to track the legend for 1D plots
-	for signal in args:
-		
-		data = signal[0] # This can be 1D or 2D (1D meaning we have to overlay on the matrix)
+		for subplot in subplots:
+			handles, labels = subplot.get_legend_handles_labels()
+			all_handles.extend(handles)
+			all_labels.extend(labels)
 			
-		if data.ndim == 1: # 1D
-			if len(signal) == 1: # It means that the axis was not passed
-				x = np.arange(data.shape[0])
-			else:
-				x = signal[1]
-			
-			if lm is False:
-				if legend is not None:
-					signal_ax.plot(x, data, label=legend[i])
-					signal_ax.legend(loc="upper right")
-				else:
-					signal_ax.plot(x, data)
-			else:
-				if legend is not None:
-					signal_ax.plot(x, data, marker="o", markersize=7, markerfacecolor='red', linestyle="--", linewidth=2, label=legend[i])
-					signal_ax.legend(loc="upper right")
-				else:
-					signal_ax.plot(x, data, marker="o", markersize=7, markerfacecolor='red', linestyle="--", linewidth=2)
-					
-			i += 1
-			
-		elif data.ndim == 2: # 2D
-			M = data
-			if len(signal) == 1: # It means that the axes were not passed
-				y = np.arange(M.shape[0])
-				x = np.arange(M.shape[1])
-				extent = _calculate_extent(x, y)
-				im = signal_ax.imshow(M, aspect="auto", origin=origin, cmap="gray_r", extent=extent)
-				
-			elif len(signal) == 3: # It means that the axes were passed
-				M, y, x = signal[0], signal[1], signal[2]
-				extent = _calculate_extent(x, y)
-				im = signal_ax.imshow(M, aspect="auto", origin=origin, cmap="gray_r", extent=extent)
-	
-	# Add annotations
-	if ann is not None:
-		annotation_ax.set_ylim(0, 1) # For consistent layout
-		# Determine visible x-range
-		x_view_min = xlim[0] if xlim is not None else np.min(x)
-		x_view_max = xlim[1] if xlim is not None else np.max(x)
+		# remove duplicates if needed
+		fig.legend(all_handles, all_labels, loc='upper right', bbox_to_anchor=(0.9, ypos), ncol=2, frameon=True, bbox_transform=fig.transFigure)
 		
-		for i, (start, end, tag) in enumerate(ann):
-			# We make sure that we only plot annotation that are within the x range of the current view
-			if start >= x_view_max or end <= x_view_min:
-				continue
-			
-			# Clip boundaries to xlim
-			start = max(start, x_view_min)
-			end = min(end, x_view_max)
-				
-			color = colors[i % len(colors)]
-			width = end - start
-			rect = Rectangle((start, 0), width, 1, color=color, alpha=0.7)
-			annotation_ax.add_patch(rect)
-			text_obj = annotation_ax.text(
-				(start + end) / 2, 0.5, tag,
-				ha='center', va='center',
-				fontsize=10, color='white', fontweight='bold', zorder=10, clip_on=True
-			)
-			
-			text_obj.set_clip_path(rect)
-			
-	# Add vlines
-	if events is not None:
-		for xpos in events:
-			if xlim is not None:
-				if xlim[0] <= xpos <= xlim[1]:
-					annotation_ax.axvline(x=xpos, color='black', linestyle='--', linewidth=1.5)
-			else:
-				annotation_ax.axvline(x=xpos, color='black', linestyle='--', linewidth=1.5)
-	
-	# Add legend incase there are 1D overlays
-	if legend is not None:
-		handles, labels = signal_ax.get_legend_handles_labels()
-		if handles:  # Only add legend if there's something to show
-			signal_ax.legend(handles, labels, loc="upper right")
-	
-	# Add colorbar
-	# Create an inset axis on top-right of signal_ax
-	cax = inset_axes(
-		colorbar_ax,
-		width="20%",      # percentage of parent width
-		height="20%",      # height in percentage of parent height
-		loc='upper right',
-		bbox_to_anchor=(0, 0, 1, 1),
-		bbox_transform=colorbar_ax.transAxes,
-		borderpad=1
-	)
-	
-	cbar = plt.colorbar(im, cax=cax, orientation='horizontal')
-	cbar.ax.xaxis.set_ticks_position('top')
-	
-	if Mlabel is not None:
-		cbar.set_label(Mlabel, labelpad=5)
-	
+	def add_meta_info(self, title="Title", ylabel="Y", xlabel="X"):
+		"""
+		Add meta info to the figure.
 		
-	# Set title, labels
-	if title is not None:
-		annotation_ax.set_title(title, pad=10, size=11)
-	if xlabel is not None:
-		signal_ax.set_xlabel(xlabel)
-	if ylabel is not None:
-		signal_ax.set_ylabel(ylabel)
+		Parameters
+		----------
+		title: str
+			- Title of the figure.
+			- Default: "Title"
+		ylabel: str
+			- y label of the signal.
+			- It will only appear in the signal subplot.
+			- Default: "Y"
+		xlabel: str
+			- x label of the signal.
+			- It will only appear in the signal subplot.
+			- Default: "X"
 		
-	# Add grid to the plot
-	if show_grid is True:
-		signal_ax.grid(True, linestyle=':', linewidth=0.7, color='gray', alpha=0.7)
-	
-	# Making annotation axis spines thicker
-	if ann is not None:
-		annotation_ax.tick_params(left=False, bottom=False, labelleft=False, labelbottom=False)
-	else:
-		annotation_ax.axis("off")
+		Returns
+		-------
+		None
+		"""
+		subplots: list = self._subplots
+		fig = self._fig
+		
+		ref_subplot = subplots[0]
+		signal_subplot = subplots[-1]
+		
+		ref_subplot.set_title(title, pad=10, size=14)
+		signal_subplot.set_xlabel(xlabel, size=12)
+		signal_subplot.set_ylabel(ylabel, size=12)
+		
+		
+	def save(self, path="./figure.png"):
+		"""
+		Save the figure.
 
-	fig.subplots_adjust(hspace=0.01, wspace=0.05)
-	plt.close()
-	return fig
+		Parameters
+		----------
+		path: str
+			- Path to the output file.
+
+		Returns
+		-------
+		None
+		"""
+		fig = self._fig
+		fig.savefig(path, bbox_inches="tight")
+		
+
 
 #======== Plot distribution ===========
 def plot_dist(*args, ann=None, xlim=None, ylim=None, ylabel=None, xlabel=None, title=None, legend=None, show_hist=True, npoints=200, bins=30):
@@ -536,7 +805,7 @@ def plot_dist(*args, ann=None, xlim=None, ylim=None, ylabel=None, xlabel=None, t
 		if legend is not None:
 			if len(legend) < len(args):
 				raise ValueError(f"Legend should be provided for each signal.")
-					
+				
 		# Create figure
 		fig = plt.figure(figsize=(16, 4))
 		gs = gridspec.GridSpec(2, 1, height_ratios=[0.1, 1])
@@ -557,11 +826,11 @@ def plot_dist(*args, ann=None, xlim=None, ylim=None, ylabel=None, xlabel=None, t
 		for i, data in enumerate(args):
 			# Fit gaussian to the data
 			kde = gaussian_kde(data)
-		
+			
 			# Create points to evaluate KDE
 			x = np.linspace(np.min(data), np.max(data), npoints)
 			y = kde(x)
-		
+			
 			if legend is not None:
 				dist_ax.plot(x, y, color=colors[i], label=legend[i])
 				if show_hist is True:
@@ -570,7 +839,7 @@ def plot_dist(*args, ann=None, xlim=None, ylim=None, ylabel=None, xlabel=None, t
 				dist_ax.plot(x, y, color=colors[i])
 				if show_hist is True:
 					dist_ax.hist(data, bins=bins, density=True, alpha=0.3, facecolor=colors[i], edgecolor='black')
-							
+					
 		# Add annotations
 		if ann is not None:
 			annotation_ax.set_ylim(0, 1) # For consistent layout
@@ -585,15 +854,15 @@ def plot_dist(*args, ann=None, xlim=None, ylim=None, ylabel=None, xlabel=None, t
 				# Clip boundaries to xlim
 				start = max(start, x_view_min)
 				end = min(end, x_view_max)
-					
+				
 				color = colors[i % len(colors)]
 				width = end - start
 				rect = Rectangle((start, 0), width, 1, color=color, alpha=0.7)
 				annotation_ax.add_patch(rect)
-			
+				
 				text_obj = annotation_ax.text((start + end) / 2, 0.5, tag, ha='center', va='center', fontsize=10, color='white', fontweight='bold', zorder=10, clip_on=True)
 				text_obj.set_clip_path(rect)
-					
+				
 		# Add legend
 		if legend is not None:
 			handles, labels = dist_ax.get_legend_handles_labels()

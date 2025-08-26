@@ -5,7 +5,7 @@
 groups = ["default", "docs", "misc", "profiling", "test", "upload"]
 strategy = []
 lock_version = "4.5.0"
-content_hash = "sha256:5d7905edfaf4a7d3c76a5a243d8c1ad9bd922df0fb4ed40fbe0acadc372e0268"
+content_hash = "sha256:b3c96b0fc5a909bf81ff251e475a2ba74411c433100c4b4c0758e26cefcc6678"
 
 [[metadata.targets]]
 requires_python = ">=3.10"
@@ -3485,11 +3485,11 @@ files = [
 
 [[package]]
 name = "yt-dlp"
-version = "2025.7.21"
+version = "2025.8.22"
 summary = ""
 files = [
-    {file = "yt_dlp-2025.7.21-py3-none-any.whl", hash = "sha256:d7aa2b53f9b2f35453346360f41811a0dad1e956e70b35a4ae95039d4d815d15"},
-    {file = "yt_dlp-2025.7.21.tar.gz", hash = "sha256:46fbb53eab1afbe184c45b4c17e9a6eba614be680e4c09de58b782629d0d7f43"},
+    {file = "yt_dlp-2025.8.22-py3-none-any.whl", hash = "sha256:b8c71fe4516170dea60c6e5c54e2d45654693b8dc273cad060f22199476ec979"},
+    {file = "yt_dlp-2025.8.22.tar.gz", hash = "sha256:d1846bbb7edbcd2a0d4a2d76c7a2124868de9ea3b3959a8cb8219e3f7cb5c335"},
 ]
 
 [[package]]
