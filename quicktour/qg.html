@@ -7,7 +7,7 @@
         <link rel="prefetch" href="../_static/logo.png" as="image" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2025.07.19 -->
-        <title>&lt;/&gt; - modusa 0.3.42 documentation</title>
+        <title>&lt;/&gt; - modusa 0.3.43 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -171,7 +171,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">modusa 0.3.42 documentation</div></a>
+      <a href="../index.html"><div class="brand">modusa 0.3.43 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -197,7 +197,7 @@
     <img class="sidebar-logo" src="../_static/logo.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">modusa 0.3.42 documentation</span>
+  <span class="sidebar-brand-text">modusa 0.3.43 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -270,6 +270,7 @@
 </p></div><p><code class="docutils literal notranslate"><span class="pre">modusa</span></code> comes with bunch of useful utility tools particulary for audio but not limited to.</p>
 <section id="Installation">
 <h2>Installation<a class="headerlink" href="#Installation" title="Link to this heading">¶</a></h2>
+<p>You need python version <span class="math notranslate nohighlight">\(\ge 3.10\)</span></p>
 <p>To install run the command:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -284,7 +285,7 @@
 <h2>Loading an audio signal<a class="headerlink" href="#Loading-an-audio-signal" title="Link to this heading">¶</a></h2>
 <p>You can load audio signal from <strong>local file</strong> or directly from <strong>youtube</strong>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">modusa</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ms</span>
@@ -293,7 +294,7 @@
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Local path</span>
@@ -310,7 +311,7 @@
 <h4>Ankit Anand Music - Tu Hi Bta</h4></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -337,11 +338,10 @@
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Youtube</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">modusa</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ms</span>
 <span class="n">y2</span><span class="p">,</span> <span class="n">sr2</span><span class="p">,</span> <span class="n">title2</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;https://www.youtube.com/watch?v=DIU_vmElPkU&quot;</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 <span class="n">y2</span> <span class="o">=</span> <span class="n">y2</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="n">sr2</span><span class="p">)]</span> <span class="c1"># First 10 seconds</span>
 <span class="n">ms</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="n">y2</span><span class="p">,</span> <span class="n">sr2</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title2</span><span class="p">)</span>
@@ -363,7 +363,7 @@
 <h4>Ankit Anand Music - Laut Aao Na (लौट आओ ना) [Official Lyrical Video]</h4></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -394,134 +394,66 @@
 <h2>Plotting<a class="headerlink" href="#Plotting" title="Link to this heading">¶</a></h2>
 <p>We have different methods to plot 1D and 2D signals</p>
 <ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">ms.plot1d</span></code>: To plot 1D signals.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ms.plot2d</span></code>: To plot 2D signals.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ms.fig1d</span></code>: To plot 1D signals.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ms.fig2d</span></code>: To plot 2D signals.</p></li>
 </ol>
 <section id="1D">
 <h3>1D<a class="headerlink" href="#1D" title="Link to this heading">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ms</span><span class="o">.</span><span class="n">plot1d</span><span class="p">(</span>
-    <span class="p">(</span><span class="n">y1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y1</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">/</span> <span class="n">sr1</span><span class="p">),</span>
-    <span class="n">ann</span><span class="o">=</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">)],</span>
-    <span class="n">title</span><span class="o">=</span><span class="n">title1</span><span class="p">[:</span><span class="mi">40</span><span class="p">],</span>
-    <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Amplitude&quot;</span><span class="p">,</span>
-    <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Time (sec)&quot;</span><span class="p">,</span>
-    <span class="n">legend</span><span class="o">=</span><span class="s2">&quot;Audio&quot;</span><span class="p">,</span>
-<span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="n">fig1d</span><span class="p">(</span><span class="n">n_aux_subplots</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="c1"># 3 aux plot -&gt; two for annotation, one for events</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_annotation</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">)])</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_annotation</span><span class="p">([(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">)])</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_events</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_signal</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y1</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y1</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">/</span> <span class="n">sr1</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Audio&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_signal</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y2</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y2</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">/</span> <span class="n">sr2</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Audio&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_meta_info</span><span class="p">(</span><span class="n">title1</span><span class="p">,</span> <span class="s2">&quot;Time (sec)&quot;</span><span class="p">,</span> <span class="s2">&quot;Amplitude&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_legend</span><span class="p">(</span><span class="n">ypos</span><span class="o">=</span><span class="mf">1.1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <img alt="../_images/quicktour_qg_10_0.png" src="../_images/quicktour_qg_10_0.png" />
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Multiple plots as different figures</span>
-<span class="n">display</span><span class="p">(</span><span class="n">ms</span><span class="o">.</span><span class="n">plot1d</span><span class="p">(</span>
-    <span class="p">(</span><span class="n">y1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y1</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">/</span> <span class="n">sr1</span><span class="p">),</span>
-    <span class="n">ann</span><span class="o">=</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">)],</span>
-    <span class="n">title</span><span class="o">=</span><span class="n">title1</span><span class="p">[:</span><span class="mi">40</span><span class="p">],</span>
-    <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Amplitude&quot;</span><span class="p">,</span>
-    <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Time (sec)&quot;</span><span class="p">,</span>
-    <span class="n">legend</span><span class="o">=</span><span class="s2">&quot;Audio&quot;</span><span class="p">,</span>
-<span class="p">))</span>
-<span class="n">display</span><span class="p">(</span><span class="n">ms</span><span class="o">.</span><span class="n">plot1d</span><span class="p">(</span>
-    <span class="p">(</span><span class="n">y2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y2</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">/</span> <span class="n">sr2</span><span class="p">),</span>
-    <span class="n">ann</span><span class="o">=</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">)],</span>
-    <span class="n">title</span><span class="o">=</span><span class="n">title2</span><span class="p">[:</span><span class="mi">32</span><span class="p">],</span>
-    <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Amplitude&quot;</span><span class="p">,</span>
-    <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Time (sec)&quot;</span><span class="p">,</span>
-    <span class="n">legend</span><span class="o">=</span><span class="s2">&quot;Audio&quot;</span><span class="p">,</span>
-<span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/quicktour_qg_11_0.png" src="../_images/quicktour_qg_11_0.png" />
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/quicktour_qg_11_1.png" src="../_images/quicktour_qg_11_1.png" />
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Multiple plots on the same subplots</span>
-<span class="n">ms</span><span class="o">.</span><span class="n">plot1d</span><span class="p">(</span>
-    <span class="p">(</span><span class="n">y1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y1</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">/</span> <span class="n">sr1</span><span class="p">),</span>
-    <span class="p">(</span><span class="n">y2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y2</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">/</span> <span class="n">sr2</span><span class="p">),</span>
-    <span class="n">ann</span><span class="o">=</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">)],</span>
-    <span class="n">events</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">5.1</span><span class="p">,</span> <span class="mf">5.2</span><span class="p">,</span> <span class="mf">5.3</span><span class="p">,</span> <span class="mf">5.4</span><span class="p">],</span>
-    <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Amplitude&quot;</span><span class="p">,</span>
-    <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Time (sec)&quot;</span><span class="p">,</span>
-    <span class="n">legend</span><span class="o">=</span><span class="p">(</span><span class="n">title1</span><span class="p">[:</span><span class="mi">40</span><span class="p">],</span> <span class="n">title2</span><span class="p">[:</span><span class="mi">31</span><span class="p">]),</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/quicktour_qg_12_0.png" src="../_images/quicktour_qg_12_0.png" />
 </div>
 </div>
 </section>
 <section id="2D">
 <h3>2D<a class="headerlink" href="#2D" title="Link to this heading">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[64]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
 
-<span class="n">ms</span><span class="o">.</span><span class="n">plot2d</span><span class="p">(</span>
-    <span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="p">),</span>
-    <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="p">),</span>
-    <span class="n">ann</span><span class="o">=</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">)],</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span>
-    <span class="n">Mlabel</span><span class="o">=</span><span class="s2">&quot;Random&quot;</span><span class="p">,</span>
-    <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span>
-    <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">,</span>
-    <span class="n">lm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># Line marker</span>
-    <span class="n">legend</span><span class="o">=</span><span class="s2">&quot;Random Path&quot;</span>
-<span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="n">fig2d</span><span class="p">(</span><span class="n">n_aux_subplots</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="c1"># 3 aux plot -&gt; two for annotation, one for events</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_annotation</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">)])</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_annotation</span><span class="p">([(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">)])</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_events</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span> <span class="s2">&quot;Event markers&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_matrix</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Audio&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_signal</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Audio&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_meta_info</span><span class="p">(</span><span class="s2">&quot;Random matrix&quot;</span><span class="p">,</span> <span class="s2">&quot;Time (sec)&quot;</span><span class="p">,</span> <span class="s2">&quot;Amplitude&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_legend</span><span class="p">(</span><span class="n">ypos</span><span class="o">=</span><span class="mf">1.1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[64]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/quicktour_qg_14_0.png" src="../_images/quicktour_qg_14_0.png" />
+<img alt="../_images/quicktour_qg_12_0.png" src="../_images/quicktour_qg_12_0.png" />
 </div>
 </div>
 </section>
 <section id="Distribution">
 <h3>Distribution<a class="headerlink" href="#Distribution" title="Link to this heading">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
@@ -536,11 +468,11 @@
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/quicktour_qg_16_0.png" src="../_images/quicktour_qg_16_0.png" />
+<img alt="../_images/quicktour_qg_14_0.png" src="../_images/quicktour_qg_14_0.png" />
 </div>
 </div>
 </section>
@@ -548,27 +480,11 @@
 <section id="Audio-Player">
 <h2>Audio Player<a class="headerlink" href="#Audio-Player" title="Link to this heading">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[66]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">ms</span><span class="o">.</span><span class="n">plot1d</span><span class="p">(</span>
-    <span class="p">(</span><span class="n">y1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y1</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">/</span> <span class="n">sr1</span><span class="p">),</span>
-    <span class="n">ann</span><span class="o">=</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">)],</span>
-    <span class="n">title</span><span class="o">=</span><span class="n">title1</span><span class="p">[:</span><span class="mi">40</span><span class="p">],</span>
-    <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Amplitude&quot;</span><span class="p">,</span>
-    <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Time (sec)&quot;</span><span class="p">,</span>
-    <span class="n">legend</span><span class="o">=</span><span class="s2">&quot;Audio&quot;</span><span class="p">,</span>
-<span class="p">))</span>
-
-<span class="n">ms</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="n">y1</span><span class="p">,</span> <span class="n">sr1</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title1</span><span class="p">,</span> <span class="n">regions</span><span class="o">=</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">)])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ms</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="n">y1</span><span class="p">,</span> <span class="n">sr1</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title1</span><span class="p">,</span> <span class="n">regions</span><span class="o">=</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">)])</span>
 </pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/quicktour_qg_18_0.png" src="../_images/quicktour_qg_18_0.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -578,7 +494,7 @@
 <h4>Ankit Anand Music - Tu Hi Bta</h4></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[66]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -613,7 +529,7 @@
 <section id="Audio-Recorder">
 <h2>Audio Recorder<a class="headerlink" href="#Audio-Recorder" title="Link to this heading">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="n">record</span><span class="p">()</span>
@@ -624,7 +540,7 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "df452f06d85f41c9b9c18c894b9a413f", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "3dcd18fb4b2f4d5fbeaed87d98d05af7", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -742,7 +658,7 @@
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=083f9d4c"></script>
+</div><script src="../_static/documentation_options.js?v=a17fe92a"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>

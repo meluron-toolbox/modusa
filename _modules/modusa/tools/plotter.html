@@ -6,7 +6,7 @@
         <link rel="prefetch" href="../../../_static/logo.png" as="image" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2025.07.19 -->
-        <title>modusa.tools.plotter - modusa 0.3.41 documentation</title>
+        <title>modusa.tools.plotter - modusa 0.3.43 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -169,7 +169,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">modusa 0.3.41 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">modusa 0.3.43 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -195,7 +195,7 @@
     <img class="sidebar-logo" src="../../../_static/logo.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">modusa 0.3.41 documentation</span>
+  <span class="sidebar-brand-text">modusa 0.3.43 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -216,6 +216,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../tools/ann_loader.html">Annotation Loader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../tools/audio_converter.html">Audio Convertor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../tools/audio_player.html">Audio Player</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tools/audio_recorder.html">Audio Recorder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../tools/plotter.html">Plotter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../tools/youtube_downloader.html">Youtube Downloader</a></li>
 </ul>
@@ -257,40 +258,27 @@
           <h1>Source code for modusa.tools.plotter</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 
+<span class="c1">#---------------------------------</span>
+<span class="c1"># Author: Ankit Anand</span>
+<span class="c1"># Date: 26/08/25</span>
+<span class="c1"># Email: ankit0.anand0@gmail.com</span>
+<span class="c1">#---------------------------------</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.font_manager</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">fm</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.gridspec</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gridspec</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Rectangle</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">mpl_toolkits.axes_grid1.inset_locator</span><span class="w"> </span><span class="kn">import</span> <span class="n">inset_axes</span>
 
-<span class="c1"># Helper for 2D plot</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">_calculate_extent</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-	<span class="c1"># Handle spacing safely</span>
-	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-		<span class="n">dx</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-	<span class="k">else</span><span class="p">:</span>
-		<span class="n">dx</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Default spacing for single value</span>
-	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-		<span class="n">dy</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-	<span class="k">else</span><span class="p">:</span>
-		<span class="n">dy</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Default spacing for single value</span>
-		
-	<span class="k">return</span> <span class="p">[</span>
-		<span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">dx</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-		<span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">dx</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-		<span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">dy</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-		<span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">dy</span> <span class="o">/</span> <span class="mi">2</span>
-	<span class="p">]</span>
-	
-<span class="c1"># Helper to load fonts (devnagri)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">set_default_hindi_font</span><span class="p">():</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1">#===== Loading Devanagari font ========</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_load_devanagari_font</span><span class="p">():</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Hindi fonts works for both english and hindi.</span>
+<span class="sd">	Load devanagari font as it works for both English and Hindi.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
-	<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpl</span>
-	<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.font_manager</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">fm</span>
+	
 	<span class="c1"># Path to your bundled font</span>
 	<span class="n">font_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="s2">&quot;fonts&quot;</span> <span class="o">/</span> <span class="s2">&quot;NotoSansDevanagari-Regular.ttf&quot;</span>
 	
@@ -302,437 +290,713 @@
 	
 	<span class="c1"># Set as default rcParam</span>
 	<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.family&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hindi_font</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
+	
+<span class="n">_load_devanagari_font</span><span class="p">()</span>
+<span class="c1">#==============</span>
 
-<span class="n">set_default_hindi_font</span><span class="p">()</span>
+<span class="c1">#--------------------------</span>
+<span class="c1"># Figuure 1D</span>
+<span class="c1">#--------------------------</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Figure1D</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	A utility class that provides easy-to-use API</span>
+<span class="sd">	for plotting 1D signals along with clean</span>
+<span class="sd">	representations of annotations, events.</span>
 
-<span class="c1">#======== 1D ===========</span>
-<div class="viewcode-block" id="plot1d">
-<a class="viewcode-back" href="../../../tools/plotter.html#modusa.plot1d">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">plot1d</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">ann</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">events</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show_grid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show_stem</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="sd">	</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	n_aux_subplots: int</span>
+<span class="sd">		- Total number of auxiliary subplots</span>
+<span class="sd">		- These include annotations and events subplots.</span>
+<span class="sd">		- Default: 0</span>
+<span class="sd">	title: str</span>
+<span class="sd">		- Title of the figure.</span>
+<span class="sd">		- Default: Title</span>
+<span class="sd">	xlim: tuple[number, number]</span>
+<span class="sd">		- xlim for the figure.</span>
+<span class="sd">		- All subplots will be automatically adjusted.</span>
+<span class="sd">		- Default: None</span>
+<span class="sd">	ylim: tuple[number, number]</span>
+<span class="sd">		- ylim for the signal.</span>
+<span class="sd">		- Default: None</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	
+	<span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_aux_subplots</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_n_aux_subplots</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">n_aux_subplots</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_active_subplot_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># Any addition will happen on this subplot (0 is reserved for reference axis)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_xlim</span> <span class="o">=</span> <span class="n">xlim</span> <span class="c1"># Many add functions depend on this, so we fix it while instantiating the class</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_ylim</span> <span class="o">=</span> <span class="n">ylim</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_subplots</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_subplots</span><span class="p">()</span> <span class="c1"># Will contain all the subplots (list, fig)</span>
+	
+	<span class="k">def</span><span class="w"> </span><span class="nf">_get_active_subplot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Plots a 1D signal using matplotlib.</span>
-
-<span class="sd">		.. code-block:: python</span>
-<span class="sd">	</span>
-<span class="sd">			import modusa as ms</span>
-<span class="sd">			import numpy as np</span>
-<span class="sd">			</span>
-<span class="sd">			x = np.arange(100) / 100</span>
-<span class="sd">			y = np.sin(x)</span>
-<span class="sd">			</span>
-<span class="sd">			display(ms.plot1d(y, x))</span>
-<span class="sd">			</span>
-<span class="sd">	</span>
+<span class="sd">		Get the active subplot where you can add</span>
+<span class="sd">		either annotations or events.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">active_subplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subplots</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_active_subplot_idx</span><span class="p">]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_active_subplot_idx</span> <span class="o">+=</span> <span class="mi">1</span>
+		
+		<span class="k">return</span> <span class="n">active_subplot</span>
+		
+	<span class="k">def</span><span class="w"> </span><span class="nf">_generate_subplots</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Generate subplots based on the configuration.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		
+		<span class="n">n_aux_subplots</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_aux_subplots</span>
+		
+		<span class="c1"># Fixed heights per subplot type</span>
+		<span class="n">ref_height</span> <span class="o">=</span> <span class="mf">0.0</span>
+		<span class="n">aux_height</span> <span class="o">=</span> <span class="mf">0.4</span>
+		<span class="n">signal_height</span> <span class="o">=</span> <span class="mf">2.0</span>
+		
+		<span class="c1"># Total number of subplots</span>
+		<span class="n">n_subplots</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">n_aux_subplots</span> <span class="o">+</span> <span class="mi">1</span>
+		
+		<span class="c1"># Compute total fig height</span>
+		<span class="n">fig_height</span> <span class="o">=</span> <span class="n">ref_height</span> <span class="o">+</span> <span class="n">n_aux_subplots</span> <span class="o">*</span> <span class="n">aux_height</span> <span class="o">+</span> <span class="n">signal_height</span>
+		
+		<span class="c1"># Define height ratios</span>
+		<span class="n">height_ratios</span> <span class="o">=</span> <span class="p">[</span><span class="n">ref_height</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">aux_height</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_aux_subplots</span> <span class="o">+</span> <span class="p">[</span><span class="n">signal_height</span><span class="p">]</span>
+		
+		<span class="c1"># Create figure and grid</span>
+		<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">fig_height</span><span class="p">))</span>
+		<span class="n">gs</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span><span class="p">(</span><span class="n">n_subplots</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">height_ratios</span><span class="o">=</span><span class="n">height_ratios</span><span class="p">)</span>
+		
+		<span class="c1"># Add subplots</span>
+		<span class="n">subplots_list</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="n">ref_subplot</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+		<span class="n">ref_subplot</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+		<span class="n">subplots_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ref_subplot</span><span class="p">)</span>
+		
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_subplots</span><span class="p">):</span>
+			<span class="n">subplots_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">sharex</span><span class="o">=</span><span class="n">ref_subplot</span><span class="p">))</span>
+			
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_subplots</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+			<span class="n">subplots_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">labelleft</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">labelbottom</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+		
+		<span class="c1"># Set xlim</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xlim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="c1"># xlim should be applied on reference subplot, rest all sharex</span>
+			<span class="n">ref_subplot</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xlim</span><span class="p">)</span>
+			
+		<span class="c1"># Set ylim</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ylim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="c1"># ylim should be applied on the signal subplot</span>
+			<span class="n">subplots_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ylim</span><span class="p">)</span>
+									
+		<span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+			
+		<span class="k">return</span> <span class="n">subplots_list</span><span class="p">,</span> <span class="n">fig</span>
+	
+		
+	<span class="k">def</span><span class="w"> </span><span class="nf">add_events</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Event Label&quot;</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Add events to the figure.</span>
+<span class="sd">		</span>
 <span class="sd">		Parameters</span>
 <span class="sd">		----------</span>
-<span class="sd">		*args : tuple[array-like, array-like] | tuple[array-like]</span>
-<span class="sd">			- The signal y and axis x to be plotted.</span>
-<span class="sd">			- If only values are provided, we generate the axis using arange.</span>
-<span class="sd">			- E.g. (y1, x1), (y2, x2), ...</span>
-<span class="sd">		ann : list[tuple[Number, Number, str] | None</span>
-<span class="sd">			- A list of annotations to mark specific points. Each tuple should be of the form (start, end, label).</span>
-<span class="sd">			- Default: None =&gt; No annotation.</span>
-<span class="sd">		events : list[Number] | None</span>
-<span class="sd">			- A list of x-values where vertical lines (event markers) will be drawn.</span>
-<span class="sd">			- Default: None</span>
-<span class="sd">		xlim : tuple[Number, Number] | None</span>
-<span class="sd">			- Limits for the x-axis as (xmin, xmax).</span>
-<span class="sd">			- Default: None</span>
-<span class="sd">		ylim : tuple[Number, Number] | None</span>
-<span class="sd">			- Limits for the y-axis as (ymin, ymax).</span>
-<span class="sd">			- Default: None</span>
-<span class="sd">		xlabel : str | None</span>
-<span class="sd">			- Label for the x-axis.</span>
-<span class="sd">			- - Default: None</span>
-<span class="sd">		ylabel : str | None</span>
-<span class="sd">			- Label for the y-axis.</span>
-<span class="sd">			- Default: None</span>
-<span class="sd">		title : str | None</span>
-<span class="sd">			- Title of the plot.</span>
-<span class="sd">			- Default: None</span>
-<span class="sd">		legend : list[str] | None</span>
-<span class="sd">			- List of legend labels corresponding to each signal if plotting multiple lines.</span>
-<span class="sd">			- Default: None</span>
-<span class="sd">		fmt: list[str] | None</span>
-<span class="sd">			- linefmt for different line plots.</span>
-<span class="sd">			- Default: None</span>
-<span class="sd">		show_grid: bool</span>
-<span class="sd">			- If you want to show the grid.</span>
-<span class="sd">			- Default: False</span>
-<span class="sd">		show_stem: bool:</span>
-<span class="sd">			- If you want stem plot.</span>
-<span class="sd">			- Default: False</span>
-<span class="sd">	</span>
+<span class="sd">		events: np.ndarray</span>
+<span class="sd">			- All the event marker values.</span>
+<span class="sd">		c: str</span>
+<span class="sd">			- Color of the event marker.</span>
+<span class="sd">			- Default: &quot;k&quot;</span>
+<span class="sd">		ls: str</span>
+<span class="sd">			- Line style.</span>
+<span class="sd">			- Default: &quot;-&quot;</span>
+<span class="sd">		lw: float</span>
+<span class="sd">			- Linewidth.</span>
+<span class="sd">			- Default: 1.5</span>
+<span class="sd">		label: str</span>
+<span class="sd">			- Label for the event type.</span>
+<span class="sd">			- This will appear in the legend.</span>
+<span class="sd">			- Default: &quot;Event label&quot;</span>
+
 <span class="sd">		Returns</span>
 <span class="sd">		-------</span>
-<span class="sd">		plt.Figure</span>
-<span class="sd">			Matplolib figure.</span>
+<span class="sd">		None</span>
 <span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span> <span class="c1"># 1 if it just provides values, 2 if it provided axis as well</span>
-				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;1D signal needs to have max 2 arrays (y, x) or simply (y, )&quot;</span><span class="p">)</span>
-			
-		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">legend</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span> <span class="n">legend</span> <span class="o">=</span> <span class="p">(</span><span class="n">legend</span><span class="p">,</span> <span class="p">)</span>
-		<span class="k">if</span> <span class="n">legend</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">legend</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
-				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`legend` should be provided for each signal.&quot;</span><span class="p">)</span>
+		<span class="n">event_subplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_active_subplot</span><span class="p">()</span>
+		<span class="n">xlim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xlim</span>
 		
-		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span> <span class="n">fmt</span> <span class="o">=</span> <span class="p">[</span><span class="n">fmt</span><span class="p">]</span>
-		<span class="k">if</span> <span class="n">fmt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
-				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`fmt` should be provided for each signal.&quot;</span><span class="p">)</span>
-
-		<span class="n">colors</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;tab10&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">colors</span>
-
-		<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-		<span class="n">gs</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">height_ratios</span><span class="o">=</span><span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-		
-		<span class="n">signal_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-		<span class="n">annotation_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">sharex</span><span class="o">=</span><span class="n">signal_ax</span><span class="p">)</span>
-		
-		<span class="c1"># Set lim</span>
-		<span class="k">if</span> <span class="n">xlim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">signal_ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">xlim</span><span class="p">)</span>
-		
-		<span class="k">if</span> <span class="n">ylim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">signal_ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ylim</span><span class="p">)</span>
-			
-		<span class="c1"># Add signal plot</span>
-		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">signal</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
-			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-				<span class="n">y</span> <span class="o">=</span> <span class="n">signal</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-				<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
-				<span class="k">if</span> <span class="n">legend</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-					<span class="k">if</span> <span class="n">show_stem</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-						<span class="n">markerline</span><span class="p">,</span> <span class="n">stemlines</span><span class="p">,</span> <span class="n">baseline</span> <span class="o">=</span> <span class="n">signal_ax</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">legend</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-						<span class="n">markerline</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-						<span class="n">stemlines</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-						<span class="n">baseline</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">events</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">xlim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">event</span> <span class="o">&lt;=</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+					<span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># Label should be set only once for all the events</span>
+						<span class="n">event_subplot</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">event</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="n">ls</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">lw</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
 					<span class="k">else</span><span class="p">:</span>
-						<span class="k">if</span> <span class="n">fmt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-							<span class="n">signal_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fmt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">legend</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-						<span class="k">else</span><span class="p">:</span>
-							<span class="n">signal_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">legend</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+						<span class="n">event_subplot</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">event</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="n">ls</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># Label should be set only once for all the events</span>
+					<span class="n">event_subplot</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">event</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="n">ls</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">lw</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
 				<span class="k">else</span><span class="p">:</span>
-					<span class="k">if</span> <span class="n">show_stem</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-						<span class="n">markerline</span><span class="p">,</span> <span class="n">stemlines</span><span class="p">,</span> <span class="n">baseline</span> <span class="o">=</span> <span class="n">signal_ax</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-						<span class="n">markerline</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-						<span class="n">stemlines</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-						<span class="n">baseline</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
-					<span class="k">else</span><span class="p">:</span>
-						<span class="k">if</span> <span class="n">fmt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-							<span class="n">signal_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fmt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-						<span class="k">else</span><span class="p">:</span>
-							<span class="n">signal_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-						
-			<span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-				<span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">signal</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">signal</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-				<span class="k">if</span> <span class="n">legend</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-					<span class="k">if</span> <span class="n">show_stem</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-						<span class="n">markerline</span><span class="p">,</span> <span class="n">stemlines</span><span class="p">,</span> <span class="n">baseline</span> <span class="o">=</span> <span class="n">signal_ax</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">legend</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-						<span class="n">markerline</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-						<span class="n">stemlines</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-						<span class="n">baseline</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
-					<span class="k">else</span><span class="p">:</span>
-						<span class="k">if</span> <span class="n">fmt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-							<span class="n">signal_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fmt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">legend</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-						<span class="k">else</span><span class="p">:</span>
-							<span class="n">signal_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">legend</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-				<span class="k">else</span><span class="p">:</span>
-					<span class="k">if</span> <span class="n">show_stem</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-						<span class="n">markerline</span><span class="p">,</span> <span class="n">stemlines</span><span class="p">,</span> <span class="n">baseline</span> <span class="o">=</span> <span class="n">signal_ax</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-						<span class="n">markerline</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-						<span class="n">stemlines</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-						<span class="n">baseline</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
-					<span class="k">else</span><span class="p">:</span>
-						<span class="k">if</span> <span class="n">fmt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-							<span class="n">signal_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fmt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-						<span class="k">else</span><span class="p">:</span>
-							<span class="n">signal_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-							
+					<span class="n">event_subplot</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">event</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="n">ls</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
 		
-		<span class="c1"># Add annotations</span>
-		<span class="k">if</span> <span class="n">ann</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">annotation_ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># For consistent layout</span>
-			<span class="c1"># Determine visible x-range</span>
-			<span class="n">x_view_min</span> <span class="o">=</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">xlim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-			<span class="n">x_view_max</span> <span class="o">=</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">xlim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">add_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ann</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Add annotation to the figure.</span>
+<span class="sd">		</span>
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		ann : list[tuple[Number, Number, str]] | None</span>
+<span class="sd">			- A list of annotation spans. Each tuple should be (start, end, label).</span>
+<span class="sd">			- Default: None (no annotations).</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		
+		<span class="n">ann_subplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_active_subplot</span><span class="p">()</span>
+		<span class="n">xlim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xlim</span>
+		
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ann</span><span class="p">):</span>
 			
-			<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ann</span><span class="p">):</span>
-				<span class="c1"># We make sure that we only plot annotation that are within the x range of the current view</span>
-				<span class="k">if</span> <span class="n">start</span> <span class="o">&gt;=</span> <span class="n">x_view_max</span> <span class="ow">or</span> <span class="n">end</span> <span class="o">&lt;=</span> <span class="n">x_view_min</span><span class="p">:</span>
+			<span class="c1"># We make sure that we only plot annotation that are within the x range of the current view</span>
+			<span class="k">if</span> <span class="n">xlim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">start</span> <span class="o">&gt;=</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="n">end</span> <span class="o">&lt;=</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
 					<span class="k">continue</span>
 				
 				<span class="c1"># Clip boundaries to xlim</span>
-				<span class="n">start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">x_view_min</span><span class="p">)</span>
-				<span class="n">end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">x_view_max</span><span class="p">)</span>
-					
-				<span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">)]</span>
-				<span class="n">width</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
-				<span class="n">rect</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">((</span><span class="n">start</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">width</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
-				<span class="n">annotation_ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+				<span class="n">start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+				<span class="n">end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 				
-				<span class="n">text_obj</span> <span class="o">=</span> <span class="n">annotation_ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+				<span class="n">box_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="s2">&quot;lightgray&quot;</span><span class="p">]</span> <span class="c1"># Alternates color between two</span>
+				<span class="n">box_color</span> <span class="o">=</span> <span class="n">box_colors</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="mi">2</span><span class="p">]</span>
+				
+				<span class="n">width</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
+				<span class="n">rect</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">((</span><span class="n">start</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">width</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">box_color</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+				<span class="n">ann_subplot</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+				
+				<span class="n">text_obj</span> <span class="o">=</span> <span class="n">ann_subplot</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
 					<span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="n">end</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span>
 					<span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
-					<span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span>
+					<span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span>
+				<span class="p">)</span>
+				
+				<span class="n">text_obj</span><span class="o">.</span><span class="n">set_clip_path</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">box_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="s2">&quot;lightgray&quot;</span><span class="p">]</span> <span class="c1"># Alternates color between two</span>
+				<span class="n">box_color</span> <span class="o">=</span> <span class="n">box_colors</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="mi">2</span><span class="p">]</span>
+				
+				<span class="n">width</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
+				<span class="n">rect</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">((</span><span class="n">start</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">width</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">box_color</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+				<span class="n">ann_subplot</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+				
+				<span class="n">text_obj</span> <span class="o">=</span> <span class="n">ann_subplot</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+					<span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="n">end</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span>
+					<span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+					<span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span>
+				<span class="p">)</span>
+				
+				<span class="n">text_obj</span><span class="o">.</span><span class="n">set_clip_path</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+	
+	<span class="k">def</span><span class="w"> </span><span class="nf">add_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Signal&quot;</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Add signal to the figure.</span>
+<span class="sd">			</span>
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		y: np.ndarray</span>
+<span class="sd">			- Signal y values.</span>
+<span class="sd">		x: np.ndarray | None</span>
+<span class="sd">			- Signal x values.</span>
+<span class="sd">			- Default: None (indices will be used)</span>
+<span class="sd">		c: str</span>
+<span class="sd">			- Color of the line.</span>
+<span class="sd">			- Default: None</span>
+<span class="sd">		ls: str</span>
+<span class="sd">			- Linestyle</span>
+<span class="sd">			- Default: &quot;-&quot;</span>
+<span class="sd">		lw: Number</span>
+<span class="sd">			- Linewidth</span>
+<span class="sd">			- Default: 1</span>
+<span class="sd">		m: str</span>
+<span class="sd">			- Marker</span>
+<span class="sd">			- Default: None</span>
+<span class="sd">		ms: number</span>
+<span class="sd">			- Markersize</span>
+<span class="sd">			- Default: 5</span>
+<span class="sd">		label: str</span>
+<span class="sd">			- Label for the plot.</span>
+<span class="sd">			- Legend will use this.</span>
+<span class="sd">			- Default: &quot;Signal&quot;</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+		<span class="n">signal_subplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subplots</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+		<span class="n">signal_subplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="n">ls</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">lw</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="n">ms</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+		
+	<span class="k">def</span><span class="w"> </span><span class="nf">add_legend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ypos</span><span class="o">=</span><span class="mf">1.3</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Add legend to the figure.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		ypos: float</span>
+<span class="sd">			- y position from the top.</span>
+<span class="sd">			- &gt; 1 to push it higher, &lt; 1 to push it lower</span>
+<span class="sd">			- Default: 1.3</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">subplots</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subplots</span>
+		<span class="n">fig</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span>
+		
+		<span class="n">all_handles</span><span class="p">,</span> <span class="n">all_labels</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+		
+		<span class="k">for</span> <span class="n">subplot</span> <span class="ow">in</span> <span class="n">subplots</span><span class="p">:</span>
+			<span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">subplot</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+			<span class="n">all_handles</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">handles</span><span class="p">)</span>
+			<span class="n">all_labels</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+			
+		<span class="c1"># remove duplicates if needed</span>
+		<span class="n">fig</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">all_handles</span><span class="p">,</span> <span class="n">all_labels</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">ypos</span><span class="p">),</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bbox_transform</span><span class="o">=</span><span class="n">fig</span><span class="o">.</span><span class="n">transFigure</span><span class="p">)</span>
+		
+	<span class="k">def</span><span class="w"> </span><span class="nf">add_meta_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Add meta info to the figure.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		title: str</span>
+<span class="sd">			- Title of the figure.</span>
+<span class="sd">			- Default: &quot;Title&quot;</span>
+<span class="sd">		ylabel: str</span>
+<span class="sd">			- y label of the signal.</span>
+<span class="sd">			- It will only appear in the signal subplot.</span>
+<span class="sd">			- Default: &quot;Y&quot;</span>
+<span class="sd">		xlabel: str</span>
+<span class="sd">			- x label of the signal.</span>
+<span class="sd">			- It will only appear in the signal subplot.</span>
+<span class="sd">			- Default: &quot;X&quot;</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">subplots</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subplots</span>
+		<span class="n">fig</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span>
+		
+		<span class="n">ref_subplot</span> <span class="o">=</span> <span class="n">subplots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="n">signal_subplot</span> <span class="o">=</span> <span class="n">subplots</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+		
+		<span class="n">ref_subplot</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+		<span class="n">signal_subplot</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+		<span class="n">signal_subplot</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+		
+		
+	<span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;./figure.png&quot;</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Save the figure.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		path: str</span>
+<span class="sd">			- Path to the output file.</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">fig</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span>
+		<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
+		
+
+<span class="c1">#--------------------------</span>
+<span class="c1"># Figuure 2D</span>
+<span class="c1">#--------------------------</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Figure2D</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	A utility class that provides easy-to-use API</span>
+<span class="sd">	for plotting 2D signals along with clean</span>
+<span class="sd">	representations of annotations, events.</span>
+
+<span class="sd">	</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	n_aux_subplots: int</span>
+<span class="sd">		- Total number of auxiliary subplots</span>
+<span class="sd">		- These include annotations and events subplots.</span>
+<span class="sd">		- Default: 0</span>
+<span class="sd">	title: str</span>
+<span class="sd">		- Title of the figure.</span>
+<span class="sd">		- Default: Title</span>
+<span class="sd">	xlim: tuple[number, number]</span>
+<span class="sd">		- xlim for the figure.</span>
+<span class="sd">		- All subplots will be automatically adjusted.</span>
+<span class="sd">		- Default: None</span>
+<span class="sd">	ylim: tuple[number, number]</span>
+<span class="sd">		- ylim for the signal.</span>
+<span class="sd">		- Default: None</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	
+	<span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_aux_subplots</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_n_aux_subplots</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">n_aux_subplots</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_active_subplot_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># Any addition will happen on this subplot (0 is reserved for reference axis)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_xlim</span> <span class="o">=</span> <span class="n">xlim</span> <span class="c1"># Many add functions depend on this, so we fix it while instantiating the class</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_ylim</span> <span class="o">=</span> <span class="n">ylim</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_subplots</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_subplots</span><span class="p">()</span> <span class="c1"># Will contain all the subplots (list, fig)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_im</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># Useful while creating colorbar for the image</span>
+		
+	<span class="k">def</span><span class="w"> </span><span class="nf">_get_active_subplot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Get the active subplot where you can add</span>
+<span class="sd">		either annotations or events.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">active_subplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subplots</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_active_subplot_idx</span><span class="p">]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_active_subplot_idx</span> <span class="o">+=</span> <span class="mi">1</span>
+		
+		<span class="k">return</span> <span class="n">active_subplot</span>
+	
+	<span class="k">def</span><span class="w"> </span><span class="nf">_calculate_extent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+		<span class="c1"># Handle spacing safely</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+			<span class="n">dx</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">dx</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Default spacing for single value</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+			<span class="n">dy</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">dy</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Default spacing for single value</span>
+			
+		<span class="k">return</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">dx</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">dx</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">dy</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">dy</span> <span class="o">/</span> <span class="mi">2</span><span class="p">]</span>
+	
+	<span class="k">def</span><span class="w"> </span><span class="nf">_add_colorbar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">im</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;20%&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;35%&quot;</span><span class="p">):</span>
+		<span class="kn">from</span><span class="w"> </span><span class="nn">mpl_toolkits.axes_grid1.inset_locator</span><span class="w"> </span><span class="kn">import</span> <span class="n">inset_axes</span>
+		
+		<span class="n">ref_subplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subplots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		
+		<span class="c1"># Assume ref_subplot is your reference axes, im is the image</span>
+		<span class="n">cax</span> <span class="o">=</span> <span class="n">inset_axes</span><span class="p">(</span>
+			<span class="n">ref_subplot</span><span class="p">,</span>
+			<span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>        <span class="c1"># width of colorbar</span>
+			<span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span>        <span class="c1"># height of colorbar</span>
+			<span class="n">loc</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span>
+			<span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>  <span class="c1"># move 0.9 right, 1.2 up from the subplot</span>
+			<span class="n">bbox_transform</span><span class="o">=</span><span class="n">ref_subplot</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>  <span class="c1"># important: use subplot coords</span>
+			<span class="n">borderpad</span><span class="o">=</span><span class="mi">0</span>
+		<span class="p">)</span>
+		
+		<span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">)</span>
+		<span class="n">cbar</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_ticks_position</span><span class="p">(</span><span class="s1">&#39;top&#39;</span><span class="p">)</span>
+		<span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+			
+	
+		
+	<span class="k">def</span><span class="w"> </span><span class="nf">_generate_subplots</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Generate subplots based on the configuration.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		
+		<span class="n">n_aux_subplots</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_aux_subplots</span>
+		
+		<span class="c1"># Fixed heights per subplot type</span>
+		<span class="n">ref_height</span> <span class="o">=</span> <span class="mf">0.4</span>
+		<span class="n">aux_height</span> <span class="o">=</span> <span class="mf">0.4</span>
+		<span class="n">signal_height</span> <span class="o">=</span> <span class="mf">4.0</span>
+		
+		<span class="c1"># Total number of subplots</span>
+		<span class="n">n_subplots</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">n_aux_subplots</span> <span class="o">+</span> <span class="mi">1</span>
+		
+		<span class="c1"># Compute total fig height</span>
+		<span class="n">fig_height</span> <span class="o">=</span> <span class="n">ref_height</span> <span class="o">+</span> <span class="n">n_aux_subplots</span> <span class="o">*</span> <span class="n">aux_height</span> <span class="o">+</span> <span class="n">signal_height</span>
+		
+		<span class="c1"># Define height ratios</span>
+		<span class="n">height_ratios</span> <span class="o">=</span> <span class="p">[</span><span class="n">ref_height</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">aux_height</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_aux_subplots</span> <span class="o">+</span> <span class="p">[</span><span class="n">signal_height</span><span class="p">]</span>
+		
+		<span class="c1"># Create figure and grid</span>
+		<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">fig_height</span><span class="p">))</span>
+		<span class="n">gs</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span><span class="p">(</span><span class="n">n_subplots</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">height_ratios</span><span class="o">=</span><span class="n">height_ratios</span><span class="p">)</span>
+		
+		<span class="c1"># Add subplots</span>
+		<span class="n">subplots_list</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="n">ref_subplot</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+		<span class="n">ref_subplot</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+		<span class="n">subplots_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ref_subplot</span><span class="p">)</span>
+		
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_subplots</span><span class="p">):</span>
+			<span class="n">subplots_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">sharex</span><span class="o">=</span><span class="n">ref_subplot</span><span class="p">))</span>
+			
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_subplots</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+			<span class="n">subplots_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">labelleft</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">labelbottom</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+			
+		<span class="c1"># Set xlim</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xlim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="c1"># xlim should be applied on reference subplot, rest all sharex</span>
+			<span class="n">ref_subplot</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xlim</span><span class="p">)</span>
+		
+		<span class="c1"># Set ylim</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ylim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="c1"># ylim should be applied on the signal subplot</span>
+			<span class="n">subplots_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ylim</span><span class="p">)</span>
+		
+		<span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+		
+		<span class="k">return</span> <span class="n">subplots_list</span><span class="p">,</span> <span class="n">fig</span>
+	
+	
+	<span class="k">def</span><span class="w"> </span><span class="nf">add_events</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Event Label&quot;</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Add events to the figure.</span>
+<span class="sd">		</span>
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		events: np.ndarray</span>
+<span class="sd">			- All the event marker values.</span>
+<span class="sd">		c: str</span>
+<span class="sd">			- Color of the event marker.</span>
+<span class="sd">			- Default: &quot;k&quot;</span>
+<span class="sd">		ls: str</span>
+<span class="sd">			- Line style.</span>
+<span class="sd">			- Default: &quot;-&quot;</span>
+<span class="sd">		lw: float</span>
+<span class="sd">			- Linewidth.</span>
+<span class="sd">			- Default: 1.5</span>
+<span class="sd">		label: str</span>
+<span class="sd">			- Label for the event type.</span>
+<span class="sd">			- This will appear in the legend.</span>
+<span class="sd">			- Default: &quot;Event label&quot;</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">event_subplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_active_subplot</span><span class="p">()</span>
+		<span class="n">xlim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xlim</span>
+		
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">events</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">xlim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">event</span> <span class="o">&lt;=</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+					<span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># Label should be set only once for all the events</span>
+						<span class="n">event_subplot</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">event</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="n">ls</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">lw</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+					<span class="k">else</span><span class="p">:</span>
+						<span class="n">event_subplot</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">event</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="n">ls</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># Label should be set only once for all the events</span>
+					<span class="n">event_subplot</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">event</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="n">ls</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">lw</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">event_subplot</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">event</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="n">ls</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
+					
+	<span class="k">def</span><span class="w"> </span><span class="nf">add_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ann</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Add annotation to the figure.</span>
+<span class="sd">		</span>
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		ann : list[tuple[Number, Number, str]] | None</span>
+<span class="sd">			- A list of annotation spans. Each tuple should be (start, end, label).</span>
+<span class="sd">			- Default: None (no annotations).</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">ann_subplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_active_subplot</span><span class="p">()</span>
+		<span class="n">xlim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xlim</span>
+		
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ann</span><span class="p">):</span>
+			
+			<span class="c1"># We make sure that we only plot annotation that are within the x range of the current view</span>
+			<span class="k">if</span> <span class="n">xlim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">start</span> <span class="o">&gt;=</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="n">end</span> <span class="o">&lt;=</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+					<span class="k">continue</span>
+				
+				<span class="c1"># Clip boundaries to xlim</span>
+				<span class="n">start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+				<span class="n">end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+					
+				<span class="n">box_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="s2">&quot;lightgray&quot;</span><span class="p">]</span> <span class="c1"># Alternates color between two</span>
+				<span class="n">box_color</span> <span class="o">=</span> <span class="n">box_colors</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="mi">2</span><span class="p">]</span>
+				
+				<span class="n">width</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
+				<span class="n">rect</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">((</span><span class="n">start</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">width</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">box_color</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+				<span class="n">ann_subplot</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+				
+				<span class="n">text_obj</span> <span class="o">=</span> <span class="n">ann_subplot</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+					<span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="n">end</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span>
+					<span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+					<span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span>
+				<span class="p">)</span>
+				
+				<span class="n">text_obj</span><span class="o">.</span><span class="n">set_clip_path</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">box_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="s2">&quot;lightgray&quot;</span><span class="p">]</span> <span class="c1"># Alternates color between two</span>
+				<span class="n">box_color</span> <span class="o">=</span> <span class="n">box_colors</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="mi">2</span><span class="p">]</span>
+				
+				<span class="n">width</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
+				<span class="n">rect</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">((</span><span class="n">start</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">width</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">box_color</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+				<span class="n">ann_subplot</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+				
+				<span class="n">text_obj</span> <span class="o">=</span> <span class="n">ann_subplot</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+					<span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="n">end</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span>
+					<span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+					<span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span>
 				<span class="p">)</span>
 				
 				<span class="n">text_obj</span><span class="o">.</span><span class="n">set_clip_path</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
 				
-				
-		<span class="c1"># Add vlines</span>
-		<span class="k">if</span> <span class="n">events</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="k">for</span> <span class="n">xpos</span> <span class="ow">in</span> <span class="n">events</span><span class="p">:</span>
-				<span class="k">if</span> <span class="n">xlim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-					<span class="k">if</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">xpos</span> <span class="o">&lt;=</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-						<span class="n">annotation_ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">xpos</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-				<span class="k">else</span><span class="p">:</span>
-					<span class="n">annotation_ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">xpos</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-					
-		<span class="c1"># Add legend</span>
-		<span class="k">if</span> <span class="n">legend</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">signal_ax</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
-			<span class="n">fig</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">),</span> <span class="n">ncol</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">legend</span><span class="p">),</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-			
-		<span class="c1"># Set title, labels</span>
-		<span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">annotation_ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
-		<span class="k">if</span> <span class="n">xlabel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">signal_ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">)</span>
-		<span class="k">if</span> <span class="n">ylabel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">signal_ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">)</span>
-			
-		<span class="c1"># Add grid to the plot</span>
-		<span class="k">if</span> <span class="n">show_grid</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-			<span class="n">signal_ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
-		
-		<span class="c1"># Remove the boundaries and ticks from an axis</span>
-		<span class="k">if</span> <span class="n">ann</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="n">annotation_ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">labelleft</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">labelbottom</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-		<span class="k">else</span><span class="p">:</span>
-			<span class="n">annotation_ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
-		
-		
-		<span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
-		<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-		<span class="k">return</span> <span class="n">fig</span></div>
-
-
-<span class="c1">#======== 2D ===========</span>
-<div class="viewcode-block" id="plot2d">
-<a class="viewcode-back" href="../../../tools/plotter.html#modusa.plot2d">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">plot2d</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">ann</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">events</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span> <span class="n">Mlabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show_grid</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Plots a 2D matrix (e.g., spectrogram or heatmap) with optional annotations and events.</span>
-
-<span class="sd">	.. code-block:: python</span>
-
-<span class="sd">		import modusa as ms</span>
-<span class="sd">		import numpy as np</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">add_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;gray_r&quot;</span><span class="p">,</span> <span class="n">o</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Matrix&quot;</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Add matrix to the figure.</span>
+<span class="sd">			</span>
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		M: np.ndarray</span>
+<span class="sd">			- Matrix (2D) array</span>
+<span class="sd">		y: np.ndarray | None</span>
+<span class="sd">			- y axis values.</span>
+<span class="sd">		x: np.ndarray | None (indices will be used)</span>
+<span class="sd">			- x axis values.</span>
+<span class="sd">			- Default: None (indices will be used)</span>
+<span class="sd">		c: str</span>
+<span class="sd">			- cmap for the matrix.</span>
+<span class="sd">			- Default: None</span>
+<span class="sd">		o: str</span>
+<span class="sd">			- origin</span>
+<span class="sd">			- Default: &quot;lower&quot;</span>
+<span class="sd">		label: str</span>
+<span class="sd">			- Label for the plot.</span>
+<span class="sd">			- Legend will use this.</span>
+<span class="sd">			- Default: &quot;Signal&quot;</span>
 <span class="sd">		</span>
-<span class="sd">		M = np.random.random((10, 30))</span>
-<span class="sd">		y = np.arange(M.shape[0])</span>
-<span class="sd">		x = np.arange(M.shape[1])</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+		<span class="k">if</span> <span class="n">y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+			
+		<span class="n">matrix_subplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subplots</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+		<span class="n">extent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_extent</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+		<span class="n">im</span> <span class="o">=</span> <span class="n">matrix_subplot</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="n">o</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">)</span>
+		
+		<span class="bp">self</span><span class="o">.</span><span class="n">_add_colorbar</span><span class="p">(</span><span class="n">im</span><span class="o">=</span><span class="n">im</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+	
+	<span class="k">def</span><span class="w"> </span><span class="nf">add_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Signal&quot;</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Add signal on the matrix.</span>
+<span class="sd">			</span>
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		y: np.ndarray</span>
+<span class="sd">			- Signal y values.</span>
+<span class="sd">		x: np.ndarray | None</span>
+<span class="sd">			- Signal x values.</span>
+<span class="sd">			- Default: None (indices will be used)</span>
+<span class="sd">		c: str</span>
+<span class="sd">			- Color of the line.</span>
+<span class="sd">			- Default: None</span>
+<span class="sd">		ls: str</span>
+<span class="sd">			- Linestyle</span>
+<span class="sd">			- Default: &quot;-&quot;</span>
+<span class="sd">		lw: Number</span>
+<span class="sd">			- Linewidth</span>
+<span class="sd">			- Default: 1</span>
+<span class="sd">		m: str</span>
+<span class="sd">			- Marker</span>
+<span class="sd">			- Default: None</span>
+<span class="sd">		ms: number</span>
+<span class="sd">			- Markersize</span>
+<span class="sd">			- Default: 5</span>
+<span class="sd">		label: str</span>
+<span class="sd">			- Label for the plot.</span>
+<span class="sd">			- Legend will use this.</span>
+<span class="sd">			- Default: &quot;Signal&quot;</span>
 <span class="sd">		</span>
-<span class="sd">		display(ms.plot2d(M, y, x))</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+		<span class="n">matrix_subplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subplots</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+		<span class="n">matrix_subplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="n">ls</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">lw</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="n">ms</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+		
+	
+			
+	<span class="k">def</span><span class="w"> </span><span class="nf">add_legend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ypos</span><span class="o">=</span><span class="mf">1.1</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Add legend to the figure.</span>
 
-<span class="sd">	Parameters</span>
-<span class="sd">	----------</span>
-<span class="sd">	*args : tuple[array-like, array-like]</span>
-<span class="sd">		- The signal values to be plotted.</span>
-<span class="sd">		- E.g. (M1, y1, x1), (M2, y2, x2), ...</span>
-<span class="sd">	ann : list[tuple[Number, Number, str]] | None</span>
-<span class="sd">		- A list of annotation spans. Each tuple should be (start, end, label).</span>
-<span class="sd">		- Default: None (no annotations).</span>
-<span class="sd">	events : list[Number] | None</span>
-<span class="sd">		- X-values where vertical event lines will be drawn.</span>
-<span class="sd">		- Default: None.</span>
-<span class="sd">	xlim : tuple[Number, Number] | None</span>
-<span class="sd">		- Limits for the x-axis as (xmin, xmax).</span>
-<span class="sd">		- Default: None (auto-scaled).</span>
-<span class="sd">	ylim : tuple[Number, Number] | None</span>
-<span class="sd">		- Limits for the y-axis as (ymin, ymax).</span>
-<span class="sd">		- Default: None (auto-scaled).</span>
-<span class="sd">	origin : {&#39;upper&#39;, &#39;lower&#39;}</span>
-<span class="sd">		- Origin position for the image display. Used in `imshow`.</span>
-<span class="sd">		- Default: &quot;lower&quot;.</span>
-<span class="sd">	Mlabel : str | None</span>
-<span class="sd">		- Label for the colorbar (e.g., &quot;Magnitude&quot;, &quot;Energy&quot;).</span>
-<span class="sd">		- Default: None.</span>
-<span class="sd">	xlabel : str | None</span>
-<span class="sd">		- Label for the x-axis.</span>
-<span class="sd">		- Default: None.</span>
-<span class="sd">	ylabel : str | None</span>
-<span class="sd">		- Label for the y-axis.</span>
-<span class="sd">		- Default: None.</span>
-<span class="sd">	title : str | None</span>
-<span class="sd">		- Title of the plot.</span>
-<span class="sd">		- Default: None.</span>
-<span class="sd">	legend : list[str] | None</span>
-<span class="sd">		- Legend labels for any overlaid lines or annotations.</span>
-<span class="sd">		- Default: None.</span>
-<span class="sd">	lm: bool</span>
-<span class="sd">		- Adds a circular marker for the line.</span>
-<span class="sd">		- Default: False</span>
-<span class="sd">		- Useful to show the data points.</span>
-<span class="sd">	show_grid: bool</span>
-<span class="sd">		- If you want to show the grid.</span>
-<span class="sd">		- Default: False</span>
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		ypos: float</span>
+<span class="sd">			- y position from the top.</span>
+<span class="sd">			- &gt; 1 to push it higher, &lt; 1 to push it lower</span>
+<span class="sd">			- Default: 1.3</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">subplots</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subplots</span>
+		<span class="n">fig</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span>
+		
+		<span class="n">all_handles</span><span class="p">,</span> <span class="n">all_labels</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+		
+		<span class="k">for</span> <span class="n">subplot</span> <span class="ow">in</span> <span class="n">subplots</span><span class="p">:</span>
+			<span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">subplot</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+			<span class="n">all_handles</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">handles</span><span class="p">)</span>
+			<span class="n">all_labels</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+			
+		<span class="c1"># remove duplicates if needed</span>
+		<span class="n">fig</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">all_handles</span><span class="p">,</span> <span class="n">all_labels</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">ypos</span><span class="p">),</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bbox_transform</span><span class="o">=</span><span class="n">fig</span><span class="o">.</span><span class="n">transFigure</span><span class="p">)</span>
+		
+	<span class="k">def</span><span class="w"> </span><span class="nf">add_meta_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Add meta info to the figure.</span>
+<span class="sd">		</span>
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		title: str</span>
+<span class="sd">			- Title of the figure.</span>
+<span class="sd">			- Default: &quot;Title&quot;</span>
+<span class="sd">		ylabel: str</span>
+<span class="sd">			- y label of the signal.</span>
+<span class="sd">			- It will only appear in the signal subplot.</span>
+<span class="sd">			- Default: &quot;Y&quot;</span>
+<span class="sd">		xlabel: str</span>
+<span class="sd">			- x label of the signal.</span>
+<span class="sd">			- It will only appear in the signal subplot.</span>
+<span class="sd">			- Default: &quot;X&quot;</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">subplots</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subplots</span>
+		<span class="n">fig</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span>
+		
+		<span class="n">ref_subplot</span> <span class="o">=</span> <span class="n">subplots</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="n">signal_subplot</span> <span class="o">=</span> <span class="n">subplots</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+		
+		<span class="n">ref_subplot</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+		<span class="n">signal_subplot</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+		<span class="n">signal_subplot</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+		
+		
+	<span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;./figure.png&quot;</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Save the figure.</span>
 
-<span class="sd">	Returns</span>
-<span class="sd">	-------</span>
-<span class="sd">	matplotlib.figure.Figure</span>
-<span class="sd">		The matplotlib Figure object.</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	
-	<span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]:</span> <span class="c1"># Either provide just the matrix or with both axes info</span>
-			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data to plot needs to have 3 arrays (M, y, x)&quot;</span><span class="p">)</span>
-	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">legend</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span> <span class="n">legend</span> <span class="o">=</span> <span class="p">(</span><span class="n">legend</span><span class="p">,</span> <span class="p">)</span>
-	
-	<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-	<span class="n">gs</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">height_ratios</span><span class="o">=</span><span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span> <span class="c1"># colorbar, annotation, signal</span>
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		path: str</span>
+<span class="sd">			- Path to the output file.</span>
 
-	<span class="n">colors</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;tab10&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">colors</span>
-	
-	<span class="n">signal_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-	<span class="n">annotation_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">sharex</span><span class="o">=</span><span class="n">signal_ax</span><span class="p">)</span>
-	
-	<span class="n">colorbar_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-	<span class="n">colorbar_ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
-	
-	
-	<span class="c1"># Add lim</span>
-	<span class="k">if</span> <span class="n">xlim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-		<span class="n">signal_ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">xlim</span><span class="p">)</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		None</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">fig</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span>
+		<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
 		
-	<span class="k">if</span> <span class="n">ylim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-		<span class="n">signal_ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ylim</span><span class="p">)</span>
-		
-	<span class="c1"># Add signal plot</span>
-	<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># This is to track the legend for 1D plots</span>
-	<span class="k">for</span> <span class="n">signal</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-		
-		<span class="n">data</span> <span class="o">=</span> <span class="n">signal</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># This can be 1D or 2D (1D meaning we have to overlay on the matrix)</span>
-			
-		<span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c1"># 1D</span>
-			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c1"># It means that the axis was not passed</span>
-				<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-			<span class="k">else</span><span class="p">:</span>
-				<span class="n">x</span> <span class="o">=</span> <span class="n">signal</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-			
-			<span class="k">if</span> <span class="n">lm</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-				<span class="k">if</span> <span class="n">legend</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-					<span class="n">signal_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">legend</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-					<span class="n">signal_ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
-				<span class="k">else</span><span class="p">:</span>
-					<span class="n">signal_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-			<span class="k">else</span><span class="p">:</span>
-				<span class="k">if</span> <span class="n">legend</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-					<span class="n">signal_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">markerfacecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">legend</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-					<span class="n">signal_ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
-				<span class="k">else</span><span class="p">:</span>
-					<span class="n">signal_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">markerfacecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-					
-			<span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-			
-		<span class="k">elif</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span> <span class="c1"># 2D</span>
-			<span class="n">M</span> <span class="o">=</span> <span class="n">data</span>
-			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c1"># It means that the axes were not passed</span>
-				<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-				<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-				<span class="n">extent</span> <span class="o">=</span> <span class="n">_calculate_extent</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-				<span class="n">im</span> <span class="o">=</span> <span class="n">signal_ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray_r&quot;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">)</span>
-				
-			<span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span> <span class="c1"># It means that the axes were passed</span>
-				<span class="n">M</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">signal</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">signal</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">signal</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-				<span class="n">extent</span> <span class="o">=</span> <span class="n">_calculate_extent</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-				<span class="n">im</span> <span class="o">=</span> <span class="n">signal_ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray_r&quot;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">)</span>
-	
-	<span class="c1"># Add annotations</span>
-	<span class="k">if</span> <span class="n">ann</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-		<span class="n">annotation_ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># For consistent layout</span>
-		<span class="c1"># Determine visible x-range</span>
-		<span class="n">x_view_min</span> <span class="o">=</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">xlim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-		<span class="n">x_view_max</span> <span class="o">=</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">xlim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-		
-		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ann</span><span class="p">):</span>
-			<span class="c1"># We make sure that we only plot annotation that are within the x range of the current view</span>
-			<span class="k">if</span> <span class="n">start</span> <span class="o">&gt;=</span> <span class="n">x_view_max</span> <span class="ow">or</span> <span class="n">end</span> <span class="o">&lt;=</span> <span class="n">x_view_min</span><span class="p">:</span>
-				<span class="k">continue</span>
-			
-			<span class="c1"># Clip boundaries to xlim</span>
-			<span class="n">start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">x_view_min</span><span class="p">)</span>
-			<span class="n">end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">x_view_max</span><span class="p">)</span>
-				
-			<span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">)]</span>
-			<span class="n">width</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
-			<span class="n">rect</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">((</span><span class="n">start</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">width</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
-			<span class="n">annotation_ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
-			<span class="n">text_obj</span> <span class="o">=</span> <span class="n">annotation_ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
-				<span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="n">end</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span>
-				<span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
-				<span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span>
-			<span class="p">)</span>
-			
-			<span class="n">text_obj</span><span class="o">.</span><span class="n">set_clip_path</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
-			
-	<span class="c1"># Add vlines</span>
-	<span class="k">if</span> <span class="n">events</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-		<span class="k">for</span> <span class="n">xpos</span> <span class="ow">in</span> <span class="n">events</span><span class="p">:</span>
-			<span class="k">if</span> <span class="n">xlim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-				<span class="k">if</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">xpos</span> <span class="o">&lt;=</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-					<span class="n">annotation_ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">xpos</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-			<span class="k">else</span><span class="p">:</span>
-				<span class="n">annotation_ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">xpos</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-	
-	<span class="c1"># Add legend incase there are 1D overlays</span>
-	<span class="k">if</span> <span class="n">legend</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-		<span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">signal_ax</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
-		<span class="k">if</span> <span class="n">handles</span><span class="p">:</span>  <span class="c1"># Only add legend if there&#39;s something to show</span>
-			<span class="n">signal_ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
-	
-	<span class="c1"># Add colorbar</span>
-	<span class="c1"># Create an inset axis on top-right of signal_ax</span>
-	<span class="n">cax</span> <span class="o">=</span> <span class="n">inset_axes</span><span class="p">(</span>
-		<span class="n">colorbar_ax</span><span class="p">,</span>
-		<span class="n">width</span><span class="o">=</span><span class="s2">&quot;20%&quot;</span><span class="p">,</span>      <span class="c1"># percentage of parent width</span>
-		<span class="n">height</span><span class="o">=</span><span class="s2">&quot;20%&quot;</span><span class="p">,</span>      <span class="c1"># height in percentage of parent height</span>
-		<span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span>
-		<span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-		<span class="n">bbox_transform</span><span class="o">=</span><span class="n">colorbar_ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
-		<span class="n">borderpad</span><span class="o">=</span><span class="mi">1</span>
-	<span class="p">)</span>
-	
-	<span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">)</span>
-	<span class="n">cbar</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_ticks_position</span><span class="p">(</span><span class="s1">&#39;top&#39;</span><span class="p">)</span>
-	
-	<span class="k">if</span> <span class="n">Mlabel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-		<span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="n">Mlabel</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-	
-		
-	<span class="c1"># Set title, labels</span>
-	<span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-		<span class="n">annotation_ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
-	<span class="k">if</span> <span class="n">xlabel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-		<span class="n">signal_ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">)</span>
-	<span class="k">if</span> <span class="n">ylabel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-		<span class="n">signal_ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">)</span>
-		
-	<span class="c1"># Add grid to the plot</span>
-	<span class="k">if</span> <span class="n">show_grid</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-		<span class="n">signal_ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
-	
-	<span class="c1"># Making annotation axis spines thicker</span>
-	<span class="k">if</span> <span class="n">ann</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-		<span class="n">annotation_ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">labelleft</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">labelbottom</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-	<span class="k">else</span><span class="p">:</span>
-		<span class="n">annotation_ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
-
-	<span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
-	<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-	<span class="k">return</span> <span class="n">fig</span></div>
 
 
 <span class="c1">#======== Plot distribution ===========</span>
@@ -801,7 +1065,7 @@
 		<span class="k">if</span> <span class="n">legend</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">legend</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 				<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Legend should be provided for each signal.&quot;</span><span class="p">)</span>
-					
+				
 		<span class="c1"># Create figure</span>
 		<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 		<span class="n">gs</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">height_ratios</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
@@ -822,11 +1086,11 @@
 		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
 			<span class="c1"># Fit gaussian to the data</span>
 			<span class="n">kde</span> <span class="o">=</span> <span class="n">gaussian_kde</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-		
+			
 			<span class="c1"># Create points to evaluate KDE</span>
 			<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">npoints</span><span class="p">)</span>
 			<span class="n">y</span> <span class="o">=</span> <span class="n">kde</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-		
+			
 			<span class="k">if</span> <span class="n">legend</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 				<span class="n">dist_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">legend</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 				<span class="k">if</span> <span class="n">show_hist</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
@@ -835,7 +1099,7 @@
 				<span class="n">dist_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 				<span class="k">if</span> <span class="n">show_hist</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
 					<span class="n">dist_ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
-							
+					
 		<span class="c1"># Add annotations</span>
 		<span class="k">if</span> <span class="n">ann</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 			<span class="n">annotation_ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># For consistent layout</span>
@@ -850,15 +1114,15 @@
 				<span class="c1"># Clip boundaries to xlim</span>
 				<span class="n">start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">x_view_min</span><span class="p">)</span>
 				<span class="n">end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">x_view_max</span><span class="p">)</span>
-					
+				
 				<span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">)]</span>
 				<span class="n">width</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
 				<span class="n">rect</span> <span class="o">=</span> <span class="n">Rectangle</span><span class="p">((</span><span class="n">start</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">width</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
 				<span class="n">annotation_ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
-			
+				
 				<span class="n">text_obj</span> <span class="o">=</span> <span class="n">annotation_ax</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">start</span> <span class="o">+</span> <span class="n">end</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 				<span class="n">text_obj</span><span class="o">.</span><span class="n">set_clip_path</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
-					
+				
 		<span class="c1"># Add legend</span>
 		<span class="k">if</span> <span class="n">legend</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 			<span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">dist_ax</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
@@ -914,7 +1178,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=288e07a7"></script>
+</div><script src="../../../_static/documentation_options.js?v=a17fe92a"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

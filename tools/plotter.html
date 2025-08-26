@@ -7,7 +7,7 @@
         <link rel="prefetch" href="../_static/logo.png" as="image" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2025.07.19 -->
-        <title>Plotter - modusa 0.3.42 documentation</title>
+        <title>Plotter - modusa 0.3.43 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -170,7 +170,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">modusa 0.3.42 documentation</div></a>
+      <a href="../index.html"><div class="brand">modusa 0.3.43 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -196,7 +196,7 @@
     <img class="sidebar-logo" src="../_static/logo.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">modusa 0.3.42 documentation</span>
+  <span class="sidebar-brand-text">modusa 0.3.43 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -264,189 +264,484 @@
         <article role="main" id="furo-main-content">
           <section id="plotter">
 <h1>Plotter<a class="headerlink" href="#plotter" title="Link to this heading">¶</a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="modusa.plot1d">
-<span class="sig-prename descclassname"><span class="pre">modusa.</span></span><span class="sig-name descname"><span class="pre">plot1d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ann</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">events</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_stem</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#plot1d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.plot1d" title="Link to this definition">¶</a></dt>
-<dd><p>Plots a 1D signal using matplotlib.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">modusa</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ms</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-<span class="n">display</span><span class="p">(</span><span class="n">ms</span><span class="o">.</span><span class="n">plot1d</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
-</pre></div>
-</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="modusa.tools.plotter.Figure1D">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modusa.tools.plotter.</span></span><span class="sig-name descname"><span class="pre">Figure1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_aux_subplots</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#Figure1D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.plotter.Figure1D" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A utility class that provides easy-to-use API
+for plotting 1D signals along with clean
+representations of annotations, events.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>*args</strong> (<em>tuple</em><em>[</em><em>array-like</em><em>, </em><em>array-like</em><em>] </em><em>| </em><em>tuple</em><em>[</em><em>array-like</em><em>]</em>) – <ul>
-<li><p>The signal y and axis x to be plotted.</p></li>
-<li><p>If only values are provided, we generate the axis using arange.</p></li>
-<li><p>E.g. (y1, x1), (y2, x2), …</p></li>
+<li><p><strong>n_aux_subplots</strong> (<em>int</em>) – <ul>
+<li><p>Total number of auxiliary subplots</p></li>
+<li><p>These include annotations and events subplots.</p></li>
+<li><p>Default: 0</p></li>
 </ul>
 </p></li>
-<li><p><strong>ann</strong> (<em>list</em><em>[</em><em>tuple</em><em>[</em><em>Number</em><em>, </em><em>Number</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – <ul>
-<li><p>A list of annotations to mark specific points. Each tuple should be of the form (start, end, label).</p></li>
-<li><p>Default: None =&gt; No annotation.</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – <ul>
+<li><p>Title of the figure.</p></li>
+<li><p>Default: Title</p></li>
 </ul>
 </p></li>
-<li><p><strong>events</strong> (<em>list</em><em>[</em><em>Number</em><em>] </em><em>| </em><em>None</em>) – <ul>
-<li><p>A list of x-values where vertical lines (event markers) will be drawn.</p></li>
+<li><p><strong>xlim</strong> (<em>tuple</em><em>[</em><em>number</em><em>, </em><em>number</em><em>]</em>) – <ul>
+<li><p>xlim for the figure.</p></li>
+<li><p>All subplots will be automatically adjusted.</p></li>
 <li><p>Default: None</p></li>
 </ul>
 </p></li>
-<li><p><strong>xlim</strong> (<em>tuple</em><em>[</em><em>Number</em><em>, </em><em>Number</em><em>] </em><em>| </em><em>None</em>) – <ul>
-<li><p>Limits for the x-axis as (xmin, xmax).</p></li>
+<li><p><strong>ylim</strong> (<em>tuple</em><em>[</em><em>number</em><em>, </em><em>number</em><em>]</em>) – <ul>
+<li><p>ylim for the signal.</p></li>
 <li><p>Default: None</p></li>
-</ul>
-</p></li>
-<li><p><strong>ylim</strong> (<em>tuple</em><em>[</em><em>Number</em><em>, </em><em>Number</em><em>] </em><em>| </em><em>None</em>) – <ul>
-<li><p>Limits for the y-axis as (ymin, ymax).</p></li>
-<li><p>Default: None</p></li>
-</ul>
-</p></li>
-<li><p><strong>xlabel</strong> (<em>str</em><em> | </em><em>None</em>) – <ul>
-<li><p>Label for the x-axis.</p></li>
-<li><ul>
-<li><p>Default: None</p></li>
-</ul>
-</li>
-</ul>
-</p></li>
-<li><p><strong>ylabel</strong> (<em>str</em><em> | </em><em>None</em>) – <ul>
-<li><p>Label for the y-axis.</p></li>
-<li><p>Default: None</p></li>
-</ul>
-</p></li>
-<li><p><strong>title</strong> (<em>str</em><em> | </em><em>None</em>) – <ul>
-<li><p>Title of the plot.</p></li>
-<li><p>Default: None</p></li>
-</ul>
-</p></li>
-<li><p><strong>legend</strong> (<em>list</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>) – <ul>
-<li><p>List of legend labels corresponding to each signal if plotting multiple lines.</p></li>
-<li><p>Default: None</p></li>
-</ul>
-</p></li>
-<li><p><strong>fmt</strong> (<em>list</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>) – <ul>
-<li><p>linefmt for different line plots.</p></li>
-<li><p>Default: None</p></li>
-</ul>
-</p></li>
-<li><p><strong>show_grid</strong> (<em>bool</em>) – <ul>
-<li><p>If you want to show the grid.</p></li>
-<li><p>Default: False</p></li>
-</ul>
-</p></li>
-<li><p><strong>show_stem</strong> (<em>bool:</em>) – <ul>
-<li><p>If you want stem plot.</p></li>
-<li><p>Default: False</p></li>
 </ul>
 </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Matplolib figure.</p>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="modusa.tools.plotter.Figure1D.add_events">
+<span class="sig-name descname"><span class="pre">add_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">events</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'k'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Event</span> <span class="pre">Label'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#Figure1D.add_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.plotter.Figure1D.add_events" title="Link to this definition">¶</a></dt>
+<dd><p>Add events to the figure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>events</strong> (<em>np.ndarray</em>) – <ul>
+<li><p>All the event marker values.</p></li>
+</ul>
+</p></li>
+<li><p><strong>c</strong> (<em>str</em>) – <ul>
+<li><p>Color of the event marker.</p></li>
+<li><p>Default: “k”</p></li>
+</ul>
+</p></li>
+<li><p><strong>ls</strong> (<em>str</em>) – <ul>
+<li><p>Line style.</p></li>
+<li><p>Default: “-”</p></li>
+</ul>
+</p></li>
+<li><p><strong>lw</strong> (<em>float</em>) – <ul>
+<li><p>Linewidth.</p></li>
+<li><p>Default: 1.5</p></li>
+</ul>
+</p></li>
+<li><p><strong>label</strong> (<em>str</em>) – <ul>
+<li><p>Label for the event type.</p></li>
+<li><p>This will appear in the legend.</p></li>
+<li><p>Default: “Event label”</p></li>
+</ul>
+</p></li>
+</ul>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>plt.Figure</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="modusa.plot2d">
-<span class="sig-prename descclassname"><span class="pre">modusa.</span></span><span class="sig-name descname"><span class="pre">plot2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ann</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">events</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lower'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#plot2d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.plot2d" title="Link to this definition">¶</a></dt>
-<dd><p>Plots a 2D matrix (e.g., spectrogram or heatmap) with optional annotations and events.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">modusa</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ms</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-<span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-
-<span class="n">display</span><span class="p">(</span><span class="n">ms</span><span class="o">.</span><span class="n">plot2d</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
-</pre></div>
-</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="modusa.tools.plotter.Figure1D.add_annotation">
+<span class="sig-name descname"><span class="pre">add_annotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ann</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#Figure1D.add_annotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.plotter.Figure1D.add_annotation" title="Link to this definition">¶</a></dt>
+<dd><p>Add annotation to the figure.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>*args</strong> (<em>tuple</em><em>[</em><em>array-like</em><em>, </em><em>array-like</em><em>]</em>) – <ul>
-<li><p>The signal values to be plotted.</p></li>
-<li><p>E.g. (M1, y1, x1), (M2, y2, x2), …</p></li>
-</ul>
-</p></li>
-<li><p><strong>ann</strong> (<em>list</em><em>[</em><em>tuple</em><em>[</em><em>Number</em><em>, </em><em>Number</em><em>, </em><em>str</em><em>]</em><em>] </em><em>| </em><em>None</em>) – <ul>
+<dd class="field-odd"><p><strong>ann</strong> (<em>list</em><em>[</em><em>tuple</em><em>[</em><em>Number</em><em>, </em><em>Number</em><em>, </em><em>str</em><em>]</em><em>] </em><em>| </em><em>None</em>) – <ul class="simple">
 <li><p>A list of annotation spans. Each tuple should be (start, end, label).</p></li>
 <li><p>Default: None (no annotations).</p></li>
 </ul>
-</p></li>
-<li><p><strong>events</strong> (<em>list</em><em>[</em><em>Number</em><em>] </em><em>| </em><em>None</em>) – <ul>
-<li><p>X-values where vertical event lines will be drawn.</p></li>
-<li><p>Default: None.</p></li>
-</ul>
-</p></li>
-<li><p><strong>xlim</strong> (<em>tuple</em><em>[</em><em>Number</em><em>, </em><em>Number</em><em>] </em><em>| </em><em>None</em>) – <ul>
-<li><p>Limits for the x-axis as (xmin, xmax).</p></li>
-<li><p>Default: None (auto-scaled).</p></li>
-</ul>
-</p></li>
-<li><p><strong>ylim</strong> (<em>tuple</em><em>[</em><em>Number</em><em>, </em><em>Number</em><em>] </em><em>| </em><em>None</em>) – <ul>
-<li><p>Limits for the y-axis as (ymin, ymax).</p></li>
-<li><p>Default: None (auto-scaled).</p></li>
-</ul>
-</p></li>
-<li><p><strong>origin</strong> (<em>{'upper'</em><em>, </em><em>'lower'}</em>) – <ul>
-<li><p>Origin position for the image display. Used in <cite>imshow</cite>.</p></li>
-<li><p>Default: “lower”.</p></li>
-</ul>
-</p></li>
-<li><p><strong>Mlabel</strong> (<em>str</em><em> | </em><em>None</em>) – <ul>
-<li><p>Label for the colorbar (e.g., “Magnitude”, “Energy”).</p></li>
-<li><p>Default: None.</p></li>
-</ul>
-</p></li>
-<li><p><strong>xlabel</strong> (<em>str</em><em> | </em><em>None</em>) – <ul>
-<li><p>Label for the x-axis.</p></li>
-<li><p>Default: None.</p></li>
-</ul>
-</p></li>
-<li><p><strong>ylabel</strong> (<em>str</em><em> | </em><em>None</em>) – <ul>
-<li><p>Label for the y-axis.</p></li>
-<li><p>Default: None.</p></li>
-</ul>
-</p></li>
-<li><p><strong>title</strong> (<em>str</em><em> | </em><em>None</em>) – <ul>
-<li><p>Title of the plot.</p></li>
-<li><p>Default: None.</p></li>
-</ul>
-</p></li>
-<li><p><strong>legend</strong> (<em>list</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>) – <ul>
-<li><p>Legend labels for any overlaid lines or annotations.</p></li>
-<li><p>Default: None.</p></li>
-</ul>
-</p></li>
-<li><p><strong>lm</strong> (<em>bool</em>) – <ul>
-<li><p>Adds a circular marker for the line.</p></li>
-<li><p>Default: False</p></li>
-<li><p>Useful to show the data points.</p></li>
-</ul>
-</p></li>
-<li><p><strong>show_grid</strong> (<em>bool</em>) – <ul>
-<li><p>If you want to show the grid.</p></li>
-<li><p>Default: False</p></li>
-</ul>
-</p></li>
-</ul>
+</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The matplotlib Figure object.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>matplotlib.figure.Figure</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modusa.tools.plotter.Figure1D.add_signal">
+<span class="sig-name descname"><span class="pre">add_signal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Signal'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#Figure1D.add_signal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.plotter.Figure1D.add_signal" title="Link to this definition">¶</a></dt>
+<dd><p>Add signal to the figure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>np.ndarray</em>) – <ul>
+<li><p>Signal y values.</p></li>
+</ul>
+</p></li>
+<li><p><strong>x</strong> (<em>np.ndarray</em><em> | </em><em>None</em>) – <ul>
+<li><p>Signal x values.</p></li>
+<li><p>Default: None (indices will be used)</p></li>
+</ul>
+</p></li>
+<li><p><strong>c</strong> (<em>str</em>) – <ul>
+<li><p>Color of the line.</p></li>
+<li><p>Default: None</p></li>
+</ul>
+</p></li>
+<li><p><strong>ls</strong> (<em>str</em>) – <ul>
+<li><p>Linestyle</p></li>
+<li><p>Default: “-”</p></li>
+</ul>
+</p></li>
+<li><p><strong>lw</strong> (<em>Number</em>) – <ul>
+<li><p>Linewidth</p></li>
+<li><p>Default: 1</p></li>
+</ul>
+</p></li>
+<li><p><strong>m</strong> (<em>str</em>) – <ul>
+<li><p>Marker</p></li>
+<li><p>Default: None</p></li>
+</ul>
+</p></li>
+<li><p><strong>ms</strong> (<em>number</em>) – <ul>
+<li><p>Markersize</p></li>
+<li><p>Default: 5</p></li>
+</ul>
+</p></li>
+<li><p><strong>label</strong> (<em>str</em>) – <ul>
+<li><p>Label for the plot.</p></li>
+<li><p>Legend will use this.</p></li>
+<li><p>Default: “Signal”</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modusa.tools.plotter.Figure1D.add_legend">
+<span class="sig-name descname"><span class="pre">add_legend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ypos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#Figure1D.add_legend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.plotter.Figure1D.add_legend" title="Link to this definition">¶</a></dt>
+<dd><p>Add legend to the figure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ypos</strong> (<em>float</em>) – <ul class="simple">
+<li><p>y position from the top.</p></li>
+<li><p>&gt; 1 to push it higher, &lt; 1 to push it lower</p></li>
+<li><p>Default: 1.3</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modusa.tools.plotter.Figure1D.add_meta_info">
+<span class="sig-name descname"><span class="pre">add_meta_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Title'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Y'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'X'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#Figure1D.add_meta_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.plotter.Figure1D.add_meta_info" title="Link to this definition">¶</a></dt>
+<dd><p>Add meta info to the figure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<em>str</em>) – <ul>
+<li><p>Title of the figure.</p></li>
+<li><p>Default: “Title”</p></li>
+</ul>
+</p></li>
+<li><p><strong>ylabel</strong> (<em>str</em>) – <ul>
+<li><p>y label of the signal.</p></li>
+<li><p>It will only appear in the signal subplot.</p></li>
+<li><p>Default: “Y”</p></li>
+</ul>
+</p></li>
+<li><p><strong>xlabel</strong> (<em>str</em>) – <ul>
+<li><p>x label of the signal.</p></li>
+<li><p>It will only appear in the signal subplot.</p></li>
+<li><p>Default: “X”</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modusa.tools.plotter.Figure1D.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./figure.png'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#Figure1D.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.plotter.Figure1D.save" title="Link to this definition">¶</a></dt>
+<dd><p>Save the figure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – <ul class="simple">
+<li><p>Path to the output file.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="modusa.tools.plotter.Figure2D">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modusa.tools.plotter.</span></span><span class="sig-name descname"><span class="pre">Figure2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_aux_subplots</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#Figure2D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.plotter.Figure2D" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A utility class that provides easy-to-use API
+for plotting 2D signals along with clean
+representations of annotations, events.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_aux_subplots</strong> (<em>int</em>) – <ul>
+<li><p>Total number of auxiliary subplots</p></li>
+<li><p>These include annotations and events subplots.</p></li>
+<li><p>Default: 0</p></li>
+</ul>
+</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – <ul>
+<li><p>Title of the figure.</p></li>
+<li><p>Default: Title</p></li>
+</ul>
+</p></li>
+<li><p><strong>xlim</strong> (<em>tuple</em><em>[</em><em>number</em><em>, </em><em>number</em><em>]</em>) – <ul>
+<li><p>xlim for the figure.</p></li>
+<li><p>All subplots will be automatically adjusted.</p></li>
+<li><p>Default: None</p></li>
+</ul>
+</p></li>
+<li><p><strong>ylim</strong> (<em>tuple</em><em>[</em><em>number</em><em>, </em><em>number</em><em>]</em>) – <ul>
+<li><p>ylim for the signal.</p></li>
+<li><p>Default: None</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="modusa.tools.plotter.Figure2D.add_events">
+<span class="sig-name descname"><span class="pre">add_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">events</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'k'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Event</span> <span class="pre">Label'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#Figure2D.add_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.plotter.Figure2D.add_events" title="Link to this definition">¶</a></dt>
+<dd><p>Add events to the figure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>events</strong> (<em>np.ndarray</em>) – <ul>
+<li><p>All the event marker values.</p></li>
+</ul>
+</p></li>
+<li><p><strong>c</strong> (<em>str</em>) – <ul>
+<li><p>Color of the event marker.</p></li>
+<li><p>Default: “k”</p></li>
+</ul>
+</p></li>
+<li><p><strong>ls</strong> (<em>str</em>) – <ul>
+<li><p>Line style.</p></li>
+<li><p>Default: “-”</p></li>
+</ul>
+</p></li>
+<li><p><strong>lw</strong> (<em>float</em>) – <ul>
+<li><p>Linewidth.</p></li>
+<li><p>Default: 1.5</p></li>
+</ul>
+</p></li>
+<li><p><strong>label</strong> (<em>str</em>) – <ul>
+<li><p>Label for the event type.</p></li>
+<li><p>This will appear in the legend.</p></li>
+<li><p>Default: “Event label”</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modusa.tools.plotter.Figure2D.add_annotation">
+<span class="sig-name descname"><span class="pre">add_annotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ann</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#Figure2D.add_annotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.plotter.Figure2D.add_annotation" title="Link to this definition">¶</a></dt>
+<dd><p>Add annotation to the figure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ann</strong> (<em>list</em><em>[</em><em>tuple</em><em>[</em><em>Number</em><em>, </em><em>Number</em><em>, </em><em>str</em><em>]</em><em>] </em><em>| </em><em>None</em>) – <ul class="simple">
+<li><p>A list of annotation spans. Each tuple should be (start, end, label).</p></li>
+<li><p>Default: None (no annotations).</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modusa.tools.plotter.Figure2D.add_matrix">
+<span class="sig-name descname"><span class="pre">add_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gray_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">o</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lower'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Matrix'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#Figure2D.add_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.plotter.Figure2D.add_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Add matrix to the figure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>M</strong> (<em>np.ndarray</em>) – <ul>
+<li><p>Matrix (2D) array</p></li>
+</ul>
+</p></li>
+<li><p><strong>y</strong> (<em>np.ndarray</em><em> | </em><em>None</em>) – <ul>
+<li><p>y axis values.</p></li>
+</ul>
+</p></li>
+<li><p><strong>x</strong> (<em>np.ndarray</em><em> | </em><em>None</em><em> (</em><em>indices will be used</em><em>)</em>) – <ul>
+<li><p>x axis values.</p></li>
+<li><p>Default: None (indices will be used)</p></li>
+</ul>
+</p></li>
+<li><p><strong>c</strong> (<em>str</em>) – <ul>
+<li><p>cmap for the matrix.</p></li>
+<li><p>Default: None</p></li>
+</ul>
+</p></li>
+<li><p><strong>o</strong> (<em>str</em>) – <ul>
+<li><p>origin</p></li>
+<li><p>Default: “lower”</p></li>
+</ul>
+</p></li>
+<li><p><strong>label</strong> (<em>str</em>) – <ul>
+<li><p>Label for the plot.</p></li>
+<li><p>Legend will use this.</p></li>
+<li><p>Default: “Signal”</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modusa.tools.plotter.Figure2D.add_signal">
+<span class="sig-name descname"><span class="pre">add_signal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'o'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Signal'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#Figure2D.add_signal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.plotter.Figure2D.add_signal" title="Link to this definition">¶</a></dt>
+<dd><p>Add signal on the matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>np.ndarray</em>) – <ul>
+<li><p>Signal y values.</p></li>
+</ul>
+</p></li>
+<li><p><strong>x</strong> (<em>np.ndarray</em><em> | </em><em>None</em>) – <ul>
+<li><p>Signal x values.</p></li>
+<li><p>Default: None (indices will be used)</p></li>
+</ul>
+</p></li>
+<li><p><strong>c</strong> (<em>str</em>) – <ul>
+<li><p>Color of the line.</p></li>
+<li><p>Default: None</p></li>
+</ul>
+</p></li>
+<li><p><strong>ls</strong> (<em>str</em>) – <ul>
+<li><p>Linestyle</p></li>
+<li><p>Default: “-”</p></li>
+</ul>
+</p></li>
+<li><p><strong>lw</strong> (<em>Number</em>) – <ul>
+<li><p>Linewidth</p></li>
+<li><p>Default: 1</p></li>
+</ul>
+</p></li>
+<li><p><strong>m</strong> (<em>str</em>) – <ul>
+<li><p>Marker</p></li>
+<li><p>Default: None</p></li>
+</ul>
+</p></li>
+<li><p><strong>ms</strong> (<em>number</em>) – <ul>
+<li><p>Markersize</p></li>
+<li><p>Default: 5</p></li>
+</ul>
+</p></li>
+<li><p><strong>label</strong> (<em>str</em>) – <ul>
+<li><p>Label for the plot.</p></li>
+<li><p>Legend will use this.</p></li>
+<li><p>Default: “Signal”</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modusa.tools.plotter.Figure2D.add_legend">
+<span class="sig-name descname"><span class="pre">add_legend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ypos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#Figure2D.add_legend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.plotter.Figure2D.add_legend" title="Link to this definition">¶</a></dt>
+<dd><p>Add legend to the figure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ypos</strong> (<em>float</em>) – <ul class="simple">
+<li><p>y position from the top.</p></li>
+<li><p>&gt; 1 to push it higher, &lt; 1 to push it lower</p></li>
+<li><p>Default: 1.3</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modusa.tools.plotter.Figure2D.add_meta_info">
+<span class="sig-name descname"><span class="pre">add_meta_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Title'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Y'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'X'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#Figure2D.add_meta_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.plotter.Figure2D.add_meta_info" title="Link to this definition">¶</a></dt>
+<dd><p>Add meta info to the figure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<em>str</em>) – <ul>
+<li><p>Title of the figure.</p></li>
+<li><p>Default: “Title”</p></li>
+</ul>
+</p></li>
+<li><p><strong>ylabel</strong> (<em>str</em>) – <ul>
+<li><p>y label of the signal.</p></li>
+<li><p>It will only appear in the signal subplot.</p></li>
+<li><p>Default: “Y”</p></li>
+</ul>
+</p></li>
+<li><p><strong>xlabel</strong> (<em>str</em>) – <ul>
+<li><p>x label of the signal.</p></li>
+<li><p>It will only appear in the signal subplot.</p></li>
+<li><p>Default: “X”</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="modusa.tools.plotter.Figure2D.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./figure.png'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#Figure2D.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.plotter.Figure2D.save" title="Link to this definition">¶</a></dt>
+<dd><p>Save the figure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – <ul class="simple">
+<li><p>Path to the output file.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py function">
@@ -597,8 +892,25 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Plotter</a><ul>
-<li><a class="reference internal" href="#modusa.plot1d"><code class="docutils literal notranslate"><span class="pre">plot1d()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.plot2d"><code class="docutils literal notranslate"><span class="pre">plot2d()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.tools.plotter.Figure1D"><code class="docutils literal notranslate"><span class="pre">Figure1D</span></code></a><ul>
+<li><a class="reference internal" href="#modusa.tools.plotter.Figure1D.add_events"><code class="docutils literal notranslate"><span class="pre">Figure1D.add_events()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.tools.plotter.Figure1D.add_annotation"><code class="docutils literal notranslate"><span class="pre">Figure1D.add_annotation()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.tools.plotter.Figure1D.add_signal"><code class="docutils literal notranslate"><span class="pre">Figure1D.add_signal()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.tools.plotter.Figure1D.add_legend"><code class="docutils literal notranslate"><span class="pre">Figure1D.add_legend()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.tools.plotter.Figure1D.add_meta_info"><code class="docutils literal notranslate"><span class="pre">Figure1D.add_meta_info()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.tools.plotter.Figure1D.save"><code class="docutils literal notranslate"><span class="pre">Figure1D.save()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#modusa.tools.plotter.Figure2D"><code class="docutils literal notranslate"><span class="pre">Figure2D</span></code></a><ul>
+<li><a class="reference internal" href="#modusa.tools.plotter.Figure2D.add_events"><code class="docutils literal notranslate"><span class="pre">Figure2D.add_events()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.tools.plotter.Figure2D.add_annotation"><code class="docutils literal notranslate"><span class="pre">Figure2D.add_annotation()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.tools.plotter.Figure2D.add_matrix"><code class="docutils literal notranslate"><span class="pre">Figure2D.add_matrix()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.tools.plotter.Figure2D.add_signal"><code class="docutils literal notranslate"><span class="pre">Figure2D.add_signal()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.tools.plotter.Figure2D.add_legend"><code class="docutils literal notranslate"><span class="pre">Figure2D.add_legend()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.tools.plotter.Figure2D.add_meta_info"><code class="docutils literal notranslate"><span class="pre">Figure2D.add_meta_info()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.tools.plotter.Figure2D.save"><code class="docutils literal notranslate"><span class="pre">Figure2D.save()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#modusa.plot_dist"><code class="docutils literal notranslate"><span class="pre">plot_dist()</span></code></a></li>
 </ul>
 </li>
@@ -611,7 +923,7 @@
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=083f9d4c"></script>
+</div><script src="../_static/documentation_options.js?v=a17fe92a"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
