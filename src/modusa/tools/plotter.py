@@ -301,7 +301,7 @@ class Figure1D:
 		# remove duplicates if needed
 		fig.legend(all_handles, all_labels, loc='upper right', bbox_to_anchor=(0.9, ypos), ncol=2, frameon=True, bbox_transform=fig.transFigure)
 		
-	def add_meta_info(self, title="Title", ylabel="Y", xlabel="X"):
+	def add_meta_info(self, title=None, ylabel=None, xlabel=None):
 		"""
 		Add meta info to the figure.
 
@@ -309,15 +309,15 @@ class Figure1D:
 		----------
 		title: str
 			- Title of the figure.
-			- Default: "Title"
+			- Default: None
 		ylabel: str
 			- y label of the signal.
 			- It will only appear in the signal subplot.
-			- Default: "Y"
+			- Default: None
 		xlabel: str
 			- x label of the signal.
 			- It will only appear in the signal subplot.
-			- Default: "X"
+			- Default: None
 
 		Returns
 		-------
@@ -329,9 +329,12 @@ class Figure1D:
 		ref_subplot = subplots[0]
 		signal_subplot = subplots[-1]
 		
-		ref_subplot.set_title(title, pad=10, size=14)
-		signal_subplot.set_xlabel(xlabel, size=12)
-		signal_subplot.set_ylabel(ylabel, size=12)
+		if title is not None:
+			ref_subplot.set_title(title, pad=10, size=14)
+		if ylabel is not None:
+			signal_subplot.set_ylabel(ylabel, size=10)
+		if xlabel is not None:
+			signal_subplot.set_xlabel(xlabel, size=10)
 		
 		
 	def save(self, path="./figure.png"):
@@ -690,7 +693,7 @@ class Figure2D:
 		# remove duplicates if needed
 		fig.legend(all_handles, all_labels, loc='upper right', bbox_to_anchor=(0.9, ypos), ncol=2, frameon=True, bbox_transform=fig.transFigure)
 		
-	def add_meta_info(self, title="Title", ylabel="Y", xlabel="X"):
+	def add_meta_info(self, title=None, ylabel=None, xlabel=None):
 		"""
 		Add meta info to the figure.
 		
@@ -698,15 +701,15 @@ class Figure2D:
 		----------
 		title: str
 			- Title of the figure.
-			- Default: "Title"
+			- Default: None
 		ylabel: str
 			- y label of the signal.
 			- It will only appear in the signal subplot.
-			- Default: "Y"
+			- Default: None
 		xlabel: str
 			- x label of the signal.
 			- It will only appear in the signal subplot.
-			- Default: "X"
+			- Default: None
 		
 		Returns
 		-------
@@ -718,10 +721,12 @@ class Figure2D:
 		ref_subplot = subplots[0]
 		signal_subplot = subplots[-1]
 		
-		ref_subplot.set_title(title, pad=10, size=14)
-		signal_subplot.set_xlabel(xlabel, size=12)
-		signal_subplot.set_ylabel(ylabel, size=12)
-		
+		if title is not None:
+			ref_subplot.set_title(title, pad=10, size=14)
+		if ylabel is not None:
+			signal_subplot.set_ylabel(ylabel, size=10)
+		if xlabel is not None:
+			signal_subplot.set_xlabel(xlabel, size=10)
 		
 	def save(self, path="./figure.png"):
 		"""
