@@ -1188,7 +1188,7 @@ class Fig:
 				else:
 					curr_row[0].axvline(x=event, color=c, linestyle=ls, linewidth=lw)
 					
-	def add_annotation(self, ann, ax=None):
+	def add_annotation(self, ann, label=None, ax=None):
 		"""
 		Add annotation to the figure.
 		
@@ -1247,6 +1247,11 @@ class Fig:
 				)
 				
 				text_obj.set_clip_path(rect)
+				
+		if label is not None:
+			curr_row[0].set_ylabel(label, rotation=0, ha="center", va="center")
+			curr_row[0].yaxis.set_label_position("right")
+			curr_row[0].yaxis.set_label_coords(1.05, 0.75)
 				
 	def add_legend(self, ypos=1.0):
 		"""
