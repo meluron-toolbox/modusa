@@ -65,9 +65,11 @@ class Figure1D:
 		- Default: None
 	"""
 	
-	def __init__(self, n_aux_subplots=0, xlim=None, ylim=None):
+	def __init__(self, n_aux_subplots=0, xlim=None, ylim=None, sharex=None):
 		self._n_aux_subplots: int = n_aux_subplots
 		self._active_subplot_idx: int = 1 # Any addition will happen on this subplot (0 is reserved for reference axis)
+		if sharex is not None:
+			xlim = sharex._xlim
 		self._xlim = xlim # Many add functions depend on this, so we fix it while instantiating the class
 		self._ylim = ylim
 		self._subplots, self._fig = self._generate_subplots() # Will contain all the subplots (list, fig)
@@ -109,15 +111,17 @@ class Figure1D:
 		
 		# Add subplots
 		subplots_list = []
+		
 		ref_subplot = fig.add_subplot(gs[0, 0])
 		ref_subplot.axis("off")
 		subplots_list.append(ref_subplot)
 		
 		for i in range(1, n_subplots):
 			subplots_list.append(fig.add_subplot(gs[i, 0], sharex=ref_subplot))
-			
+		
 		for i in range(n_subplots - 1):
 			subplots_list[i].tick_params(left=False, bottom=False, labelleft=False, labelbottom=False)
+		
 		
 		# Set xlim
 		if self._xlim is not None: # xlim should be applied on reference subplot, rest all sharex
@@ -388,9 +392,11 @@ class Figure2D:
 		- Default: None
 	"""
 	
-	def __init__(self, n_aux_subplots=0, xlim=None, ylim=None):
+	def __init__(self, n_aux_subplots=0, xlim=None, ylim=None, sharex=None):
 		self._n_aux_subplots: int = n_aux_subplots
 		self._active_subplot_idx: int = 1 # Any addition will happen on this subplot (0 is reserved for reference axis)
+		if sharex is not None:
+			xlim = sharex._xlim
 		self._xlim = xlim # Many add functions depend on this, so we fix it while instantiating the class
 		self._ylim = ylim
 		self._subplots, self._fig = self._generate_subplots() # Will contain all the subplots (list, fig)
@@ -471,6 +477,7 @@ class Figure2D:
 		ref_subplot = fig.add_subplot(gs[0, 0])
 		ref_subplot.axis("off")
 		subplots_list.append(ref_subplot)
+
 		
 		for i in range(1, n_subplots):
 			subplots_list.append(fig.add_subplot(gs[i, 0], sharex=ref_subplot))
@@ -901,3 +908,389 @@ def plot_dist(*args, ann=None, xlim=None, ylim=None, ylabel=None, xlabel=None, t
 		fig.subplots_adjust(hspace=0.01, wspace=0.05)
 		plt.close()
 		return fig
+	
+
+class Fig:
+	"""
+	
+	"""
+	
+	def __init__(self, arrangement="asm", title="Untitled", xlabel="Time (sec)", xlim=None):
+
+		self._xlim = xlim
+		self._curr_row_idx = 1 # Starting from 1 because row 0 is reserved for reference subplot
+		self._curr_color_idx = 0 # So that we have different color across all the subplots to avoid legend confusion
+		
+		# Subplot setup
+		self._fig, self._axs = self._generate_subplots(arrangement, title, xlabel) # This will fill in the all the above variables
+		
+	
+	def _get_curr_row(self):
+		"""
+		Get the active row where you can add
+		either annotations or events.
+		"""
+		curr_row = self._axs[self._curr_row_idx]
+		self._curr_row_idx += 1
+		
+		return curr_row
+	
+	def _get_new_color(self):
+		"""
+		Get a new color for different lines.
+		"""
+		colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
+		self._curr_color_idx += 1
+		
+		return colors[self._curr_color_idx]
+	
+	def _calculate_extent(self, x, y):
+		# Handle spacing safely
+		if len(x) > 1:
+			dx = x[1] - x[0]
+		else:
+			dx = 1  # Default spacing for single value
+		if len(y) > 1:
+			dy = y[1] - y[0]
+		else:
+			dy = 1  # Default spacing for single value
+			
+		return [x[0] - dx / 2, x[-1] + dx / 2, y[0] - dy / 2, y[-1] + dy / 2]
+	
+		
+	def _generate_subplots(self, arrangement, title, xlabel):
+		"""
+		Generate subplots based on the configuration.
+		"""
+		
+		xlim = self._xlim
+		
+		n_aux_sp = arrangement.count("a")
+		n_signal_sp = arrangement.count("s")
+		n_matrix_sp = arrangement.count("m")
+		n_sp = 1 + n_aux_sp + n_signal_sp + n_matrix_sp # +1 is for the first reference subplot
+		
+		# Decide heights of different subplots type
+		height = {}
+		height["r"] = 0.0 # Reference height
+		height["a"] = 0.4 # Aux height
+		height["s"] = 2.0 # Signal height
+		height["m"] = 4.0 # Matrix height
+		cbar_width = 0.01
+		
+		arrangement = "r" + arrangement # "r" is to include the reference
+		
+		# Calculate height ratios list based on the arrangement
+		for char in arrangement:
+			height_ratios = [height[char] for char in arrangement]
+		
+		# Calculate total fig height
+		fig_height = height["r"] + (n_aux_sp * height["a"]) + (n_signal_sp * height["s"]) + (n_matrix_sp * height["m"])
+		
+		# Create figure and axs
+		fig, axs = plt.subplots(n_sp, 2, figsize=(16, fig_height), height_ratios=height_ratios, width_ratios=[1, cbar_width])
+		
+		for i, char in enumerate(arrangement): # For each of the subplots, we modify the layout accordingly
+			if char == "r":
+				axs[i, 0].axis("off")
+				axs[i, 1].axis("off")
+			elif char == "a": # Remove ticks and labels from all the aux subplots
+				axs[i, 0].tick_params(left=False, bottom=False, labelleft=False, labelbottom=False)
+				axs[i, 0].grid(True, linestyle=':', linewidth=0.7, color='gray', alpha=0.7)
+				axs[i, 1].axis("off")
+			elif char == "s":
+				axs[i, 0].tick_params(bottom=False, labelbottom=False)
+				axs[i, 0].grid(True, linestyle=':', linewidth=0.7, color='gray', alpha=0.7)
+				axs[i, 1].axis("off")
+			elif char == "m":
+				axs[i, 0].grid(True, linestyle=':', linewidth=0.7, color='gray', alpha=0.7)
+				axs[i, 0].tick_params(bottom=False, labelbottom=False)
+			
+			axs[i, 0].sharex(axs[0, 0])
+			
+		axs[-1, 0].tick_params(bottom=True, labelbottom=True)
+		
+		# xlim should be applied on reference subplot, rest all subplots will automatically adjust
+		if xlim is not None:
+			axs[0, 0].set_xlim(xlim)
+			
+		# Set title and label
+		if title is not None:
+			axs[0, 0].set_title(title)
+		if xlabel is not None:
+			axs[-1, 0].set_xlabel(xlabel)
+					
+		fig.subplots_adjust(hspace=0.2, wspace=0.05)
+
+		return fig, axs
+	
+	def add_signal(self, y, x=None, c=None, ls=None, lw=None, m=None, ms=3, label=None, ylabel=None, ylim=None, ax=None):
+		"""
+		Add signal to the figure.
+			
+		Parameters
+		----------
+		y: np.ndarray
+			- Signal y values.
+		x: np.ndarray | None
+			- Signal x values.
+			- Default: None (indices will be used)
+		c: str
+			- Color of the line.
+			- Default: None
+		ls: str
+			- Linestyle
+			- Default: None
+		lw: Number
+			- Linewidth
+			- Default: None
+		m: str
+			- Marker
+			- Default: None
+		ms: number
+			- Markersize
+			- Default: 3
+		label: str
+			- Label for the plot.
+			- Legend will use this.
+			- Default: None
+		ylabel: str
+			- y-label for the plot.
+			- Default: None
+		ylim: tuple
+			- y-lim for the plot.
+			- Default: None
+		ax: int
+			- Which specific axis to plot (1, 2, 3, ...)
+			- None
+
+		Returns
+		-------
+		None
+		"""
+		
+		curr_row = self._get_curr_row() if ax is None else self._axs[ax]
+		
+		if x is None: x = np.arange(y.size)
+		
+		if c is None: c = self._get_new_color()
+
+		curr_row[0].plot(x, y, color=c, linestyle=ls, linewidth=lw, marker=m, markersize=ms, label=label)
+		
+		if ylabel is not None: curr_row[0].set_ylabel(ylabel)
+		
+		if ylim is not None: curr_row[0].set_ylim(ylim)
+		
+	def add_matrix(self, M, y=None, x=None, c="gray_r", o="lower", label=None, ylabel=None, ylim=None, cbar=True, ax=None):
+		"""
+		Add matrix to the figure.
+			
+		Parameters
+		----------
+		M: np.ndarray
+			- Matrix (2D) array
+		y: np.ndarray | None
+			- y axis values.
+		x: np.ndarray | None (indices will be used)
+			- x axis values.
+			- Default: None (indices will be used)
+		c: str
+			- cmap for the matrix.
+			- Default: None
+		o: str
+			- origin
+			- Default: "lower"
+		label: str
+			- Label for the plot.
+			- Legend will use this.
+			- Default: "Signal"
+		ylabel: str
+			- y-label for the plot.
+			- Default: None
+		ylim: tuple
+			- y-lim for the plot.
+			- Default: None
+		cbar: bool
+			- Show colorbar
+			- Default: True
+		ax: int
+			- Which specific axis to plot (1, 2, 3, ...)
+			- None
+		
+		Returns
+		-------
+		None
+		"""
+		if x is None: x = np.arange(M.shape[1])
+		if y is None: y = np.arange(M.shape[0])
+
+		curr_row = self._get_curr_row() if ax is None else self._axs[ax]
+		
+		extent = self._calculate_extent(x, y)
+		im = curr_row[0].imshow(M, aspect="auto", origin=o, cmap=c, extent=extent)
+		
+		if ylabel is not None: curr_row[0].set_ylabel(ylabel)
+		
+		if ylim is not None: curr_row[0].set_ylim(ylim)
+		
+		if cbar is True:
+			cbar = plt.colorbar(im, cax=curr_row[1])
+			if label is not None:
+				cbar.set_label(label, labelpad=5)
+		
+		
+	def add_events(self, events, c=None, ls=None, lw=None, label=None, ax=None):
+		"""
+		Add events to the figure.
+		
+		Parameters
+		----------
+		events: np.ndarray
+			- All the event marker values.
+		c: str
+			- Color of the event marker.
+			- Default: "k"
+		ls: str
+			- Line style.
+			- Default: "-"
+		lw: float
+			- Linewidth.
+			- Default: 1.5
+		label: str
+			- Label for the event type.
+			- This will appear in the legend.
+			- Default: "Event label"
+		ax: int
+			- Which specific axis to plot (1, 2, 3, ...)
+			- None
+
+		Returns
+		-------
+		None
+		"""
+		
+		curr_row = self._get_curr_row() if ax is None else self._axs[ax]
+			
+		if c is None: c = self._get_new_color()
+			
+		xlim = self._xlim
+		
+		for i, event in enumerate(events):
+			if xlim is not None:
+				if xlim[0] <= event <= xlim[1]:
+					if i == 0: # Label should be set only once for all the events
+						curr_row[0].axvline(x=event, color=c, linestyle=ls, linewidth=lw, label=label)
+					else:
+						curr_row[0].axvline(x=event, color=c, linestyle=ls, linewidth=lw)
+			else:
+				if i == 0: # Label should be set only once for all the events
+					curr_row[0].axvline(x=event, color=c, linestyle=ls, linewidth=lw, label=label)
+				else:
+					curr_row[0].axvline(x=event, color=c, linestyle=ls, linewidth=lw)
+					
+	def add_annotation(self, ann, ax=None):
+		"""
+		Add annotation to the figure.
+		
+		Parameters
+		----------
+		ann : list[tuple[Number, Number, str]] | None
+			- A list of annotation spans. Each tuple should be (start, end, label).
+			- Default: None (no annotations).
+		ax: int
+			- Which specific axis to plot (1, 2, 3, ...)
+			- None
+		Returns
+		-------
+		None
+		"""
+		curr_row = self._get_curr_row() if ax is None else self._axs[ax]
+			
+		xlim = self._xlim
+		
+		for i, (start, end, tag) in enumerate(ann):
+			# We make sure that we only plot annotation that are within the x range of the current view
+			if xlim is not None:
+				if start >= xlim[1] or end <= xlim[0]:
+					continue
+				
+				# Clip boundaries to xlim
+				start = max(start, xlim[0])
+				end = min(end, xlim[1])
+				
+				box_colors = ["gray", "lightgray"] # Alternates color between two
+				box_color = box_colors[i % 2]
+				
+				width = end - start
+				rect = Rectangle((start, 0), width, 1, facecolor=box_color, edgecolor="black", alpha=0.7)
+				curr_row[0].add_patch(rect)
+				
+				text_obj = curr_row[0].text(
+					(start + end) / 2, 0.5, tag,
+					ha='center', va='center',
+					fontsize=10, color="black", fontweight='bold', zorder=10, clip_on=True
+				)
+				
+				text_obj.set_clip_path(rect)
+			else:
+				box_colors = ["gray", "lightgray"] # Alternates color between two
+				box_color = box_colors[i % 2]
+				
+				width = end - start
+				rect = Rectangle((start, 0), width, 1, facecolor=box_color, edgecolor="black", alpha=0.7)
+				curr_row[0].add_patch(rect)
+				
+				text_obj = curr_row[0].text(
+					(start + end) / 2, 0.5, tag,
+					ha='center', va='center',
+					fontsize=10, color="black", fontweight='bold', zorder=10, clip_on=True
+				)
+				
+				text_obj.set_clip_path(rect)
+				
+	def add_legend(self, ypos=1.0):
+		"""
+		Add legend to the figure.
+
+		Parameters
+		----------
+		ypos: float
+			- y position from the top.
+			- > 1 to push it higher, < 1 to push it lower
+			- Default: 1.3
+		
+		Returns
+		-------
+		None
+		"""
+		axs = self._axs
+		fig = self._fig
+		
+		all_handles, all_labels = [], []
+		
+		for ax in axs:
+			handles, labels = ax[0].get_legend_handles_labels()
+			all_handles.extend(handles)
+			all_labels.extend(labels)
+			
+		# remove duplicates if needed
+		fig.legend(all_handles, all_labels, loc='upper right', bbox_to_anchor=(0.95, ypos), ncol=2, frameon=True, bbox_transform=fig.transFigure)
+		
+	def save(self, path="./figure.png"):
+		"""
+		Save the figure.
+
+		Parameters
+		----------
+		path: str
+			- Path to the output file.
+
+		Returns
+		-------
+		None
+		"""
+		fig = self._fig
+		fig.savefig(path, bbox_inches="tight")
+	
+		
+	
