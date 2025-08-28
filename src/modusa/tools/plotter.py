@@ -1103,7 +1103,7 @@ class Fig:
 		label: str
 			- Label for the plot.
 			- Legend will use this.
-			- Default: "Signal"
+			- Default: None
 		ylabel: str
 			- y-label for the plot.
 			- Default: None
@@ -1159,7 +1159,7 @@ class Fig:
 		label: str
 			- Label for the event type.
 			- This will appear in the legend.
-			- Default: "Event label"
+			- Default: None
 		ax: int
 			- Which specific axis to plot (1, 2, 3, ...)
 			- None
@@ -1197,6 +1197,10 @@ class Fig:
 		ann : list[tuple[Number, Number, str]] | None
 			- A list of annotation spans. Each tuple should be (start, end, label).
 			- Default: None (no annotations).
+		label: str
+			- Label for the annotation type.
+			- This will appear to the right of the aux plot.
+			- Default: None
 		ax: int
 			- Which specific axis to plot (1, 2, 3, ...)
 			- None
