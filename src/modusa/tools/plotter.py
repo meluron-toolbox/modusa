@@ -72,7 +72,14 @@ class Fig:
 		
 		return colors[self._curr_color_idx]
 	
-	def _calculate_extent(self, x, y):
+	def _calculate_extent(self, x, y, o):
+		"""
+		
+		Parameters
+		----------
+		o: str
+			- Origin
+		"""
 		# Handle spacing safely
 		if len(x) > 1:
 			dx = x[1] - x[0]
@@ -83,7 +90,10 @@ class Fig:
 		else:
 			dy = 1  # Default spacing for single value
 			
-		return [x[0] - dx / 2, x[-1] + dx / 2, y[0] - dy / 2, y[-1] + dy / 2]
+		if o == "lower":
+			return  [x[0] - dx / 2, x[-1] + dx / 2, y[0] - dy / 2, y[-1] + dy / 2]
+		else:
+			return [x[0] - dx / 2, x[-1] + dx / 2, y[-1] + dy / 2, y[0] - dy / 2]
 	
 	
 	def _generate_subplots(self, arrangement):
@@ -203,7 +213,7 @@ class Fig:
 		
 		if ylim is not None: curr_row[0].set_ylim(ylim)
 		
-	def add_matrix(self, M, y=None, x=None, c="gray_r", o="lower", label=None, ylabel=None, ylim=None, cbar=True, ax=None):
+	def add_matrix(self, M, y=None, x=None, c="gray_r", o="upper", label=None, ylabel=None, ylim=None, cbar=True, ax=None):
 		"""
 		Add matrix to the figure.
 			
@@ -248,12 +258,18 @@ class Fig:
 		
 		curr_row = self._get_curr_row() if ax is None else self._axs[ax]
 		
-		extent = self._calculate_extent(x, y)
+		extent = self._calculate_extent(x, y, o)
+		print(extent)
+		
 		im = curr_row[0].imshow(M, aspect="auto", origin=o, cmap=c, extent=extent)
 		
 		if ylabel is not None: curr_row[0].set_ylabel(ylabel)
 		
-		if ylim is not None: curr_row[0].set_ylim(ylim)
+		if ylim is not None:
+			if o == "lower":
+				curr_row[0].set_ylim(ylim)
+			elif o == "upper":
+				curr_row[0].set_ylim(ylim[::-1])
 		
 		if cbar is True:
 			cbar = plt.colorbar(im, cax=curr_row[1])
