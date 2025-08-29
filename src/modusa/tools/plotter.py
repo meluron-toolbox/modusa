@@ -915,14 +915,14 @@ class Fig:
 	
 	"""
 	
-	def __init__(self, arrangement="asm", title="Untitled", xlabel="Time (sec)", xlim=None):
+	def __init__(self, arrangement="asm", xlim=None):
 
 		self._xlim = xlim
 		self._curr_row_idx = 1 # Starting from 1 because row 0 is reserved for reference subplot
 		self._curr_color_idx = 0 # So that we have different color across all the subplots to avoid legend confusion
 		
 		# Subplot setup
-		self._fig, self._axs = self._generate_subplots(arrangement, title, xlabel) # This will fill in the all the above variables
+		self._fig, self._axs = self._generate_subplots(arrangement) # This will fill in the all the above variables
 		
 	
 	def _get_curr_row(self):
@@ -958,7 +958,7 @@ class Fig:
 		return [x[0] - dx / 2, x[-1] + dx / 2, y[0] - dy / 2, y[-1] + dy / 2]
 	
 		
-	def _generate_subplots(self, arrangement, title, xlabel):
+	def _generate_subplots(self, arrangement):
 		"""
 		Generate subplots based on the configuration.
 		"""
@@ -1013,12 +1013,6 @@ class Fig:
 		# xlim should be applied on reference subplot, rest all subplots will automatically adjust
 		if xlim is not None:
 			axs[0, 0].set_xlim(xlim)
-			
-		# Set title and label
-		if title is not None:
-			axs[0, 0].set_title(title)
-		if xlabel is not None:
-			axs[-1, 0].set_xlabel(xlabel)
 					
 		fig.subplots_adjust(hspace=0.2, wspace=0.05)
 
@@ -1284,6 +1278,47 @@ class Fig:
 			
 		# remove duplicates if needed
 		fig.legend(all_handles, all_labels, loc='upper right', bbox_to_anchor=(0.95, ypos), ncol=2, frameon=True, bbox_transform=fig.transFigure)
+		
+	def add_title(self, title=None, s=13):
+		"""
+		Add title to the figure.
+
+		Parameters
+		----------
+		title: str | None
+			- Title of the figure.
+			- Default: None
+		s: Number
+			- Font size.
+			- Default: None
+		"""
+		axs = self._axs
+		ref_ax = axs[0, 0] # Title is added to the top subplot (ref subplot)
+		
+		if title is not None:
+			ref_ax.set_title(title, pad=10, size=s)
+	
+		
+	def add_xlabel(self, xlabel=None, s=None):
+		"""
+		Add shared x-label to the figure.
+
+		Parameters
+		----------
+		xlabel: str | None
+			- xlabel for the figure.
+			- Default: None
+		s: Number
+			- Font size.
+			- Default: None
+		"""
+		axs = self._axs
+		ref_ax = axs[-1, 0] # X-label is added to the last subplot
+		if xlabel is not None:
+			ref_ax.set_xlabel(xlabel, size=s)
+	
+	def add_xticks():
+		raise NotImplementedError("Please raise a github issue `https://github.com/meluron-toolbox/modusa/issues`")
 		
 	def save(self, path="./figure.png"):
 		"""
