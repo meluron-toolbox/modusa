@@ -445,8 +445,11 @@ class Fig:
 		if xlabel is not None:
 			ref_ax.set_xlabel(xlabel, size=s)
 			
-	def add_xticks():
-		raise NotImplementedError("Please raise a github issue `https://github.com/meluron-toolbox/modusa/issues`")
+	def add_xticks(self, xticks=None):
+		"""
+		Not implemented yet
+		"""
+		raise NotImplementedError("Please raise a github issue https://github.com/meluron-toolbox/modusa/issues")
 		
 	def save(self, path="./figure.png"):
 		"""
