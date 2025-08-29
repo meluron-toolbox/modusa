@@ -259,7 +259,6 @@ class Fig:
 		curr_row = self._get_curr_row() if ax is None else self._axs[ax]
 		
 		extent = self._calculate_extent(x, y, o)
-		print(extent)
 		
 		im = curr_row[0].imshow(M, aspect="auto", origin=o, cmap=c, extent=extent)
 		
