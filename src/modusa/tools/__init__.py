@@ -7,7 +7,5 @@ from .audio_loader import load
 from .ann_loader import load_ann
 from .audio_recorder import record
 
-from .plotter import Figure1D as fig1d
-from .plotter import Figure2D as fig2d
 from .plotter import Fig as fig
 from .plotter import plot_dist
