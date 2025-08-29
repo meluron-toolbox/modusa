@@ -1277,7 +1277,7 @@ class Fig:
 			all_labels.extend(labels)
 			
 		# remove duplicates if needed
-		fig.legend(all_handles, all_labels, loc='upper right', bbox_to_anchor=(0.95, ypos), ncol=2, frameon=True, bbox_transform=fig.transFigure)
+		fig.legend(all_handles, all_labels, loc='upper right', bbox_to_anchor=(0.95, ypos), ncol=3, frameon=True, bbox_transform=fig.transFigure)
 		
 	def add_title(self, title=None, s=13):
 		"""
