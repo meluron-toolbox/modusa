@@ -1,9 +1,7 @@
 Plotter
 =======
 
-.. autoclass:: modusa.tools.plotter.Figure1D
-
-.. autoclass:: modusa.tools.plotter.Figure2D
+.. autoclass:: modusa.tools.plotter.Fig
 
 .. autofunction:: modusa.plot_dist
 
