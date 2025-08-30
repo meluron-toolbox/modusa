@@ -12,8 +12,8 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 from matplotlib.patches import Rectangle
-
 import numpy as np
+import fnmatch
 
 #===== Loading Devanagari font ========
 def _load_devanagari_font():
@@ -325,7 +325,7 @@ class Fig:
 				else:
 					curr_row[0].axvline(x=event, color=c, linestyle=ls, linewidth=lw)
 					
-	def add_annotation(self, ann, label=None, ax=None):
+	def add_annotation(self, ann, label=None, patterns=None, ax=None):
 		"""
 		Add annotation to the figure.
 		
@@ -338,6 +338,10 @@ class Fig:
 			- Label for the annotation type.
 			- This will appear to the right of the aux plot.
 			- Default: None
+		patterns: list[str]
+			- Patterns to group annotations
+			- E.g., "*R" or "<tag>*" or ["A*", "*B"]
+			- All elements in a group will have same color.
 		ax: int
 			- Which specific axis to plot (1, 2, 3, ...)
 			- None
@@ -349,7 +353,24 @@ class Fig:
 		
 		xlim = self._xlim
 		
-		for i, (start, end, tag) in enumerate(ann):
+		if isinstance(patterns, str): patterns = [patterns]
+		
+		if patterns is not None:
+			for i, (start, end, tag) in enumerate(ann):
+				for j, pattern in enumerate(patterns):
+					if fnmatch.fnmatch(tag, pattern):
+						ann[i] = (start, end, tag, j)
+						break
+					else:
+						ann[i] = (start, end, tag, None)
+		else:
+			for i, (start, end, tag) in enumerate(ann):
+				ann[i] = (start, end, tag, None)
+					
+		colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
+		print(ann)
+		
+		for i, (start, end, tag, group) in enumerate(ann):
 			# We make sure that we only plot annotation that are within the x range of the current view
 			if xlim is not None:
 				if start >= xlim[1] or end <= xlim[0]:
@@ -359,8 +380,10 @@ class Fig:
 				start = max(start, xlim[0])
 				end = min(end, xlim[1])
 				
-				box_colors = ["gray", "lightgray"] # Alternates color between two
-				box_color = box_colors[i % 2]
+				if group is not None:
+					box_color = colors[group]
+				else:
+					box_color = "lightgray"
 				
 				width = end - start
 				rect = Rectangle((start, 0), width, 1, facecolor=box_color, edgecolor="black", alpha=0.7)
@@ -374,8 +397,10 @@ class Fig:
 				
 				text_obj.set_clip_path(rect)
 			else:
-				box_colors = ["gray", "lightgray"] # Alternates color between two
-				box_color = box_colors[i % 2]
+				if group is not None:
+					box_color = colors[group]
+				else:
+					box_color = "lightgray"
 				
 				width = end - start
 				rect = Rectangle((start, 0), width, 1, facecolor=box_color, edgecolor="black", alpha=0.7)
