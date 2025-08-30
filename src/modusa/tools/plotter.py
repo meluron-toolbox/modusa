@@ -354,22 +354,23 @@ class Fig:
 		xlim = self._xlim
 		
 		if isinstance(patterns, str): patterns = [patterns]
+		ann_copy = ann.copy()
 		
 		if patterns is not None:
-			for i, (start, end, tag) in enumerate(ann):
+			for i, (start, end, tag) in enumerate(ann_copy):
 				for j, pattern in enumerate(patterns):
 					if fnmatch.fnmatch(tag, pattern):
-						ann[i] = (start, end, tag, j)
+						ann_copy[i] = (start, end, tag, j)
 						break
 					else:
-						ann[i] = (start, end, tag, None)
+						ann_copy[i] = (start, end, tag, None)
 		else:
-			for i, (start, end, tag) in enumerate(ann):
-				ann[i] = (start, end, tag, None)
+			for i, (start, end, tag) in enumerate(ann_copy):
+				ann_copy[i] = (start, end, tag, None)
 					
 		colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 		
-		for i, (start, end, tag, group) in enumerate(ann):
+		for i, (start, end, tag, group) in enumerate(ann_copy):
 			# We make sure that we only plot annotation that are within the x range of the current view
 			if xlim is not None:
 				if start >= xlim[1] or end <= xlim[0]:
