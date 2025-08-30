@@ -368,7 +368,6 @@ class Fig:
 				ann[i] = (start, end, tag, None)
 					
 		colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
-		print(ann)
 		
 		for i, (start, end, tag, group) in enumerate(ann):
 			# We make sure that we only plot annotation that are within the x range of the current view
