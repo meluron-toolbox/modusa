@@ -7,7 +7,7 @@
         <link rel="prefetch" href="../_static/logo.png" as="image" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2025.07.19 -->
-        <title>Plotter - modusa 0.3.57 documentation</title>
+        <title>Plotter - modusa 0.3.58 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -170,7 +170,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">modusa 0.3.57 documentation</div></a>
+      <a href="../index.html"><div class="brand">modusa 0.3.58 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -196,7 +196,7 @@
     <img class="sidebar-logo" src="../_static/logo.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">modusa 0.3.57 documentation</span>
+  <span class="sidebar-brand-text">modusa 0.3.58 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -452,7 +452,7 @@ of annotations, events.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="modusa.tools.plotter.Fig.add_annotation">
-<span class="sig-name descname"><span class="pre">add_annotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ann</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#Fig.add_annotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.plotter.Fig.add_annotation" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">add_annotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ann</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patterns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#Fig.add_annotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.plotter.Fig.add_annotation" title="Link to this definition">¶</a></dt>
 <dd><p>Add annotation to the figure.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -466,6 +466,12 @@ of annotations, events.</p>
 <li><p>Label for the annotation type.</p></li>
 <li><p>This will appear to the right of the aux plot.</p></li>
 <li><p>Default: None</p></li>
+</ul>
+</p></li>
+<li><p><strong>patterns</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – <ul>
+<li><p>Patterns to group annotations</p></li>
+<li><p>E.g., “<em>R” or “&lt;tag&gt;</em>” or [“A*”, “<a href="#id1"><span class="problematic" id="id2">*</span></a>B”]</p></li>
+<li><p>All elements in a group will have same color.</p></li>
 </ul>
 </p></li>
 <li><p><strong>ax</strong> (<em>int</em>) – <ul>
@@ -741,7 +747,7 @@ of annotations, events.</p>
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=cd95b668"></script>
+</div><script src="../_static/documentation_options.js?v=6fe2472f"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
