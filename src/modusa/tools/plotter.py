@@ -358,12 +358,12 @@ class Fig:
 		
 		if patterns is not None:
 			for i, (start, end, tag) in enumerate(ann_copy):
+				group = None
 				for j, pattern in enumerate(patterns):
 					if fnmatch.fnmatch(tag, pattern):
-						ann_copy[i] = (start, end, tag, j)
+						group = j
 						break
-					else:
-						ann_copy[i] = (start, end, tag, None)
+				ann_copy[i] = (start, end, tag, group)
 		else:
 			for i, (start, end, tag) in enumerate(ann_copy):
 				ann_copy[i] = (start, end, tag, None)
