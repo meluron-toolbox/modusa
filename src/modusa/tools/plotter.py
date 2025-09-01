@@ -325,7 +325,7 @@ class Fig:
 				else:
 					curr_row[0].axvline(x=event, color=c, linestyle=ls, linewidth=lw)
 					
-	def add_annotation(self, ann, label=None, patterns=None, ax=None):
+	def add_annotation(self, ann, label=None, patterns=None, ax=None, ylim=(0, 1)):
 		"""
 		Add annotation to the figure.
 		
@@ -345,6 +345,9 @@ class Fig:
 		ax: int
 			- Which specific axis to plot (1, 2, 3, ...)
 			- None
+		ylim: tuple[number, number]
+			- Y-limit for the annotation.
+			- Default: (0, 1)
 		Returns
 		-------
 		None
@@ -386,11 +389,11 @@ class Fig:
 					box_color = "lightgray"
 				
 				width = end - start
-				rect = Rectangle((start, 0), width, 1, facecolor=box_color, edgecolor="black", alpha=0.7)
+				rect = Rectangle((start, ylim[0]), width, ylim[1] - ylim[0], facecolor=box_color, edgecolor="black", alpha=0.7)
 				curr_row[0].add_patch(rect)
 				
 				text_obj = curr_row[0].text(
-					(start + end) / 2, 0.5, tag,
+					(start + end) / 2, (ylim[1] - ylim[0]) / 2, tag,
 					ha='center', va='center',
 					fontsize=10, color="black", fontweight='bold', zorder=10, clip_on=True
 				)
@@ -403,11 +406,11 @@ class Fig:
 					box_color = "lightgray"
 				
 				width = end - start
-				rect = Rectangle((start, 0), width, 1, facecolor=box_color, edgecolor="black", alpha=0.7)
+				rect = Rectangle((start, ylim[0]), width, ylim[1] - ylim[0], facecolor=box_color, edgecolor="black", alpha=0.7)
 				curr_row[0].add_patch(rect)
 				
 				text_obj = curr_row[0].text(
-					(start + end) / 2, 0.5, tag,
+					(start + end) / 2, (ylim[1] - ylim[0]) / 2, tag,
 					ha='center', va='center',
 					fontsize=10, color="black", fontweight='bold', zorder=10, clip_on=True
 				)
