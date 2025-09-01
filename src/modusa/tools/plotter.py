@@ -393,7 +393,7 @@ class Fig:
 				curr_row[0].add_patch(rect)
 				
 				text_obj = curr_row[0].text(
-					(start + end) / 2, (ylim[1] - ylim[0]) / 2, tag,
+					(start + end) / 2, (ylim[1] + ylim[0]) / 2, tag,
 					ha='center', va='center',
 					fontsize=10, color="black", fontweight='bold', zorder=10, clip_on=True
 				)
@@ -410,7 +410,7 @@ class Fig:
 				curr_row[0].add_patch(rect)
 				
 				text_obj = curr_row[0].text(
-					(start + end) / 2, (ylim[1] - ylim[0]) / 2, tag,
+					(start + end) / 2, (ylim[1] + ylim[0]) / 2, tag,
 					ha='center', va='center',
 					fontsize=10, color="black", fontweight='bold', zorder=10, clip_on=True
 				)
