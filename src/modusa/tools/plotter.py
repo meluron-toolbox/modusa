@@ -325,7 +325,7 @@ class Fig:
 				else:
 					curr_row[0].axvline(x=event, color=c, linestyle=ls, linewidth=lw)
 					
-	def add_annotation(self, ann, label=None, patterns=None, ax=None, ylim=(0, 1)):
+	def add_annotation(self, ann, label=None, patterns=None, ax=None, ylim=(0, 1), text_loc="middle"):
 		"""
 		Add annotation to the figure.
 		
@@ -348,6 +348,9 @@ class Fig:
 		ylim: tuple[number, number]
 			- Y-limit for the annotation.
 			- Default: (0, 1)
+		text_loc: str
+			- Location of text relative to the box. (b for bottom, m for middle, t for top)
+			- Default: "middle"
 		Returns
 		-------
 		None
@@ -373,6 +376,14 @@ class Fig:
 					
 		colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 		
+		# Text Location
+		if text_loc == "b": 
+			text_yloc = ylim[0] + 0.1 * (ylim[1] - ylim[0])
+		elif text_loc == "t":
+			text_yloc = ylim[1] - 0.1 * (ylim[1] - ylim[0])
+		else:
+			text_yloc = (ylim[1] + ylim[0]) / 2
+		
 		for i, (start, end, tag, group) in enumerate(ann_copy):
 			# We make sure that we only plot annotation that are within the x range of the current view
 			if xlim is not None:
@@ -382,6 +393,7 @@ class Fig:
 				# Clip boundaries to xlim
 				start = max(start, xlim[0])
 				end = min(end, xlim[1])
+			
 				
 				if group is not None:
 					box_color = colors[group]
@@ -393,7 +405,7 @@ class Fig:
 				curr_row[0].add_patch(rect)
 				
 				text_obj = curr_row[0].text(
-					(start + end) / 2, (ylim[1] + ylim[0]) / 2, tag,
+					(start + end) / 2, text_yloc, tag,
 					ha='center', va='center',
 					fontsize=10, color="black", fontweight='bold', zorder=10, clip_on=True
 				)
@@ -410,7 +422,7 @@ class Fig:
 				curr_row[0].add_patch(rect)
 				
 				text_obj = curr_row[0].text(
-					(start + end) / 2, (ylim[1] + ylim[0]) / 2, tag,
+					(start + end) / 2, text_yloc, tag,
 					ha='center', va='center',
 					fontsize=10, color="black", fontweight='bold', zorder=10, clip_on=True
 				)
