@@ -43,14 +43,14 @@ class Fig:
 	of annotations, events.
 	"""
 	
-	def __init__(self, arrangement="asm", xlim=None):
+	def __init__(self, arrangement="asm", xlim=None, width=16):
 		
 		self._xlim = xlim
 		self._curr_row_idx = 1 # Starting from 1 because row 0 is reserved for reference subplot
 		self._curr_color_idx = 0 # So that we have different color across all the subplots to avoid legend confusion
 		
 		# Subplot setup
-		self._fig, self._axs = self._generate_subplots(arrangement) # This will fill in the all the above variables
+		self._fig, self._axs = self._generate_subplots(arrangement, width) # This will fill in the all the above variables
 		
 		
 	def _get_curr_row(self):
@@ -96,12 +96,13 @@ class Fig:
 			return [x[0] - dx / 2, x[-1] + dx / 2, y[-1] + dy / 2, y[0] - dy / 2]
 	
 	
-	def _generate_subplots(self, arrangement):
+	def _generate_subplots(self, arrangement, width):
 		"""
 		Generate subplots based on the configuration.
 		"""
 		
 		xlim = self._xlim
+		fig_width = width
 		
 		n_aux_sp = arrangement.count("a")
 		n_signal_sp = arrangement.count("s")
@@ -126,7 +127,7 @@ class Fig:
 		fig_height = height["r"] + (n_aux_sp * height["a"]) + (n_signal_sp * height["s"]) + (n_matrix_sp * height["m"])
 		
 		# Create figure and axs
-		fig, axs = plt.subplots(n_sp, 2, figsize=(16, fig_height), height_ratios=height_ratios, width_ratios=[1, cbar_width])
+		fig, axs = plt.subplots(n_sp, 2, figsize=(fig_width, fig_height), height_ratios=height_ratios, width_ratios=[1, cbar_width])
 		
 		for i, char in enumerate(arrangement): # For each of the subplots, we modify the layout accordingly
 			if char == "r":
@@ -156,7 +157,7 @@ class Fig:
 		
 		return fig, axs
 	
-	def add_signal(self, y, x=None, c=None, ls=None, lw=None, m=None, ms=3, label=None, ylabel=None, ylim=None, ax=None):
+	def add_signal(self, y, x=None, c=None, ls=None, lw=None, m=None, ms=3, label=None, ylabel=None, ylim=None, yticks=None, yticklabels=None, xticks=None, xticklabels=None, ax=None):
 		"""
 		Add signal to the figure.
 			
@@ -192,6 +193,14 @@ class Fig:
 		ylim: tuple
 			- y-lim for the plot.
 			- Default: None
+		yticks: Arraylike
+			- Positions at which to place y-axis ticks.
+		yticklabels : list of str, optional
+			- Labels corresponding to `yticks`. Must be the same length as `yticks`.
+		xticks: Arraylike
+			- Positions at which to place x-axis ticks.
+		xticklabels : list of str, optional
+			- Labels corresponding to `xticks`. Must be the same length as `xticks`.
 		ax: int
 			- Which specific axis to plot (1, 2, 3, ...)
 			- None
@@ -203,17 +212,32 @@ class Fig:
 		
 		curr_row = self._get_curr_row() if ax is None else self._axs[ax]
 		
-		if x is None: x = np.arange(y.size)
+		if x is None: 
+			x = np.arange(y.size)
 		
-		if c is None: c = self._get_new_color()
+		if c is None: 
+			c = self._get_new_color()
 		
 		curr_row[0].plot(x, y, color=c, linestyle=ls, linewidth=lw, marker=m, markersize=ms, label=label)
 		
-		if ylabel is not None: curr_row[0].set_ylabel(ylabel)
+		if ylabel is not None: 
+			curr_row[0].set_ylabel(ylabel)
 		
-		if ylim is not None: curr_row[0].set_ylim(ylim)
+		if ylim is not None: 
+			curr_row[0].set_ylim(ylim)
 		
-	def add_matrix(self, M, y=None, x=None, c="gray_r", o="upper", label=None, ylabel=None, ylim=None, cbar=True, ax=None):
+		if yticks is not None:
+			curr_row[0].set_yticks(yticks)
+			if yticklabels is not None:
+				curr_row[0].set_yticklabels(yticklabels)
+				
+		if xticks is not None:
+			curr_row[0].set_xticks(xticks)
+			if xticklabels is not None:
+				curr_row[0].set_xticklabels(xticklabels)
+				
+		
+	def add_matrix(self, M, y=None, x=None, c="gray_r", o="upper", label=None, ylabel=None, ylim=None, yticks=None, yticklabels=None, xticks=None, xticklabels=None, cbar=True, ax=None):
 		"""
 		Add matrix to the figure.
 			
@@ -242,6 +266,14 @@ class Fig:
 		ylim: tuple
 			- y-lim for the plot.
 			- Default: None
+		yticks: Arraylike
+			- Positions at which to place y-axis ticks.
+		yticklabels : list of str, optional
+			- Labels corresponding to `yticks`. Must be the same length as `yticks`.
+		xticks: Arraylike
+			- Positions at which to place x-axis ticks.
+		xticklabels : list of str, optional
+			- Labels corresponding to `xticks`. Must be the same length as `xticks`.
 		cbar: bool
 			- Show colorbar
 			- Default: True
@@ -274,6 +306,16 @@ class Fig:
 			cbar = plt.colorbar(im, cax=curr_row[1])
 			if label is not None:
 				cbar.set_label(label, labelpad=5)
+		
+		if yticks is not None:
+			curr_row[0].set_yticks(yticks)
+			if yticklabels is not None:
+				curr_row[0].set_yticklabels(yticklabels)
+				
+		if xticks is not None:
+			curr_row[0].set_xticks(xticks)
+			if xticklabels is not None:
+				curr_row[0].set_xticklabels(xticklabels)
 				
 				
 	def add_events(self, events, c=None, ls=None, lw=None, label=None, ax=None):
