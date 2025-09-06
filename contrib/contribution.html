@@ -3,11 +3,11 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Tools" href="../tools/index.html" /><link rel="prev" title="&lt;/&gt;" href="qg.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" />
         <link rel="prefetch" href="../_static/logo.png" as="image" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2025.07.19 -->
-        <title>Contribution - modusa 0.3.64 documentation</title>
+        <title>Contribution - modusa 0.3.66 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -170,7 +170,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">modusa 0.3.64 documentation</div></a>
+      <a href="../index.html"><div class="brand">modusa 0.3.66 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -196,7 +196,7 @@
     <img class="sidebar-logo" src="../_static/logo.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">modusa 0.3.64 documentation</span>
+  <span class="sidebar-brand-text">modusa 0.3.66 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -205,10 +205,9 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Quick Tour to Modusa</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="evolution.html">Evolution</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qg.html">Quick Guide</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Contribution</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quicktour/evolution.html">Evolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quicktour/qg.html">Quick Guide</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
@@ -242,7 +241,7 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="../_sources/quicktour/contribution.rst.txt" title="View this page">
+  <a class="muted-link" href="../_sources/contrib/contribution.rst.txt" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
@@ -264,6 +263,73 @@
         <article role="main" id="furo-main-content">
           <section id="contribution">
 <h1>Contribution<a class="headerlink" href="#contribution" title="Link to this heading">¶</a></h1>
+<p>We welcome all kinds of contributions! Whether you’re a developer, tester, writer, or bug hunter, there’s a place for you in the <strong>modusa</strong> project.</p>
+<div class="admonition-steps-to-setup-the-project-locally-for-contribution admonition">
+<p class="admonition-title"><strong>Steps to setup the project locally for contribution:</strong></p>
+<ol class="arabic">
+<li><p><strong>Fork</strong> the repository on GitHub.</p></li>
+<li><p><strong>Clone</strong> your fork locally:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/your-username/modusa.git
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><strong>Set up your environment</strong>:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>modusa
+python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv<span class="w"> </span><span class="c1"># use python version &gt;= 3.10</span>
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate<span class="w">  </span><span class="c1"># or .venv\Scripts\activate on Windows</span>
+pdm<span class="w"> </span>install<span class="w"> </span><span class="c1"># or pip install -e .</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</div>
+<hr class="docutils" />
+<div class="admonition-you-can-contribute-to-modusa-in-many-ways admonition">
+<p class="admonition-title"><strong>You can contribute to Modusa in many ways:</strong></p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>As a Developer</strong></dt><dd><p>Add new features to the codebase.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>As a Tester</strong></dt><dd><p>Test the behavior of engines, plugins, signals, and generators. Write test cases or report bugs with reproducible examples.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>As a Bug Fixer</strong></dt><dd><p>Pick an open issue or inspect the codebase for possible bugs. Submit patches with clean, descriptive commits.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>As a Documentation Contributor</strong></dt><dd><p>Improve doc clarity, fix typos, or contribute new tutorials and guides. Good docs help everyone.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>As an Idea Contributor</strong></dt><dd><p>Suggest new signal types, transformation logic, or plugins that could expand the modusa ecosystem.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="admonition-some-general-guidelines-that-you-should-follow admonition">
+<p class="admonition-title"><strong>Some general guidelines that you should follow:</strong></p>
+<ul class="simple">
+<li><p>Write modular, readable, and well-documented code.</p></li>
+<li><p>Follow existing naming conventions and project structure.</p></li>
+<li><p>Add tests for any new functionality you introduce.</p></li>
+<li><p>Use meaningful and concise commit messages.</p></li>
+<li><p>If in doubt, open a GitHub issue or discussion before starting work.</p></li>
+<li><p>Be kind and constructive, we value respectful collaboration.</p></li>
+</ul>
+</div>
 </section>
 
         </article>
@@ -271,26 +337,8 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../tools/index.html">
-              <div class="page-info">
-                <div class="context">
-                  <span>Next</span>
-                </div>
-                <div class="title">Tools</div>
-              </div>
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-            </a>
-          <a class="prev-page" href="qg.html">
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-              <div class="page-info">
-                <div class="context">
-                  <span>Previous</span>
-                </div>
-                
-                <div class="title">&lt;/&gt;</div>
-                
-              </div>
-            </a>
+          
+          
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -315,7 +363,7 @@
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=dadca6e9"></script>
+</div><script src="../_static/documentation_options.js?v=532d4864"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
