@@ -41,9 +41,40 @@ class Fig:
 	A utility class that provides easy-to-use API for 
 	plotting 1D/2D signals along with clean representations 
 	of annotations, events.
+
+	Parameters
+	----------
+	arrangement: str
+		- Arrangement of the subplots you want in the figure.
+		- "a" for aux plot which is good for adding annotations and events onto.
+		- "s" for signal plot which is good for 1D array.
+		- "m" for matrix plot which is good for 2D array.
+		- E.g., "asm" or "aasm" or "saams", ...
+		- Default: "asm"
+	xlim: tuple[number, number] | None
+		- Since all the subplots share x-axis, we set the x limit while creating the figure.
+		- Default: None
+	width: number
+		- Width of the figure
+		- Default: 16
+	dark_mode: bool
+		- Do you want dark mode?
+		- Default: True
 	"""
 	
-	def __init__(self, arrangement="asm", xlim=None, width=16):
+	def __init__(self, arrangement="asm", xlim=None, width=16, dark_mode=True):
+		
+		if dark_mode:
+			plt.style.use("dark_background")
+		else: # We do not reset to default as it changes other params leading to unexpected behaviour 
+			color_keys = [
+				"axes.facecolor", "axes.edgecolor", "axes.labelcolor",
+				"xtick.color", "ytick.color", "text.color",
+				"figure.facecolor", "figure.edgecolor",
+				"legend.facecolor", "legend.edgecolor"
+			]
+			for k in color_keys:
+				mpl.rcParams[k] = mpl.rcParamsDefault[k]
 		
 		self._xlim = xlim
 		self._curr_row_idx = 1 # Starting from 1 because row 0 is reserved for reference subplot

@@ -1,7 +1,7 @@
 MODUSA
 ======
 
-A library with utility tools especially for audio signals.
+A python library with utility tools designed especially for audio signals.
 
 .. toctree::
    :maxdepth: 1
@@ -9,7 +9,6 @@ A library with utility tools especially for audio signals.
    
    quicktour/evolution
    Quick Guide <quicktour/qg>
-   quicktour/contribution
 
 .. toctree::
    :maxdepth: 1
