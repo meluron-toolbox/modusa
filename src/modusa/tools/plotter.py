@@ -71,7 +71,8 @@ class Fig:
 				"axes.facecolor", "axes.edgecolor", "axes.labelcolor",
 				"xtick.color", "ytick.color", "text.color",
 				"figure.facecolor", "figure.edgecolor",
-				"legend.facecolor", "legend.edgecolor"
+				"legend.facecolor", "legend.edgecolor",
+				"axes.prop_cycle", # This is to make sure that the plots colors are brighter in light mode
 			]
 			for k in color_keys:
 				mpl.rcParams[k] = mpl.rcParamsDefault[k]
