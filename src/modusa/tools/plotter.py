@@ -167,14 +167,14 @@ class Fig:
 				axs[i, 1].axis("off")
 			elif char == "a": # Remove ticks and labels from all the aux subplots
 				axs[i, 0].tick_params(left=False, bottom=False, labelleft=False, labelbottom=False)
-				axs[i, 0].grid(True, linestyle=':', linewidth=0.7, color='gray', alpha=0.7)
+				axs[i, 0].grid(True, linestyle='--', linewidth=0.7, color="lightgray" ,alpha=0.6)
 				axs[i, 1].axis("off")
 			elif char == "s":
 				axs[i, 0].tick_params(bottom=False, labelbottom=False)
-				axs[i, 0].grid(True, linestyle=':', linewidth=0.7, color='gray', alpha=0.7)
+				axs[i, 0].grid(True, linestyle='--', linewidth=0.7, color="lightgray" ,alpha=0.6)
 				axs[i, 1].axis("off")
 			elif char == "m":
-				axs[i, 0].grid(True, linestyle=':', linewidth=0.7, color='gray', alpha=0.7)
+				axs[i, 0].grid(True, linestyle='--', linewidth=0.7, color="lightgray" ,alpha=0.6)
 				axs[i, 0].tick_params(bottom=False, labelbottom=False)
 				
 			axs[i, 0].sharex(axs[0, 0])
