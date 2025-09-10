@@ -60,12 +60,9 @@ class Fig:
 	dark_mode: bool
 		- Do you want dark mode?
 		- Default: True
-	grid: bool
-		- Do you want the grid?
-		- Default: True
 	"""
 	
-	def __init__(self, arrangement="asm", xlim=None, width=16, dark_mode=True, grid=True):
+	def __init__(self, arrangement="asm", xlim=None, width=16, dark_mode=True):
 		
 		if dark_mode:
 			plt.style.use("dark_background")
@@ -83,7 +80,6 @@ class Fig:
 		self._xlim = xlim
 		self._curr_row_idx = 1 # Starting from 1 because row 0 is reserved for reference subplot
 		self._curr_color_idx = 0 # So that we have different color across all the subplots to avoid legend confusion
-		self._grid = grid
 		
 		# Subplot setup
 		self._fig, self._axs = self._generate_subplots(arrangement, width) # This will fill in the all the above variables
@@ -138,7 +134,6 @@ class Fig:
 		"""
 		
 		xlim = self._xlim
-		grid: bool = self._grid
 		fig_width = width
 		
 		n_aux_sp = arrangement.count("a")
@@ -172,17 +167,11 @@ class Fig:
 				axs[i, 1].axis("off")
 			elif char == "a": # Remove ticks and labels from all the aux subplots
 				axs[i, 0].tick_params(left=False, bottom=False, labelleft=False, labelbottom=False)
-				if grid:
-					axs[i, 0].grid(True, linestyle='--', linewidth=0.7, color="lightgray" ,alpha=0.6)
 				axs[i, 1].axis("off")
 			elif char == "s":
 				axs[i, 0].tick_params(bottom=False, labelbottom=False)
-				if grid:
-					axs[i, 0].grid(True, linestyle='--', linewidth=0.7, color="lightgray" ,alpha=0.6)
 				axs[i, 1].axis("off")
 			elif char == "m":
-				if grid:
-					axs[i, 0].grid(True, linestyle='--', linewidth=0.7, color="lightgray" ,alpha=0.6)
 				axs[i, 0].tick_params(bottom=False, labelbottom=False)
 				
 			axs[i, 0].sharex(axs[0, 0])
@@ -197,7 +186,7 @@ class Fig:
 		
 		return fig, axs
 	
-	def add_signal(self, y, x=None, c=None, ls=None, lw=None, m=None, ms=3, label=None, ylabel=None, ylim=None, yticks=None, yticklabels=None, xticks=None, xticklabels=None, ax=None):
+	def add_signal(self, y, x=None, c=None, ls=None, lw=None, m=None, ms=3, label=None, ylabel=None, ylim=None, yticks=None, yticklabels=None, xticks=None, xticklabels=None, grid=True, ax=None):
 		"""
 		Add signal to the figure.
 			
@@ -241,6 +230,9 @@ class Fig:
 			- Positions at which to place x-axis ticks.
 		xticklabels : list of str, optional
 			- Labels corresponding to `xticks`. Must be the same length as `xticks`.
+		grid: bool
+			- Do you want the grid?
+			- Default: True
 		ax: int
 			- Which specific axis to plot (1, 2, 3, ...)
 			- None
@@ -275,9 +267,12 @@ class Fig:
 			curr_row[0].set_xticks(xticks)
 			if xticklabels is not None:
 				curr_row[0].set_xticklabels(xticklabels)
+		
+		if grid is True:
+			curr_row[0].grid(True, linestyle='--', linewidth=0.7, color="lightgray" ,alpha=0.6)
 				
 		
-	def add_matrix(self, M, y=None, x=None, c="gray_r", o="upper", label=None, ylabel=None, ylim=None, yticks=None, yticklabels=None, xticks=None, xticklabels=None, cbar=True, ax=None):
+	def add_matrix(self, M, y=None, x=None, c="gray_r", o="upper", label=None, ylabel=None, ylim=None, yticks=None, yticklabels=None, xticks=None, xticklabels=None, cbar=True, grid=True, ax=None):
 		"""
 		Add matrix to the figure.
 			
@@ -316,6 +311,9 @@ class Fig:
 			- Labels corresponding to `xticks`. Must be the same length as `xticks`.
 		cbar: bool
 			- Show colorbar
+			- Default: True
+		grid: bool
+			- Do you want the grid?
 			- Default: True
 		ax: int
 			- Which specific axis to plot (1, 2, 3, ...)
@@ -357,8 +355,12 @@ class Fig:
 			if xticklabels is not None:
 				curr_row[0].set_xticklabels(xticklabels)
 				
+		if grid is True:
+			curr_row[0].grid(True, linestyle='--', linewidth=0.7, color="lightgray" ,alpha=0.6)
+			
 				
-	def add_events(self, events, c=None, ls=None, lw=None, label=None, ax=None):
+				
+	def add_events(self, events, c=None, ls=None, lw=None, label=None, grid=True, ax=None):
 		"""
 		Add events to the figure.
 		
@@ -379,6 +381,9 @@ class Fig:
 			- Label for the event type.
 			- This will appear in the legend.
 			- Default: None
+		grid: bool
+			- Do you want the grid?
+			- Default: True
 		ax: int
 			- Which specific axis to plot (1, 2, 3, ...)
 			- None
@@ -407,7 +412,10 @@ class Fig:
 				else:
 					curr_row[0].axvline(x=event, color=c, linestyle=ls, linewidth=lw)
 					
-	def add_annotation(self, ann, label=None, patterns=None, ax=None, ylim=(0, 1), text_loc="middle"):
+		if grid is True:
+			curr_row[0].grid(True, linestyle='--', linewidth=0.7, color="lightgray" ,alpha=0.6)
+					
+	def add_annotation(self, ann, label=None, patterns=None, ylim=(0, 1), text_loc="middle", grid=True, ax=None):
 		"""
 		Add annotation to the figure.
 		
@@ -424,15 +432,18 @@ class Fig:
 			- Patterns to group annotations
 			- E.g., "*R" or "<tag>*" or ["A*", "*B"]
 			- All elements in a group will have same color.
-		ax: int
-			- Which specific axis to plot (1, 2, 3, ...)
-			- None
 		ylim: tuple[number, number]
 			- Y-limit for the annotation.
 			- Default: (0, 1)
 		text_loc: str
 			- Location of text relative to the box. (b for bottom, m for middle, t for top)
 			- Default: "middle"
+		grid: bool
+			- Do you want the grid?
+			- Default: True
+		ax: int
+			- Which specific axis to plot (1, 2, 3, ...)
+			- None
 		Returns
 		-------
 		None
@@ -515,6 +526,9 @@ class Fig:
 			curr_row[0].set_ylabel(label, rotation=0, ha="center", va="center")
 			curr_row[0].yaxis.set_label_position("right")
 			curr_row[0].yaxis.set_label_coords(1.05, 0.75)
+		
+		if grid is True:
+			curr_row[0].grid(True, linestyle='--', linewidth=0.7, color="lightgray" ,alpha=0.6)
 			
 	def add_legend(self, ypos=1.0):
 		"""
