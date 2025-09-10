@@ -60,9 +60,12 @@ class Fig:
 	dark_mode: bool
 		- Do you want dark mode?
 		- Default: True
+	grid: bool
+		- Do you want the grid?
+		- Default: True
 	"""
 	
-	def __init__(self, arrangement="asm", xlim=None, width=16, dark_mode=True):
+	def __init__(self, arrangement="asm", xlim=None, width=16, dark_mode=True, grid=True):
 		
 		if dark_mode:
 			plt.style.use("dark_background")
@@ -80,6 +83,7 @@ class Fig:
 		self._xlim = xlim
 		self._curr_row_idx = 1 # Starting from 1 because row 0 is reserved for reference subplot
 		self._curr_color_idx = 0 # So that we have different color across all the subplots to avoid legend confusion
+		self._grid = grid
 		
 		# Subplot setup
 		self._fig, self._axs = self._generate_subplots(arrangement, width) # This will fill in the all the above variables
@@ -134,6 +138,7 @@ class Fig:
 		"""
 		
 		xlim = self._xlim
+		grid: bool = self._grid
 		fig_width = width
 		
 		n_aux_sp = arrangement.count("a")
@@ -167,14 +172,17 @@ class Fig:
 				axs[i, 1].axis("off")
 			elif char == "a": # Remove ticks and labels from all the aux subplots
 				axs[i, 0].tick_params(left=False, bottom=False, labelleft=False, labelbottom=False)
-				axs[i, 0].grid(True, linestyle='--', linewidth=0.7, color="lightgray" ,alpha=0.6)
+				if grid:
+					axs[i, 0].grid(True, linestyle='--', linewidth=0.7, color="lightgray" ,alpha=0.6)
 				axs[i, 1].axis("off")
 			elif char == "s":
 				axs[i, 0].tick_params(bottom=False, labelbottom=False)
-				axs[i, 0].grid(True, linestyle='--', linewidth=0.7, color="lightgray" ,alpha=0.6)
+				if grid:
+					axs[i, 0].grid(True, linestyle='--', linewidth=0.7, color="lightgray" ,alpha=0.6)
 				axs[i, 1].axis("off")
 			elif char == "m":
-				axs[i, 0].grid(True, linestyle='--', linewidth=0.7, color="lightgray" ,alpha=0.6)
+				if grid:
+					axs[i, 0].grid(True, linestyle='--', linewidth=0.7, color="lightgray" ,alpha=0.6)
 				axs[i, 0].tick_params(bottom=False, labelbottom=False)
 				
 			axs[i, 0].sharex(axs[0, 0])
