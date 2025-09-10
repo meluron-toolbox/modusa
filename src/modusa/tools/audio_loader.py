@@ -10,7 +10,7 @@ from .youtube_downloader import download
 from .audio_converter import convert
 
 
-def load(path, sr=None):
+def load(path, sr=None, clip=None):
 	"""
 	Loads audio file from various sources.
 
@@ -19,15 +19,19 @@ def load(path, sr=None):
 		import modusa as ms
 		audio_fp = ms.load(
 			"https://www.youtube.com/watch?v=lIpw9-Y_N0g",
-			sr = None)
+			sr = None, clip=(5, 10))
 
 	Parameters
 	----------
 	path: str
 		- Path to the audio
 		- Youtube URL
-	sr: int
+	sr: int | None
 		- Sampling rate to load the audio in.
+	clip: number | tuple[number, number] | None
+		- Which segment of the audio you want.
+		- Eg., 10 => First 10 sec, (5, 10) => 5 to 10 second
+		- Default: None => Entire audio.
 
 	Return
 	------
@@ -86,5 +90,17 @@ def load(path, sr=None):
 				n_samples = int(len(audio_data) * sr / audio_sr)
 				audio_data = resample(audio_data, n_samples)
 				audio_sr = sr
+				
+	# Clip the audio signal as per needed
+	if clip is not None:
+		# Map clip input to the right format
+		if isinstance(clip, int or float):
+			clip = (0, clip)
+		elif isinstance(clip, tuple) and len(clip) > 1:
+			clip = (clip[0], clip[1])
+		else:
+			raise ValueError(f"Invalid clip type or length: {type(clip)}, len={len(clip)}")
+		
+		audio_data = audio_data[int(clip[0]*sr):int(clip[1]*sr)]
 	
 	return audio_data, audio_sr, title
