@@ -415,7 +415,7 @@ class Fig:
 		if grid is True:
 			curr_row[0].grid(True, linestyle='--', linewidth=0.7, color="lightgray" ,alpha=0.6)
 					
-	def add_annotation(self, ann, label=None, patterns=None, ylim=(0, 1), text_loc="middle", grid=True, ax=None):
+	def add_annotation(self, ann, label=None, patterns=None, ylim=(0, 1), text_loc="m", grid=True, ax=None):
 		"""
 		Add annotation to the figure.
 		
@@ -437,7 +437,7 @@ class Fig:
 			- Default: (0, 1)
 		text_loc: str
 			- Location of text relative to the box. (b for bottom, m for middle, t for top)
-			- Default: "middle"
+			- Default: "m"
 		grid: bool
 			- Do you want the grid?
 			- Default: True
@@ -470,9 +470,9 @@ class Fig:
 		colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 		
 		# Text Location
-		if text_loc == "b": 
+		if text_loc in ["b", "bottom", "lower", "l"]: 
 			text_yloc = ylim[0] + 0.1 * (ylim[1] - ylim[0])
-		elif text_loc == "t":
+		elif text_loc in ["t", "top", "u", "upper"]:
 			text_yloc = ylim[1] - 0.1 * (ylim[1] - ylim[0])
 		else:
 			text_yloc = (ylim[1] + ylim[0]) / 2
