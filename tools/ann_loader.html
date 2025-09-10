@@ -7,7 +7,7 @@
         <link rel="prefetch" href="../_static/logo.png" as="image" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2025.07.19 -->
-        <title>Annotation Loader - modusa 0.3.68 documentation</title>
+        <title>Annotation Loader - modusa 0.3.69 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -170,7 +170,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">modusa 0.3.68 documentation</div></a>
+      <a href="../index.html"><div class="brand">modusa 0.3.69 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -196,7 +196,7 @@
     <img class="sidebar-logo" src="../_static/logo.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">modusa 0.3.68 documentation</span>
+  <span class="sidebar-brand-text">modusa 0.3.69 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -265,11 +265,22 @@
 <h1>Annotation Loader<a class="headerlink" href="#annotation-loader" title="Link to this heading">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="modusa.load_ann">
-<span class="sig-prename descclassname"><span class="pre">modusa.</span></span><span class="sig-name descname"><span class="pre">load_ann</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/ann_loader.html#load_ann"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.load_ann" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">modusa.</span></span><span class="sig-name descname"><span class="pre">load_ann</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/ann_loader.html#load_ann"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.load_ann" title="Link to this definition">¶</a></dt>
 <dd><p>Load annotation from audatity label text file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – label text file path.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – <ul>
+<li><p>label text file path.</p></li>
+</ul>
+</p></li>
+<li><p><strong>clip</strong> (<em>tuple</em><em>[</em><em>number</em><em>, </em><em>number</em><em>] </em><em>| </em><em>number</em><em> | </em><em>None</em>) – <ul>
+<li><p>Incase you clipped the audio signal, this parameter will help clip the annotation.</p></li>
+<li><p>If you clip the audio, say from (10, 20), set the clip to (10, 20).</p></li>
+<li><p>Default: None</p></li>
+</ul>
+</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
@@ -354,7 +365,7 @@
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=581acd45"></script>
+</div><script src="../_static/documentation_options.js?v=f15ab923"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
