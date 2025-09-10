@@ -272,7 +272,7 @@ class Fig:
 			curr_row[0].grid(True, linestyle='--', linewidth=0.7, color="lightgray" ,alpha=0.6)
 				
 		
-	def add_matrix(self, M, y=None, x=None, c="gray_r", o="upper", label=None, ylabel=None, ylim=None, yticks=None, yticklabels=None, xticks=None, xticklabels=None, cbar=True, grid=True, ax=None):
+	def add_matrix(self, M, y=None, x=None, c="viridis", o="upper", label=None, ylabel=None, ylim=None, yticks=None, yticklabels=None, xticks=None, xticklabels=None, cbar=True, grid=True, ax=None):
 		"""
 		Add matrix to the figure.
 			
