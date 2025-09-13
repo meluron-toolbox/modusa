@@ -6,7 +6,7 @@
         <link rel="prefetch" href="../../../_static/logo.png" as="image" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2025.07.19 -->
-        <title>modusa.tools.plotter - modusa 0.3.74 documentation</title>
+        <title>modusa.tools.plotter - modusa 0.3.75 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -169,7 +169,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">modusa 0.3.74 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">modusa 0.3.75 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -195,7 +195,7 @@
     <img class="sidebar-logo" src="../../../_static/logo.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">modusa 0.3.74 documentation</span>
+  <span class="sidebar-brand-text">modusa 0.3.75 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -812,26 +812,28 @@
 	<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Rectangle</span>
 	<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 	
-<div class="viewcode-block" id="Fig.add_arrow">
-<a class="viewcode-back" href="../../../tools/plotter.html#modusa.tools.plotter.Fig.add_arrow">[docs]</a>
-	<span class="k">def</span><span class="w"> </span><span class="nf">add_arrow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xy</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">text_offset</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Fig.add_arrows">
+<a class="viewcode-back" href="../../../tools/plotter.html#modusa.tools.plotter.Fig.add_arrows">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">add_arrows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xys</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">text_offset</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		Add an arrow pointing to a specific point with a boxed label at the tail.</span>
+<span class="sd">		Add multiple arrows pointing to specific points with boxed labels at the tails.</span>
 <span class="sd">	</span>
 <span class="sd">		Parameters</span>
 <span class="sd">		----------</span>
-<span class="sd">		xy : tuple[float, float]</span>
-<span class="sd">			- Target point (x, y) for the arrow head.</span>
-<span class="sd">		label : str</span>
-<span class="sd">			- Text label at the arrow tail.</span>
-<span class="sd">		text_offset : tuple[float, float]</span>
-<span class="sd">			- Offset (dx, dy) for label position from arrow tail.</span>
-<span class="sd">		c : str</span>
-<span class="sd">			- Color for arrow and text.</span>
-<span class="sd">			- Default: &quot;r&quot; for red</span>
-<span class="sd">		fontsize : int</span>
-<span class="sd">			- Font size of the label text.</span>
-<span class="sd">			- Default: 12</span>
+<span class="sd">		xys : list[tuple[float, float]]</span>
+<span class="sd">			- List of target points (x, y) for the arrow heads.</span>
+<span class="sd">		labels : list[str] | str</span>
+<span class="sd">			- List of text labels at the arrow tails.</span>
+<span class="sd">			- If str, the same label is used for all points.</span>
+<span class="sd">		text_offset : tuple[float, float] | list[tuple[float, float]]</span>
+<span class="sd">			- Offset(s) (dx, dy) for label positions from arrow tails.</span>
+<span class="sd">			- If single tuple, same offset is applied to all.</span>
+<span class="sd">		c : str | list[str]</span>
+<span class="sd">			- Color(s) for arrow and text.</span>
+<span class="sd">			- If str, same color is applied to all.</span>
+<span class="sd">		fontsize : int | list[int]</span>
+<span class="sd">			- Font size(s) of the label text.</span>
+<span class="sd">			- If int, same size is applied to all.</span>
 <span class="sd">		ax : int | None</span>
 <span class="sd">			- Which specific axis to plot (1, 2, 3, ...).</span>
 <span class="sd">			- If None, uses the current row.</span>
@@ -842,21 +844,33 @@
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">curr_row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_prev_row</span><span class="p">()</span> <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_axs</span><span class="p">[</span><span class="n">ax</span><span class="p">]</span>
 		
-		<span class="n">arrowprops</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;-&gt;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-		<span class="n">bbox</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;round,pad=0.3&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+		<span class="c1"># Normalize single values into lists</span>
+		<span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">xys</span><span class="p">)</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+			<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">labels</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text_offset</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+			<span class="n">text_offset</span> <span class="o">=</span> <span class="p">[</span><span class="n">text_offset</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+			<span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fontsize</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+			<span class="n">fontsize</span> <span class="o">=</span> <span class="p">[</span><span class="n">fontsize</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
 			
-		<span class="n">text_x</span><span class="p">,</span> <span class="n">text_y</span> <span class="o">=</span> <span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">text_offset</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">text_offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-		
-		<span class="n">curr_row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
-			<span class="n">label</span><span class="p">,</span>
-			<span class="n">xy</span><span class="o">=</span><span class="n">xy</span><span class="p">,</span> <span class="n">xycoords</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">,</span>
-			<span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="n">text_x</span><span class="p">,</span> <span class="n">text_y</span><span class="p">),</span> <span class="n">textcoords</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">,</span>
-			<span class="n">arrowprops</span><span class="o">=</span><span class="n">arrowprops</span><span class="p">,</span>
-			<span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span>
-			<span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">,</span>
-			<span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
-			<span class="n">bbox</span><span class="o">=</span><span class="n">bbox</span>
-		<span class="p">)</span></div>
+		<span class="k">for</span> <span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">xys</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">text_offset</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">fontsize</span><span class="p">):</span>
+			<span class="n">arrowprops</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;-&gt;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+			<span class="n">bbox</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;round,pad=0.3&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+			
+			<span class="n">text_x</span><span class="p">,</span> <span class="n">text_y</span> <span class="o">=</span> <span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+			
+			<span class="n">curr_row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+				<span class="n">label</span><span class="p">,</span>
+				<span class="n">xy</span><span class="o">=</span><span class="n">xy</span><span class="p">,</span> <span class="n">xycoords</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">,</span>
+				<span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="n">text_x</span><span class="p">,</span> <span class="n">text_y</span><span class="p">),</span> <span class="n">textcoords</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">,</span>
+				<span class="n">arrowprops</span><span class="o">=</span><span class="n">arrowprops</span><span class="p">,</span>
+				<span class="n">fontsize</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span>
+				<span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+				<span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+				<span class="n">bbox</span><span class="o">=</span><span class="n">bbox</span>
+			<span class="p">)</span></div>
 
 			
 <div class="viewcode-block" id="Fig.add_legend">
@@ -1149,7 +1163,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=7ea422f0"></script>
+</div><script src="../../../_static/documentation_options.js?v=d7e45696"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

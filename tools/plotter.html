@@ -7,7 +7,7 @@
         <link rel="prefetch" href="../_static/logo.png" as="image" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2025.07.19 -->
-        <title>Plotter - modusa 0.3.74 documentation</title>
+        <title>Plotter - modusa 0.3.75 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -170,7 +170,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">modusa 0.3.74 documentation</div></a>
+      <a href="../index.html"><div class="brand">modusa 0.3.75 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -196,7 +196,7 @@
     <img class="sidebar-logo" src="../_static/logo.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">modusa 0.3.74 documentation</span>
+  <span class="sidebar-brand-text">modusa 0.3.75 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -788,32 +788,34 @@ zorder: float</p>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.add_arrow">
-<span class="sig-name descname"><span class="pre">add_arrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#Fig.add_arrow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.plotter.Fig.add_arrow" title="Link to this definition">¶</a></dt>
-<dd><p>Add an arrow pointing to a specific point with a boxed label at the tail.</p>
+<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.add_arrows">
+<span class="sig-name descname"><span class="pre">add_arrows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xys</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#Fig.add_arrows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.plotter.Fig.add_arrows" title="Link to this definition">¶</a></dt>
+<dd><p>Add multiple arrows pointing to specific points with boxed labels at the tails.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>xy</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – <ul>
-<li><p>Target point (x, y) for the arrow head.</p></li>
+<li><p><strong>xys</strong> (<em>list</em><em>[</em><em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>]</em>) – <ul>
+<li><p>List of target points (x, y) for the arrow heads.</p></li>
 </ul>
 </p></li>
-<li><p><strong>label</strong> (<em>str</em>) – <ul>
-<li><p>Text label at the arrow tail.</p></li>
+<li><p><strong>labels</strong> (<em>list</em><em>[</em><em>str</em><em>] </em><em>| </em><em>str</em>) – <ul>
+<li><p>List of text labels at the arrow tails.</p></li>
+<li><p>If str, the same label is used for all points.</p></li>
 </ul>
 </p></li>
-<li><p><strong>text_offset</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – <ul>
-<li><p>Offset (dx, dy) for label position from arrow tail.</p></li>
+<li><p><strong>text_offset</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>] </em><em>| </em><em>list</em><em>[</em><em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>]</em>) – <ul>
+<li><p>Offset(s) (dx, dy) for label positions from arrow tails.</p></li>
+<li><p>If single tuple, same offset is applied to all.</p></li>
 </ul>
 </p></li>
-<li><p><strong>c</strong> (<em>str</em>) – <ul>
-<li><p>Color for arrow and text.</p></li>
-<li><p>Default: “r” for red</p></li>
+<li><p><strong>c</strong> (<em>str</em><em> | </em><em>list</em><em>[</em><em>str</em><em>]</em>) – <ul>
+<li><p>Color(s) for arrow and text.</p></li>
+<li><p>If str, same color is applied to all.</p></li>
 </ul>
 </p></li>
-<li><p><strong>fontsize</strong> (<em>int</em>) – <ul>
-<li><p>Font size of the label text.</p></li>
-<li><p>Default: 12</p></li>
+<li><p><strong>fontsize</strong> (<em>int</em><em> | </em><em>list</em><em>[</em><em>int</em><em>]</em>) – <ul>
+<li><p>Font size(s) of the label text.</p></li>
+<li><p>If int, same size is applied to all.</p></li>
 </ul>
 </p></li>
 <li><p><strong>ax</strong> (<em>int</em><em> | </em><em>None</em>) – <ul>
@@ -1095,7 +1097,7 @@ zorder: float</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#modusa.tools.plotter.Fig.plt"><code class="docutils literal notranslate"><span class="pre">Fig.plt</span></code></a></li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.add_arrow"><code class="docutils literal notranslate"><span class="pre">Fig.add_arrow()</span></code></a></li>
+<li><a class="reference internal" href="#modusa.tools.plotter.Fig.add_arrows"><code class="docutils literal notranslate"><span class="pre">Fig.add_arrows()</span></code></a></li>
 <li><a class="reference internal" href="#modusa.tools.plotter.Fig.add_legend"><code class="docutils literal notranslate"><span class="pre">Fig.add_legend()</span></code></a></li>
 <li><a class="reference internal" href="#modusa.tools.plotter.Fig.add_title"><code class="docutils literal notranslate"><span class="pre">Fig.add_title()</span></code></a></li>
 <li><a class="reference internal" href="#modusa.tools.plotter.Fig.add_xlabel"><code class="docutils literal notranslate"><span class="pre">Fig.add_xlabel()</span></code></a></li>
@@ -1115,7 +1117,7 @@ zorder: float</p>
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=7ea422f0"></script>
+</div><script src="../_static/documentation_options.js?v=d7e45696"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
