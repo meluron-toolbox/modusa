@@ -95,6 +95,14 @@ class Fig:
 		
 		return curr_row
 	
+	def _get_prev_row(self):
+		"""
+		Get the prev row where you can add arrows.
+		"""
+		prev_pow = self._axs[self._curr_row_idx - 1]
+		
+		return prev_pow
+	
 	def _get_new_color(self):
 		"""
 		Get a new color for different lines.
@@ -529,6 +537,53 @@ class Fig:
 		
 		if grid is True:
 			curr_row[0].grid(True, linestyle='--', linewidth=0.7, color="lightgray" ,alpha=0.6)
+	
+	from matplotlib.patches import Rectangle
+	import matplotlib.pyplot as plt
+	
+	def add_arrow(self, xy, label, text_offset=(0, 0), c="r", fontsize=12, ax=None):
+		"""
+		Add an arrow pointing to a specific point with a boxed label at the tail.
+	
+		Parameters
+		----------
+		xy : tuple[float, float]
+			- Target point (x, y) for the arrow head.
+		label : str
+			- Text label at the arrow tail.
+		text_offset : tuple[float, float]
+			- Offset (dx, dy) for label position from arrow tail.
+		c : str
+			- Color for arrow and text.
+			- Default: "r" for red
+		fontsize : int
+			- Font size of the label text.
+			- Default: 12
+		ax : int | None
+			- Which specific axis to plot (1, 2, 3, ...).
+			- If None, uses the current row.
+	
+		Returns
+		-------
+		None
+		"""
+		curr_row = self._get_prev_row() if ax is None else self._axs[ax]
+		
+		arrowprops = dict(arrowstyle="->", color=c, lw=2)
+		bbox = dict(boxstyle="round,pad=0.3", fc="white", ec=c, lw=1.2)
+			
+		text_x, text_y = xy[0] + text_offset[0], xy[1] + text_offset[1]
+		
+		curr_row[0].annotate(
+			label,
+			xy=xy, xycoords="data",
+			xytext=(text_x, text_y), textcoords="data",
+			arrowprops=arrowprops,
+			fontsize=fontsize,
+			color=c,
+			ha="center", va="center",
+			bbox=bbox
+		)
 			
 	def add_legend(self, ypos=1.0):
 		"""
