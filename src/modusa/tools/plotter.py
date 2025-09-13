@@ -541,24 +541,26 @@ class Fig:
 	from matplotlib.patches import Rectangle
 	import matplotlib.pyplot as plt
 	
-	def add_arrow(self, xy, label, text_offset=(0, 0), c="r", fontsize=12, ax=None):
+	def add_arrows(self, xys, labels, text_offset=(0, 0), c="r", fontsize=12, ax=None):
 		"""
-		Add an arrow pointing to a specific point with a boxed label at the tail.
+		Add multiple arrows pointing to specific points with boxed labels at the tails.
 	
 		Parameters
 		----------
-		xy : tuple[float, float]
-			- Target point (x, y) for the arrow head.
-		label : str
-			- Text label at the arrow tail.
-		text_offset : tuple[float, float]
-			- Offset (dx, dy) for label position from arrow tail.
-		c : str
-			- Color for arrow and text.
-			- Default: "r" for red
-		fontsize : int
-			- Font size of the label text.
-			- Default: 12
+		xys : list[tuple[float, float]]
+			- List of target points (x, y) for the arrow heads.
+		labels : list[str] | str
+			- List of text labels at the arrow tails.
+			- If str, the same label is used for all points.
+		text_offset : tuple[float, float] | list[tuple[float, float]]
+			- Offset(s) (dx, dy) for label positions from arrow tails.
+			- If single tuple, same offset is applied to all.
+		c : str | list[str]
+			- Color(s) for arrow and text.
+			- If str, same color is applied to all.
+		fontsize : int | list[int]
+			- Font size(s) of the label text.
+			- If int, same size is applied to all.
 		ax : int | None
 			- Which specific axis to plot (1, 2, 3, ...).
 			- If None, uses the current row.
@@ -569,21 +571,33 @@ class Fig:
 		"""
 		curr_row = self._get_prev_row() if ax is None else self._axs[ax]
 		
-		arrowprops = dict(arrowstyle="->", color=c, lw=2)
-		bbox = dict(boxstyle="round,pad=0.3", fc="white", ec=c, lw=1.2)
+		# Normalize single values into lists
+		n = len(xys)
+		if isinstance(labels, str):
+			labels = [labels] * n
+		if isinstance(text_offset, tuple):
+			text_offset = [text_offset] * n
+		if isinstance(c, str):
+			c = [c] * n
+		if isinstance(fontsize, int):
+			fontsize = [fontsize] * n
 			
-		text_x, text_y = xy[0] + text_offset[0], xy[1] + text_offset[1]
-		
-		curr_row[0].annotate(
-			label,
-			xy=xy, xycoords="data",
-			xytext=(text_x, text_y), textcoords="data",
-			arrowprops=arrowprops,
-			fontsize=fontsize,
-			color=c,
-			ha="center", va="center",
-			bbox=bbox
-		)
+		for (xy, label, offset, color, fs) in zip(xys, labels, text_offset, c, fontsize):
+			arrowprops = dict(arrowstyle="->", color=color, lw=2)
+			bbox = dict(boxstyle="round,pad=0.3", fc="white", ec=color, lw=1.2)
+			
+			text_x, text_y = xy[0] + offset[0], xy[1] + offset[1]
+			
+			curr_row[0].annotate(
+				label,
+				xy=xy, xycoords="data",
+				xytext=(text_x, text_y), textcoords="data",
+				arrowprops=arrowprops,
+				fontsize=fs,
+				color=color,
+				ha="center", va="center",
+				bbox=bbox
+			)
 			
 	def add_legend(self, ypos=1.0):
 		"""
