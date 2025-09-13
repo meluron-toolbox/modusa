@@ -9,5 +9,6 @@ Tools
    audio_converter
    audio_player
    audio_recorder
+   audio_saver
    plotter
    youtube_downloader
