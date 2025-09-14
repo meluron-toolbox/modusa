@@ -547,7 +547,7 @@ class Fig:
 	
 		Parameters
 		----------
-		xys : list[tuple[float, float]]
+		xys : list[tuple[float, float]] | tuple[float, float]
 			- List of target points (x, y) for the arrow heads.
 		labels : list[str] | str
 			- List of text labels at the arrow tails.
@@ -572,6 +572,8 @@ class Fig:
 		curr_row = self._get_prev_row() if ax is None else self._axs[ax]
 		
 		# Normalize single values into lists
+		if isinstance(xys, tuple):
+			xys = [xys]
 		n = len(xys)
 		if isinstance(labels, str):
 			labels = [labels] * n
