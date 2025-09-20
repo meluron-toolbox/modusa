@@ -39,7 +39,7 @@ def record():
 	)
 	
 	sr_dropdown = widgets.Dropdown(
-		options=[('16 Khz', 16000), ('22.05 Khz', 22050), ('44.1 Khz', 44100)],
+		options=[('16 Khz', 16000), ('22.05 Khz', 22050), ('44.1 Khz', 44100), ('48 Khz', 48000)],
 		value=22050,
 		description="Sample Rate:",
 		layout=widgets.Layout(width="300px")
