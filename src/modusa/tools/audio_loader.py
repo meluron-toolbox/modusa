@@ -101,6 +101,6 @@ def load(path, sr=None, clip=None):
 		else:
 			raise ValueError(f"Invalid clip type or length: {type(clip)}, len={len(clip)}")
 		
-		audio_data = audio_data[int(clip[0]*sr):int(clip[1]*sr)]
+		audio_data = audio_data[int(clip[0]*audio_sr):int(clip[1]*audio_sr)]
 	
 	return audio_data, audio_sr, title
