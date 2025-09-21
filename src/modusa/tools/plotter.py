@@ -280,7 +280,7 @@ class Fig:
 			curr_row[0].grid(True, linestyle='--', linewidth=0.7, color="lightgray" ,alpha=0.6)
 				
 		
-	def add_matrix(self, M, y=None, x=None, c="viridis", o="upper", label=None, ylabel=None, ylim=None, yticks=None, yticklabels=None, xticks=None, xticklabels=None, cbar=True, grid=True, ax=None):
+	def add_matrix(self, M, y=None, x=None, c="viridis", o="upper", label=None, ylabel=None, ylim=None, yticks=None, yticklabels=None, xticks=None, xticklabels=None, cbar=True, grid=True, alpha=1, ax=None):
 		"""
 		Add matrix to the figure.
 			
@@ -323,6 +323,10 @@ class Fig:
 		grid: bool
 			- Do you want the grid?
 			- Default: True
+		alpha: float (0 to 1)
+			- Transparency level
+			- 1 being opaque and 0 being completely transparent
+			- Default: 1
 		ax: int
 			- Which specific axis to plot (1, 2, 3, ...)
 			- None
@@ -338,7 +342,7 @@ class Fig:
 		
 		extent = self._calculate_extent(x, y, o)
 		
-		im = curr_row[0].imshow(M, aspect="auto", origin=o, cmap=c, extent=extent, alpha=0.6)
+		im = curr_row[0].imshow(M, aspect="auto", origin=o, cmap=c, extent=extent, alpha=alpha)
 		
 		if ylabel is not None: curr_row[0].set_ylabel(ylabel)
 		
