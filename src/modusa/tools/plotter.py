@@ -338,7 +338,7 @@ class Fig:
 		
 		extent = self._calculate_extent(x, y, o)
 		
-		im = curr_row[0].imshow(M, aspect="auto", origin=o, cmap=c, extent=extent)
+		im = curr_row[0].imshow(M, aspect="auto", origin=o, cmap=c, extent=extent, alpha=0.6)
 		
 		if ylabel is not None: curr_row[0].set_ylabel(ylabel)
 		

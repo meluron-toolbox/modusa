@@ -9,7 +9,7 @@
 project = 'modusa'
 copyright = '2025, Ankit Anand'
 author = 'Ankit Anand'
-release = '0.3.79'
+release = '0.3.80'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
