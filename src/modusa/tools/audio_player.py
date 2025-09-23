@@ -3,7 +3,7 @@
 import numpy as np
 from IPython.display import display, HTML, Audio
 
-def play(y: np.ndarray, sr: float, t0: float = 0.0, regions = None, title = None) -> None:
+def play(y: np.ndarray, sr: float, title = None, t0: float = 0.0, regions = None) -> None:
 		"""
 		Plays audio clips for given regions in Jupyter Notebooks.
 
@@ -14,6 +14,8 @@ def play(y: np.ndarray, sr: float, t0: float = 0.0, regions = None, title = None
 			- Mono (1D) numpy array.
 		sr: float
 			- Sampling rate of the audio.
+		title : str | None
+			- Title to display above audio players.
 		t0: float
 			- Starting timestamp, incase the audio is cropped
 			- Default: 0.0 → Starts from 0.0 sec
@@ -21,15 +23,13 @@ def play(y: np.ndarray, sr: float, t0: float = 0.0, regions = None, title = None
 			- Regions to extract and play (in sec), e.g. [(0, 10.2, "tag")]
 			- If there is only one region, a tuple should also work. e.g. (0, 10.2, "tag")
 			- Default: None → The entire song is selected.
-		title : str | None
-			- Title to display above audio players.
 
 		Returns
 		-------
 		None
 		"""
 		if title:
-			display(HTML(f"<h4>{title}</h4>"))
+			display(HTML(f"<p style='font-size:15px; font-weight:600; text-decoration: underline;'>{title}</p>"))
 			
 		clip_tags = []
 		timings = []
