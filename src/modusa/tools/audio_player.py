@@ -29,7 +29,7 @@ def play(y: np.ndarray, sr: float, title = None, t0: float = 0.0, regions = None
 		None
 		"""
 		if title:
-			display(HTML(f"<p style='font-size:15px; font-weight:600; text-decoration: underline;'>{title}</p>"))
+			display(HTML(f"<p style='font-size:15px; font-weight:600; text-decoration: underline; margin-left:10px'>{title}</p>"))
 			
 		clip_tags = []
 		timings = []

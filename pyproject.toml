@@ -1,6 +1,6 @@
 [project]
 name = "modusa"
-version = "0.3.82"
+dynamic = ["version"]
 description = "A modular signal analysis python library."
 authors = [
     {name = "Ankit Anand", email = "ankit0.anand0@gmail.com"},
@@ -9,6 +9,9 @@ dependencies = ["numpy>=2.2.6", "matplotlib>=3.10.3", "yt-dlp>=2025.8.22", "libr
 requires-python = ">=3.10"
 readme = "README.md"
 license = {text = "MIT"}
+
+[tool.setuptools.dynamic]
+version = {attr = "modusa.__version__"}
 
 [tool.pdm.dev-dependencies]
 upload=["twine>=6.1.0"]
