@@ -204,7 +204,7 @@ class Fig:
 		
 		# Add figure number at top-left
 		if self._fig_num is not None:
-			fig.text(0.12, 0.9, f'FIG - {self._fig_num}', fontsize=10, fontweight='bold', va='top', ha='left', color='black', bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='black', linewidth=1.5))
+			fig.text(0.12, 0.9, f'fig - {self._fig_num}', fontsize=10, fontweight='bold', va='top', ha='left', color='black', bbox=dict(boxstyle='round,pad=0.3', facecolor='lightgray', edgecolor='gray', linewidth=1.0))
 		
 		axs[-1, 0].tick_params(bottom=True, labelbottom=True)
 		
