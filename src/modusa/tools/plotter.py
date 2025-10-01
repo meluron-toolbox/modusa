@@ -116,10 +116,10 @@ class Fig:
 		"""
 		Get a new color for different lines.
 		"""
-		colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
+		colors = plt.cm.tab20.colors
 		self._curr_color_idx += 1
 		
-		return colors[self._curr_color_idx]
+		return colors[self._curr_color_idx % len(colors)]
 	
 	def _calculate_extent(self, x, y, o):
 		"""
