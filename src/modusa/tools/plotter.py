@@ -194,7 +194,7 @@ class Fig:
 			for i, char in enumerate(arrangement):
 				if char != "r":  # Skip the reference subplot
 					label = chr(97 + label_counter)  # 97 is ASCII for 'a'
-					axs[i, 0].text(-0.05, 0.5, f'({label})', transform=axs[i, 0].transAxes, fontsize=12, fontweight='bold', va='center', ha='right')
+					axs[i, 0].text(-0.06, 0.5, f'({label})', transform=axs[i, 0].transAxes, fontsize=12, fontweight='bold', va='center', ha='right')
 					label_counter += 1
 		
 		axs[-1, 0].tick_params(bottom=True, labelbottom=True)
