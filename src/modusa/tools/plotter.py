@@ -60,9 +60,12 @@ class Fig:
 	dark_mode: bool
 		- Do you want dark mode?
 		- Default: True
+	abc: bool
+		- Adds a, b, c, ... to the subplots for easier referencing.
+		- Default: False
 	"""
 	
-	def __init__(self, arrangement="asm", xlim=None, width=16, dark_mode=True):
+	def __init__(self, arrangement="asm", xlim=None, width=16, dark_mode=True, abc=False):
 		
 		if dark_mode:
 			plt.style.use("dark_background")
@@ -80,6 +83,7 @@ class Fig:
 		self._xlim = xlim
 		self._curr_row_idx = 1 # Starting from 1 because row 0 is reserved for reference subplot
 		self._curr_color_idx = 0 # So that we have different color across all the subplots to avoid legend confusion
+		self._abc = abc # This tells whether to add a, b, c, ... to the subplots for better referencing
 		
 		# Subplot setup
 		self._fig, self._axs = self._generate_subplots(arrangement, width) # This will fill in the all the above variables
@@ -183,6 +187,15 @@ class Fig:
 				axs[i, 0].tick_params(bottom=False, labelbottom=False)
 				
 			axs[i, 0].sharex(axs[0, 0])
+		
+		if self._abc is True:
+			# Add subplot labels (a, b, c, d, ...) for better referencing.
+			label_counter = 0
+			for i, char in enumerate(arrangement):
+				if char != "r":  # Skip the reference subplot
+					label = chr(97 + label_counter)  # 97 is ASCII for 'a'
+					axs[i, 0].text(-0.05, 0.5, f'({label})', transform=axs[i, 0].transAxes, fontsize=12, fontweight='bold', va='center', ha='right')
+					label_counter += 1
 		
 		axs[-1, 0].tick_params(bottom=True, labelbottom=True)
 		
