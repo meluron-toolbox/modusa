@@ -63,9 +63,13 @@ class Fig:
 	abc: bool
 		- Adds a, b, c, ... to the subplots for easier referencing.
 		- Default: False
+	fig_num: str | None
+		- Adds a figure number to the top left of the figure.
+		- Eg. "1.1"
+		- Default: None
 	"""
 	
-	def __init__(self, arrangement="asm", xlim=None, width=16, dark_mode=True, abc=False):
+	def __init__(self, arrangement="asm", xlim=None, width=16, dark_mode=True, abc=False, fig_num=None):
 		
 		if dark_mode:
 			plt.style.use("dark_background")
@@ -84,6 +88,7 @@ class Fig:
 		self._curr_row_idx = 1 # Starting from 1 because row 0 is reserved for reference subplot
 		self._curr_color_idx = 0 # So that we have different color across all the subplots to avoid legend confusion
 		self._abc = abc # This tells whether to add a, b, c, ... to the subplots for better referencing
+		self._fig_num = fig_num # Add a figure number to the entire figure
 		
 		# Subplot setup
 		self._fig, self._axs = self._generate_subplots(arrangement, width) # This will fill in the all the above variables
@@ -188,14 +193,18 @@ class Fig:
 				
 			axs[i, 0].sharex(axs[0, 0])
 		
+		# Add subplot labels (a, b, c, d, ...) for better referencing.
 		if self._abc is True:
-			# Add subplot labels (a, b, c, d, ...) for better referencing.
 			label_counter = 0
 			for i, char in enumerate(arrangement):
 				if char != "r":  # Skip the reference subplot
 					label = chr(97 + label_counter)  # 97 is ASCII for 'a'
 					axs[i, 0].text(-0.06, 0.5, f'({label})', transform=axs[i, 0].transAxes, fontsize=12, fontweight='bold', va='center', ha='right')
 					label_counter += 1
+		
+		# Add figure number at top-left
+		if self._fig_num is not None:
+			fig.text(0.12, 0.9, f'FIG - {self._fig_num}', fontsize=10, fontweight='bold', va='top', ha='left', color='black', bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='black', linewidth=1.5))
 		
 		axs[-1, 0].tick_params(bottom=True, labelbottom=True)
 		
