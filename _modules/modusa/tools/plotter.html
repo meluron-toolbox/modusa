@@ -6,7 +6,7 @@
         <link rel="prefetch" href="../../../_static/logo.png" as="image" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2025.07.19 -->
-        <title>modusa.tools.plotter - modusa 0.3.87 documentation</title>
+        <title>modusa.tools.plotter - modusa 0.3.88 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -169,7 +169,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">modusa 0.3.87 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">modusa 0.3.88 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -195,7 +195,7 @@
     <img class="sidebar-logo" src="../../../_static/logo.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">modusa 0.3.87 documentation</span>
+  <span class="sidebar-brand-text">modusa 0.3.88 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -323,9 +323,13 @@
 <span class="sd">	abc: bool</span>
 <span class="sd">		- Adds a, b, c, ... to the subplots for easier referencing.</span>
 <span class="sd">		- Default: False</span>
+<span class="sd">	fig_num: str | None</span>
+<span class="sd">		- Adds a figure number to the top left of the figure.</span>
+<span class="sd">		- Eg. &quot;1.1&quot;</span>
+<span class="sd">		- Default: None</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	
-	<span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrangement</span><span class="o">=</span><span class="s2">&quot;asm&quot;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">dark_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">abc</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+	<span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arrangement</span><span class="o">=</span><span class="s2">&quot;asm&quot;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">dark_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">abc</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fig_num</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 		
 		<span class="k">if</span> <span class="n">dark_mode</span><span class="p">:</span>
 			<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;dark_background&quot;</span><span class="p">)</span>
@@ -344,6 +348,7 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">_curr_row_idx</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># Starting from 1 because row 0 is reserved for reference subplot</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_curr_color_idx</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># So that we have different color across all the subplots to avoid legend confusion</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_abc</span> <span class="o">=</span> <span class="n">abc</span> <span class="c1"># This tells whether to add a, b, c, ... to the subplots for better referencing</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_fig_num</span> <span class="o">=</span> <span class="n">fig_num</span> <span class="c1"># Add a figure number to the entire figure</span>
 		
 		<span class="c1"># Subplot setup</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">_fig</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_axs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_subplots</span><span class="p">(</span><span class="n">arrangement</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span> <span class="c1"># This will fill in the all the above variables</span>
@@ -448,14 +453,18 @@
 				
 			<span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sharex</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 		
+		<span class="c1"># Add subplot labels (a, b, c, d, ...) for better referencing.</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_abc</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-			<span class="c1"># Add subplot labels (a, b, c, d, ...) for better referencing.</span>
 			<span class="n">label_counter</span> <span class="o">=</span> <span class="mi">0</span>
 			<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">arrangement</span><span class="p">):</span>
 				<span class="k">if</span> <span class="n">char</span> <span class="o">!=</span> <span class="s2">&quot;r&quot;</span><span class="p">:</span>  <span class="c1"># Skip the reference subplot</span>
 					<span class="n">label</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="mi">97</span> <span class="o">+</span> <span class="n">label_counter</span><span class="p">)</span>  <span class="c1"># 97 is ASCII for &#39;a&#39;</span>
 					<span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">-</span><span class="mf">0.06</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
 					<span class="n">label_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+		
+		<span class="c1"># Add figure number at top-left</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fig_num</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.12</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;FIG - </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_fig_num</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s1">&#39;round,pad=0.5&#39;</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">))</span>
 		
 		<span class="n">axs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">labelbottom</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 		
@@ -1183,7 +1192,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=b60f1bd9"></script>
+</div><script src="../../../_static/documentation_options.js?v=1478ea9e"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

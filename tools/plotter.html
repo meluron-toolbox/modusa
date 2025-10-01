@@ -7,7 +7,7 @@
         <link rel="prefetch" href="../_static/logo.png" as="image" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2025.07.19 -->
-        <title>Plotter - modusa 0.3.87 documentation</title>
+        <title>Plotter - modusa 0.3.88 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -170,7 +170,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">modusa 0.3.87 documentation</div></a>
+      <a href="../index.html"><div class="brand">modusa 0.3.88 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -196,7 +196,7 @@
     <img class="sidebar-logo" src="../_static/logo.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">modusa 0.3.87 documentation</span>
+  <span class="sidebar-brand-text">modusa 0.3.88 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -266,7 +266,7 @@
 <h1>Plotter<a class="headerlink" href="#plotter" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="modusa.tools.plotter.Fig">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modusa.tools.plotter.</span></span><span class="sig-name descname"><span class="pre">Fig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arrangement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'asm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dark_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">abc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#Fig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.plotter.Fig" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">modusa.tools.plotter.</span></span><span class="sig-name descname"><span class="pre">Fig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arrangement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'asm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dark_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">abc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#Fig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.plotter.Fig" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A utility class that provides easy-to-use API for
 plotting 1D/2D signals along with clean representations
@@ -301,6 +301,12 @@ of annotations, events.</p>
 <li><p><strong>abc</strong> (<em>bool</em>) – <ul>
 <li><p>Adds a, b, c, … to the subplots for easier referencing.</p></li>
 <li><p>Default: False</p></li>
+</ul>
+</p></li>
+<li><p><strong>fig_num</strong> (<em>str</em><em> | </em><em>None</em>) – <ul>
+<li><p>Adds a figure number to the top left of the figure.</p></li>
+<li><p>Eg. “1.1”</p></li>
+<li><p>Default: None</p></li>
 </ul>
 </p></li>
 </ul>
@@ -1129,7 +1135,7 @@ zorder: float</p>
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=b60f1bd9"></script>
+</div><script src="../_static/documentation_options.js?v=1478ea9e"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
