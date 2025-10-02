@@ -7,7 +7,7 @@
         <link rel="prefetch" href="../_static/logo.png" as="image" />
 
     <!-- Generated with Sphinx 8.1.2 and Furo 2025.07.19 -->
-        <title>Plotter - modusa 0.3.91 documentation</title>
+        <title>Plotter - modusa 0.3.92 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -170,7 +170,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">modusa 0.3.91 documentation</div></a>
+      <a href="../index.html"><div class="brand">modusa 0.3.92 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -196,7 +196,7 @@
     <img class="sidebar-logo" src="../_static/logo.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">modusa 0.3.91 documentation</span>
+  <span class="sidebar-brand-text">modusa 0.3.92 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -596,215 +596,6 @@ of annotations, events.</p>
 </dl>
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.Rectangle">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Rectangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation_point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xy'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modusa.tools.plotter.Fig.Rectangle" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Patch</span></code></p>
-<p>A rectangle defined via an anchor point <em>xy</em> and its <em>width</em> and <em>height</em>.</p>
-<p>The rectangle extends from <code class="docutils literal notranslate"><span class="pre">xy[0]</span></code> to <code class="docutils literal notranslate"><span class="pre">xy[0]</span> <span class="pre">+</span> <span class="pre">width</span></code> in x-direction
-and from <code class="docutils literal notranslate"><span class="pre">xy[1]</span></code> to <code class="docutils literal notranslate"><span class="pre">xy[1]</span> <span class="pre">+</span> <span class="pre">height</span></code> in y-direction.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span>                <span class="o">+------------------+</span>
-<span class="p">:</span>                <span class="o">|</span>                  <span class="o">|</span>
-<span class="p">:</span>              <span class="n">height</span>               <span class="o">|</span>
-<span class="p">:</span>                <span class="o">|</span>                  <span class="o">|</span>
-<span class="p">:</span>               <span class="p">(</span><span class="n">xy</span><span class="p">)</span><span class="o">----</span> <span class="n">width</span> <span class="o">-----+</span>
-</pre></div>
-</div>
-<p>One may picture <em>xy</em> as the bottom left corner, but which corner <em>xy</em> is
-actually depends on the direction of the axis and the sign of <em>width</em>
-and <em>height</em>; e.g. <em>xy</em> would be the bottom right corner if the x-axis
-was inverted or if <em>width</em> was negative.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.Rectangle.get_angle">
-<span class="sig-name descname"><span class="pre">get_angle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modusa.tools.plotter.Fig.Rectangle.get_angle" title="Link to this definition">¶</a></dt>
-<dd><p>Get the rotation angle in degrees.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.Rectangle.get_bbox">
-<span class="sig-name descname"><span class="pre">get_bbox</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modusa.tools.plotter.Fig.Rectangle.get_bbox" title="Link to this definition">¶</a></dt>
-<dd><p>Return the <cite>.Bbox</cite>.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.Rectangle.get_center">
-<span class="sig-name descname"><span class="pre">get_center</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modusa.tools.plotter.Fig.Rectangle.get_center" title="Link to this definition">¶</a></dt>
-<dd><p>Return the centre of the rectangle.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.Rectangle.get_corners">
-<span class="sig-name descname"><span class="pre">get_corners</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modusa.tools.plotter.Fig.Rectangle.get_corners" title="Link to this definition">¶</a></dt>
-<dd><p>Return the corners of the rectangle, moving anti-clockwise from
-(x0, y0).</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.Rectangle.get_height">
-<span class="sig-name descname"><span class="pre">get_height</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modusa.tools.plotter.Fig.Rectangle.get_height" title="Link to this definition">¶</a></dt>
-<dd><p>Return the height of the rectangle.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.Rectangle.get_patch_transform">
-<span class="sig-name descname"><span class="pre">get_patch_transform</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modusa.tools.plotter.Fig.Rectangle.get_patch_transform" title="Link to this definition">¶</a></dt>
-<dd><p>Return the <cite>~.transforms.Transform</cite> instance mapping patch coordinates
-to data coordinates.</p>
-<p>For example, one may define a patch of a circle which represents a
-radius of 5 by providing coordinates for a unit circle, and a
-transform which scales the coordinates (the patch coordinate) by 5.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.Rectangle.get_path">
-<span class="sig-name descname"><span class="pre">get_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modusa.tools.plotter.Fig.Rectangle.get_path" title="Link to this definition">¶</a></dt>
-<dd><p>Return the vertices of the rectangle.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.Rectangle.get_width">
-<span class="sig-name descname"><span class="pre">get_width</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modusa.tools.plotter.Fig.Rectangle.get_width" title="Link to this definition">¶</a></dt>
-<dd><p>Return the width of the rectangle.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.Rectangle.get_x">
-<span class="sig-name descname"><span class="pre">get_x</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modusa.tools.plotter.Fig.Rectangle.get_x" title="Link to this definition">¶</a></dt>
-<dd><p>Return the left coordinate of the rectangle.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.Rectangle.get_xy">
-<span class="sig-name descname"><span class="pre">get_xy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modusa.tools.plotter.Fig.Rectangle.get_xy" title="Link to this definition">¶</a></dt>
-<dd><p>Return the left and bottom coords of the rectangle as a tuple.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.Rectangle.get_y">
-<span class="sig-name descname"><span class="pre">get_y</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#modusa.tools.plotter.Fig.Rectangle.get_y" title="Link to this definition">¶</a></dt>
-<dd><p>Return the bottom coordinate of the rectangle.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.Rectangle.rotation_point">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotation_point</span></span><a class="headerlink" href="#modusa.tools.plotter.Fig.Rectangle.rotation_point" title="Link to this definition">¶</a></dt>
-<dd><p>The rotation point of the patch.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.Rectangle.set">
-<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agg_filter=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">animated=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">antialiased=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capstyle=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip_box=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip_on=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip_path=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edgecolor=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facecolor=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gid=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hatch=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hatch_linewidth=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_layout=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joinstyle=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linestyle=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linewidth=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mouseover=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_effects=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picker=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rasterized=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sketch_params=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snap=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visible=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xy=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y=&lt;UNSET&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zorder=&lt;UNSET&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modusa.tools.plotter.Fig.Rectangle.set" title="Link to this definition">¶</a></dt>
-<dd><p>Set multiple properties at once.</p>
-<p>Supported properties are</p>
-<dl class="simple">
-<dt>Properties:</dt><dd><p>agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array and two offsets from the bottom left corner of the image
-alpha: float or None
-angle: unknown
-animated: bool
-antialiased or aa: bool or None
-bounds: (left, bottom, width, height)
-capstyle: <cite>.CapStyle</cite> or {‘butt’, ‘projecting’, ‘round’}
-clip_box: <cite>~matplotlib.transforms.BboxBase</cite> or None
-clip_on: bool
-clip_path: Patch or (Path, Transform) or None
-color: <a href="#id3"><span class="problematic" id="id4">:mpltype:`color`</span></a>
-edgecolor or ec: <a href="#id5"><span class="problematic" id="id6">:mpltype:`color`</span></a> or None
-facecolor or fc: <a href="#id7"><span class="problematic" id="id8">:mpltype:`color`</span></a> or None
-figure: <cite>~matplotlib.figure.Figure</cite> or <cite>~matplotlib.figure.SubFigure</cite>
-fill: bool
-gid: str
-hatch: {‘/’, ‘\’, ‘|’, ‘-’, ‘+’, ‘x’, ‘o’, ‘O’, ‘.’, ‘*’}
-hatch_linewidth: unknown
-height: unknown
-in_layout: bool
-joinstyle: <cite>.JoinStyle</cite> or {‘miter’, ‘round’, ‘bevel’}
-label: object
-linestyle or ls: {‘-’, ‘–’, ‘-.’, ‘:’, ‘’, (offset, on-off-seq), …}
-linewidth or lw: float or None
-mouseover: bool
-path_effects: list of <cite>.AbstractPathEffect</cite>
-picker: None or bool or float or callable
-rasterized: bool
-sketch_params: (scale: float, length: float, randomness: float)
-snap: bool or None
-transform: <cite>~matplotlib.transforms.Transform</cite>
-url: str
-visible: bool
-width: unknown
-x: unknown
-xy: (float, float)
-y: unknown
-zorder: float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.Rectangle.set_angle">
-<span class="sig-name descname"><span class="pre">set_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modusa.tools.plotter.Fig.Rectangle.set_angle" title="Link to this definition">¶</a></dt>
-<dd><p>Set the rotation angle in degrees.</p>
-<p>The rotation is performed anti-clockwise around <em>xy</em>.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.Rectangle.set_bounds">
-<span class="sig-name descname"><span class="pre">set_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modusa.tools.plotter.Fig.Rectangle.set_bounds" title="Link to this definition">¶</a></dt>
-<dd><p>Set the bounds of the rectangle as <em>left</em>, <em>bottom</em>, <em>width</em>, <em>height</em>.</p>
-<p>The values may be passed as separate parameters or as a tuple:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">set_bounds</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
-<span class="n">set_bounds</span><span class="p">((</span><span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">))</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.Rectangle.set_height">
-<span class="sig-name descname"><span class="pre">set_height</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modusa.tools.plotter.Fig.Rectangle.set_height" title="Link to this definition">¶</a></dt>
-<dd><p>Set the height of the rectangle.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.Rectangle.set_width">
-<span class="sig-name descname"><span class="pre">set_width</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modusa.tools.plotter.Fig.Rectangle.set_width" title="Link to this definition">¶</a></dt>
-<dd><p>Set the width of the rectangle.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.Rectangle.set_x">
-<span class="sig-name descname"><span class="pre">set_x</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modusa.tools.plotter.Fig.Rectangle.set_x" title="Link to this definition">¶</a></dt>
-<dd><p>Set the left coordinate of the rectangle.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.Rectangle.set_xy">
-<span class="sig-name descname"><span class="pre">set_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modusa.tools.plotter.Fig.Rectangle.set_xy" title="Link to this definition">¶</a></dt>
-<dd><p>Set the left and bottom coordinates of the rectangle.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>xy</strong> (<em>(</em><em>float</em><em>, </em><em>float</em><em>)</em>)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.Rectangle.set_y">
-<span class="sig-name descname"><span class="pre">set_y</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modusa.tools.plotter.Fig.Rectangle.set_y" title="Link to this definition">¶</a></dt>
-<dd><p>Set the bottom coordinate of the rectangle.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.Rectangle.xy">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">xy</span></span><a class="headerlink" href="#modusa.tools.plotter.Fig.Rectangle.xy" title="Link to this definition">¶</a></dt>
-<dd><p>Return the left and bottom coords of the rectangle as a tuple.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="modusa.tools.plotter.Fig.plt">
-<span class="sig-name descname"><span class="pre">plt</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;module</span> <span class="pre">'matplotlib.pyplot'</span> <span class="pre">from</span> <span class="pre">'/Users/ankit/Documents/meluron-toolbox/modusa/.venv/lib/python3.10/site-packages/matplotlib/pyplot.py'&gt;</span></em><a class="headerlink" href="#modusa.tools.plotter.Fig.plt" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="modusa.tools.plotter.Fig.add_arrows">
 <span class="sig-name descname"><span class="pre">add_arrows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xys</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/modusa/tools/plotter.html#Fig.add_arrows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modusa.tools.plotter.Fig.add_arrows" title="Link to this definition">¶</a></dt>
@@ -1090,31 +881,6 @@ zorder: float</p>
 <li><a class="reference internal" href="#modusa.tools.plotter.Fig.add_matrix"><code class="docutils literal notranslate"><span class="pre">Fig.add_matrix()</span></code></a></li>
 <li><a class="reference internal" href="#modusa.tools.plotter.Fig.add_events"><code class="docutils literal notranslate"><span class="pre">Fig.add_events()</span></code></a></li>
 <li><a class="reference internal" href="#modusa.tools.plotter.Fig.add_annotation"><code class="docutils literal notranslate"><span class="pre">Fig.add_annotation()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.Rectangle"><code class="docutils literal notranslate"><span class="pre">Fig.Rectangle</span></code></a><ul>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.Rectangle.get_angle"><code class="docutils literal notranslate"><span class="pre">Fig.Rectangle.get_angle()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.Rectangle.get_bbox"><code class="docutils literal notranslate"><span class="pre">Fig.Rectangle.get_bbox()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.Rectangle.get_center"><code class="docutils literal notranslate"><span class="pre">Fig.Rectangle.get_center()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.Rectangle.get_corners"><code class="docutils literal notranslate"><span class="pre">Fig.Rectangle.get_corners()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.Rectangle.get_height"><code class="docutils literal notranslate"><span class="pre">Fig.Rectangle.get_height()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.Rectangle.get_patch_transform"><code class="docutils literal notranslate"><span class="pre">Fig.Rectangle.get_patch_transform()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.Rectangle.get_path"><code class="docutils literal notranslate"><span class="pre">Fig.Rectangle.get_path()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.Rectangle.get_width"><code class="docutils literal notranslate"><span class="pre">Fig.Rectangle.get_width()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.Rectangle.get_x"><code class="docutils literal notranslate"><span class="pre">Fig.Rectangle.get_x()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.Rectangle.get_xy"><code class="docutils literal notranslate"><span class="pre">Fig.Rectangle.get_xy()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.Rectangle.get_y"><code class="docutils literal notranslate"><span class="pre">Fig.Rectangle.get_y()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.Rectangle.rotation_point"><code class="docutils literal notranslate"><span class="pre">Fig.Rectangle.rotation_point</span></code></a></li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.Rectangle.set"><code class="docutils literal notranslate"><span class="pre">Fig.Rectangle.set()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.Rectangle.set_angle"><code class="docutils literal notranslate"><span class="pre">Fig.Rectangle.set_angle()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.Rectangle.set_bounds"><code class="docutils literal notranslate"><span class="pre">Fig.Rectangle.set_bounds()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.Rectangle.set_height"><code class="docutils literal notranslate"><span class="pre">Fig.Rectangle.set_height()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.Rectangle.set_width"><code class="docutils literal notranslate"><span class="pre">Fig.Rectangle.set_width()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.Rectangle.set_x"><code class="docutils literal notranslate"><span class="pre">Fig.Rectangle.set_x()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.Rectangle.set_xy"><code class="docutils literal notranslate"><span class="pre">Fig.Rectangle.set_xy()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.Rectangle.set_y"><code class="docutils literal notranslate"><span class="pre">Fig.Rectangle.set_y()</span></code></a></li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.Rectangle.xy"><code class="docutils literal notranslate"><span class="pre">Fig.Rectangle.xy</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#modusa.tools.plotter.Fig.plt"><code class="docutils literal notranslate"><span class="pre">Fig.plt</span></code></a></li>
 <li><a class="reference internal" href="#modusa.tools.plotter.Fig.add_arrows"><code class="docutils literal notranslate"><span class="pre">Fig.add_arrows()</span></code></a></li>
 <li><a class="reference internal" href="#modusa.tools.plotter.Fig.add_legend"><code class="docutils literal notranslate"><span class="pre">Fig.add_legend()</span></code></a></li>
 <li><a class="reference internal" href="#modusa.tools.plotter.Fig.add_title"><code class="docutils literal notranslate"><span class="pre">Fig.add_title()</span></code></a></li>
@@ -1135,7 +901,7 @@ zorder: float</p>
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=5314aa16"></script>
+</div><script src="../_static/documentation_options.js?v=73a530fd"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
