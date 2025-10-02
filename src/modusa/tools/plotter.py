@@ -59,7 +59,7 @@ class Fig:
 		- Default: 16
 	dark_mode: bool
 		- Do you want dark mode?
-		- Default: True
+		- Default: False
 	abc: bool
 		- Adds a, b, c, ... to the subplots for easier referencing.
 		- Default: False
@@ -69,7 +69,7 @@ class Fig:
 		- Default: None
 	"""
 	
-	def __init__(self, arrangement="asm", xlim=None, width=16, dark_mode=True, abc=False, fig_num=None):
+	def __init__(self, arrangement="asm", xlim=None, width=16, dark_mode=False, abc=False, fig_num=None):
 		
 		if dark_mode:
 			plt.style.use("dark_background")
